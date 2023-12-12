@@ -1,0 +1,4 @@
+.ropeproject/
+__pycache__/
+venv/
+turing_machine.pyproject.user
