@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1200, 600)
+        MainWindow.resize(1000, 600)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_2 = QGridLayout(self.centralwidget)
@@ -198,7 +198,7 @@ class Ui_MainWindow(object):
         self.tape_state_table.setTabKeyNavigation(False)
         self.tape_state_table.setSelectionMode(QAbstractItemView.NoSelection)
         self.tape_state_table.horizontalHeader().setCascadingSectionResizes(False)
-        self.tape_state_table.horizontalHeader().setDefaultSectionSize(173)
+        self.tape_state_table.horizontalHeader().setDefaultSectionSize(137)
         self.tape_state_table.horizontalHeader().setHighlightSections(False)
         self.tape_state_table.horizontalHeader().setStretchLastSection(True)
         self.tape_state_table.verticalHeader().setCascadingSectionResizes(False)
