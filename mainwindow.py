@@ -53,6 +53,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def add_commands_for_buttons(self) -> None:
         self.refresh_button.clicked.connect(self.set_contents_for_widgets)
+        self.start_button.clicked.connect(self.set_start_button_command)
+        self.stop_button.clicked.connect(self.set_stop_button_command)
+
+    def set_start_button_command(self):
+        self.refresh_button.setDisabled(True)
+        self.start_button.setDisabled(True)
+        self.stop_button.setEnabled(True)
+        self.step_backward_button.setDisabled(True)
+        self.step_forward_button.setDisabled(True)
+        self.reset_button.setDisabled(True)
+
+    def set_stop_button_command(self):
+        self.refresh_button.setEnabled(True)
+        self.start_button.setEnabled(True)
+        self.stop_button.setDisabled(True)
+        self.step_backward_button.setEnabled(True)
+        self.step_forward_button.setEnabled(True)
+        self.reset_button.setEnabled(True)
 
 
 if __name__ == "__main__":
