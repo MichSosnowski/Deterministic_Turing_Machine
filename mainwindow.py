@@ -11,10 +11,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__(parent)
         self.setupUi(self)
 
-        canvas = QPixmap(self.label_3.width(), self.label_3.height())
+        canvas = QPixmap(self.turing_machine_tape.width(), self.turing_machine_tape.height())
         canvas.fill(Qt.white)
-        self.label_3.setPixmap(canvas)
-        self.label_3.setScaledContents(True)
+        self.turing_machine_tape.setPixmap(canvas)
+        self.turing_machine_tape.setScaledContents(True)
 
 
 if __name__ == "__main__":

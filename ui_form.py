@@ -36,12 +36,12 @@ class Ui_MainWindow(object):
         self.groupBox_2.setObjectName(u"groupBox_2")
         self.gridLayout_3 = QGridLayout(self.groupBox_2)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.textBrowser = QTextBrowser(self.groupBox_2)
-        self.textBrowser.setObjectName(u"textBrowser")
-        self.textBrowser.setStyleSheet(u"background-color: rgb(240, 240, 240);")
-        self.textBrowser.setFrameShape(QFrame.NoFrame)
+        self.file_text_browser = QTextBrowser(self.groupBox_2)
+        self.file_text_browser.setObjectName(u"file_text_browser")
+        self.file_text_browser.setStyleSheet(u"background-color: rgb(240, 240, 240);")
+        self.file_text_browser.setFrameShape(QFrame.NoFrame)
 
-        self.gridLayout_3.addWidget(self.textBrowser, 0, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.file_text_browser, 0, 0, 1, 1)
 
 
         self.horizontalLayout_3.addWidget(self.groupBox_2)
@@ -59,31 +59,31 @@ class Ui_MainWindow(object):
         self.groupBox.setObjectName(u"groupBox")
         self.gridLayout = QGridLayout(self.groupBox)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.pushButton_3 = QPushButton(self.groupBox)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        self.pushButton_3.setEnabled(False)
+        self.stop_button = QPushButton(self.groupBox)
+        self.stop_button.setObjectName(u"stop_button")
+        self.stop_button.setEnabled(False)
 
-        self.gridLayout.addWidget(self.pushButton_3, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.stop_button, 1, 1, 1, 1)
 
-        self.pushButton_4 = QPushButton(self.groupBox)
-        self.pushButton_4.setObjectName(u"pushButton_4")
+        self.step_backward_button = QPushButton(self.groupBox)
+        self.step_backward_button.setObjectName(u"step_backward_button")
 
-        self.gridLayout.addWidget(self.pushButton_4, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.step_backward_button, 2, 0, 1, 1)
 
-        self.pushButton_2 = QPushButton(self.groupBox)
-        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.start_button = QPushButton(self.groupBox)
+        self.start_button.setObjectName(u"start_button")
 
-        self.gridLayout.addWidget(self.pushButton_2, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.start_button, 1, 0, 1, 1)
 
-        self.pushButton_6 = QPushButton(self.groupBox)
-        self.pushButton_6.setObjectName(u"pushButton_6")
+        self.reset_button = QPushButton(self.groupBox)
+        self.reset_button.setObjectName(u"reset_button")
 
-        self.gridLayout.addWidget(self.pushButton_6, 3, 0, 1, 2)
+        self.gridLayout.addWidget(self.reset_button, 3, 0, 1, 2)
 
-        self.pushButton_5 = QPushButton(self.groupBox)
-        self.pushButton_5.setObjectName(u"pushButton_5")
+        self.step_forward_button = QPushButton(self.groupBox)
+        self.step_forward_button.setObjectName(u"step_forward_button")
 
-        self.gridLayout.addWidget(self.pushButton_5, 2, 1, 1, 1)
+        self.gridLayout.addWidget(self.step_forward_button, 2, 1, 1, 1)
 
         self.gridLayout.setColumnStretch(0, 1)
         self.gridLayout.setColumnStretch(1, 1)
@@ -106,10 +106,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addItem(self.horizontalSpacer)
 
-        self.pushButton = QPushButton(self.centralwidget)
-        self.pushButton.setObjectName(u"pushButton")
+        self.refresh_button = QPushButton(self.centralwidget)
+        self.refresh_button.setObjectName(u"refresh_button")
 
-        self.horizontalLayout.addWidget(self.pushButton)
+        self.horizontalLayout.addWidget(self.refresh_button)
 
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -123,55 +123,55 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.label = QLabel(self.centralwidget)
-        self.label.setObjectName(u"label")
+        self.entry_word_label = QLabel(self.centralwidget)
+        self.entry_word_label.setObjectName(u"entry_word_label")
 
-        self.verticalLayout_3.addWidget(self.label)
+        self.verticalLayout_3.addWidget(self.entry_word_label)
 
-        self.label_2 = QLabel(self.centralwidget)
-        self.label_2.setObjectName(u"label_2")
+        self.exit_word_label = QLabel(self.centralwidget)
+        self.exit_word_label.setObjectName(u"exit_word_label")
 
-        self.verticalLayout_3.addWidget(self.label_2)
+        self.verticalLayout_3.addWidget(self.exit_word_label)
 
 
         self.gridLayout_2.addLayout(self.verticalLayout_3, 3, 0, 3, 1)
 
-        self.label_3 = QLabel(self.centralwidget)
-        self.label_3.setObjectName(u"label_3")
+        self.turing_machine_tape = QLabel(self.centralwidget)
+        self.turing_machine_tape.setObjectName(u"turing_machine_tape")
 
-        self.gridLayout_2.addWidget(self.label_3, 0, 1, 5, 1)
+        self.gridLayout_2.addWidget(self.turing_machine_tape, 0, 1, 5, 1)
 
-        self.tableWidget = QTableWidget(self.centralwidget)
-        if (self.tableWidget.columnCount() < 5):
-            self.tableWidget.setColumnCount(5)
+        self.tape_state_table = QTableWidget(self.centralwidget)
+        if (self.tape_state_table.columnCount() < 5):
+            self.tape_state_table.setColumnCount(5)
         __qtablewidgetitem = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        self.tape_state_table.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        self.tape_state_table.setHorizontalHeaderItem(1, __qtablewidgetitem1)
         __qtablewidgetitem2 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(2, __qtablewidgetitem2)
+        self.tape_state_table.setHorizontalHeaderItem(2, __qtablewidgetitem2)
         __qtablewidgetitem3 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(3, __qtablewidgetitem3)
+        self.tape_state_table.setHorizontalHeaderItem(3, __qtablewidgetitem3)
         __qtablewidgetitem4 = QTableWidgetItem()
-        self.tableWidget.setHorizontalHeaderItem(4, __qtablewidgetitem4)
-        if (self.tableWidget.rowCount() < 1):
-            self.tableWidget.setRowCount(1)
+        self.tape_state_table.setHorizontalHeaderItem(4, __qtablewidgetitem4)
+        if (self.tape_state_table.rowCount() < 1):
+            self.tape_state_table.setRowCount(1)
         __qtablewidgetitem5 = QTableWidgetItem()
-        self.tableWidget.setVerticalHeaderItem(0, __qtablewidgetitem5)
-        self.tableWidget.setObjectName(u"tableWidget")
-        self.tableWidget.setFocusPolicy(Qt.NoFocus)
-        self.tableWidget.setStyleSheet(u"background-color: rgb(240, 240, 240);")
-        self.tableWidget.setFrameShape(QFrame.NoFrame)
-        self.tableWidget.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.tableWidget.setTabKeyNavigation(False)
-        self.tableWidget.setSelectionMode(QAbstractItemView.NoSelection)
-        self.tableWidget.horizontalHeader().setCascadingSectionResizes(False)
-        self.tableWidget.horizontalHeader().setDefaultSectionSize(173)
-        self.tableWidget.horizontalHeader().setHighlightSections(False)
-        self.tableWidget.horizontalHeader().setStretchLastSection(True)
-        self.tableWidget.verticalHeader().setCascadingSectionResizes(False)
+        self.tape_state_table.setVerticalHeaderItem(0, __qtablewidgetitem5)
+        self.tape_state_table.setObjectName(u"tape_state_table")
+        self.tape_state_table.setFocusPolicy(Qt.NoFocus)
+        self.tape_state_table.setStyleSheet(u"background-color: rgb(240, 240, 240);")
+        self.tape_state_table.setFrameShape(QFrame.NoFrame)
+        self.tape_state_table.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.tape_state_table.setTabKeyNavigation(False)
+        self.tape_state_table.setSelectionMode(QAbstractItemView.NoSelection)
+        self.tape_state_table.horizontalHeader().setCascadingSectionResizes(False)
+        self.tape_state_table.horizontalHeader().setDefaultSectionSize(173)
+        self.tape_state_table.horizontalHeader().setHighlightSections(False)
+        self.tape_state_table.horizontalHeader().setStretchLastSection(True)
+        self.tape_state_table.verticalHeader().setCascadingSectionResizes(False)
 
-        self.gridLayout_2.addWidget(self.tableWidget, 5, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.tape_state_table, 5, 1, 1, 1)
 
         self.gridLayout_2.setRowStretch(0, 5)
         self.gridLayout_2.setRowStretch(1, 2)
@@ -194,24 +194,24 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"WCZYTANA MASZYNA TURINGA", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"STEROWANIE MASZYN\u0104 TURINGA", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"STOP", None))
-        self.pushButton_4.setText(QCoreApplication.translate("MainWindow", u"KROK W TY\u0141", None))
-        self.pushButton_2.setText(QCoreApplication.translate("MainWindow", u"START", None))
-        self.pushButton_6.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
-        self.pushButton_5.setText(QCoreApplication.translate("MainWindow", u"KROK W PRZ\u00d3D", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"OD\u015aWIE\u017b", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WEJ\u015aCIOWE:", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WYJ\u015aCIOWE:", None))
-        self.label_3.setText("")
-        ___qtablewidgetitem = self.tableWidget.horizontalHeaderItem(0)
+        self.stop_button.setText(QCoreApplication.translate("MainWindow", u"STOP", None))
+        self.step_backward_button.setText(QCoreApplication.translate("MainWindow", u"KROK W TY\u0141", None))
+        self.start_button.setText(QCoreApplication.translate("MainWindow", u"START", None))
+        self.reset_button.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
+        self.step_forward_button.setText(QCoreApplication.translate("MainWindow", u"KROK W PRZ\u00d3D", None))
+        self.refresh_button.setText(QCoreApplication.translate("MainWindow", u"OD\u015aWIE\u017b", None))
+        self.entry_word_label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WEJ\u015aCIOWE:", None))
+        self.exit_word_label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WYJ\u015aCIOWE:", None))
+        self.turing_machine_tape.setText("")
+        ___qtablewidgetitem = self.tape_state_table.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"STAN BIE\u017b\u0104CY", None));
-        ___qtablewidgetitem1 = self.tableWidget.horizontalHeaderItem(1)
+        ___qtablewidgetitem1 = self.tape_state_table.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"ZNAK CZYTANY", None));
-        ___qtablewidgetitem2 = self.tableWidget.horizontalHeaderItem(2)
+        ___qtablewidgetitem2 = self.tape_state_table.horizontalHeaderItem(2)
         ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"STAN DOCELOWY", None));
-        ___qtablewidgetitem3 = self.tableWidget.horizontalHeaderItem(3)
+        ___qtablewidgetitem3 = self.tape_state_table.horizontalHeaderItem(3)
         ___qtablewidgetitem3.setText(QCoreApplication.translate("MainWindow", u"ZNAK PISANY", None));
-        ___qtablewidgetitem4 = self.tableWidget.horizontalHeaderItem(4)
+        ___qtablewidgetitem4 = self.tape_state_table.horizontalHeaderItem(4)
         ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"KIERUNEK", None));
     # retranslateUi
 

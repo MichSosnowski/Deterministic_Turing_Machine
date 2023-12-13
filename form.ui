@@ -24,7 +24,7 @@
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
-          <widget class="QTextBrowser" name="textBrowser">
+          <widget class="QTextBrowser" name="file_text_browser">
            <property name="styleSheet">
             <string notr="true">background-color: rgb(240, 240, 240);</string>
            </property>
@@ -60,7 +60,7 @@
         </property>
         <layout class="QGridLayout" name="gridLayout" columnstretch="1,1">
          <item row="1" column="1">
-          <widget class="QPushButton" name="pushButton_3">
+          <widget class="QPushButton" name="stop_button">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -70,28 +70,28 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QPushButton" name="pushButton_4">
+          <widget class="QPushButton" name="step_backward_button">
            <property name="text">
             <string>KROK W TYŁ</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="start_button">
            <property name="text">
             <string>START</string>
            </property>
           </widget>
          </item>
          <item row="3" column="0" colspan="2">
-          <widget class="QPushButton" name="pushButton_6">
+          <widget class="QPushButton" name="reset_button">
            <property name="text">
             <string>RESET</string>
            </property>
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="QPushButton" name="pushButton_5">
+          <widget class="QPushButton" name="step_forward_button">
            <property name="text">
             <string>KROK W PRZÓD</string>
            </property>
@@ -131,7 +131,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="refresh_button">
         <property name="text">
          <string>ODŚWIEŻ</string>
         </property>
@@ -155,14 +155,14 @@
     <item row="3" column="0" rowspan="3">
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="entry_word_label">
         <property name="text">
          <string>SŁOWO WEJŚCIOWE:</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_2">
+       <widget class="QLabel" name="exit_word_label">
         <property name="text">
          <string>SŁOWO WYJŚCIOWE:</string>
         </property>
@@ -171,14 +171,14 @@
      </layout>
     </item>
     <item row="0" column="1" rowspan="5">
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="turing_machine_tape">
       <property name="text">
        <string/>
       </property>
      </widget>
     </item>
     <item row="5" column="1">
-     <widget class="QTableWidget" name="tableWidget">
+     <widget class="QTableWidget" name="tape_state_table">
       <property name="focusPolicy">
        <enum>Qt::NoFocus</enum>
       </property>
