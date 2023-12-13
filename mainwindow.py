@@ -25,11 +25,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             self.file_reader: FileReader = FileReader(constants.FILENAME)
         except FileNotFoundError:
-            QApplication.beep()
             self.show_file_error_dialog(constants.MESSAGE_TITLE, constants.MESSAGE)
             exit(constants.EXIT_FAILURE)
 
     def show_file_error_dialog(self, title: str, message: str) -> None:
+        QApplication.beep()
         QMessageBox.critical(self, title, message)
 
     def add_pixmap_for_turing_machine_tape(self) -> None:
