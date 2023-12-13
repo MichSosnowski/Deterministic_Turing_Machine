@@ -128,10 +128,10 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.entry_word_label)
 
-        self.exit_word_label = QLabel(self.centralwidget)
-        self.exit_word_label.setObjectName(u"exit_word_label")
+        self.result_word_label = QLabel(self.centralwidget)
+        self.result_word_label.setObjectName(u"result_word_label")
 
-        self.verticalLayout_3.addWidget(self.exit_word_label)
+        self.verticalLayout_3.addWidget(self.result_word_label)
 
 
         self.gridLayout_2.addLayout(self.verticalLayout_3, 3, 0, 3, 1)
@@ -201,7 +201,7 @@ class Ui_MainWindow(object):
         self.step_forward_button.setText(QCoreApplication.translate("MainWindow", u"KROK W PRZ\u00d3D", None))
         self.refresh_button.setText(QCoreApplication.translate("MainWindow", u"OD\u015aWIE\u017b", None))
         self.entry_word_label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WEJ\u015aCIOWE:", None))
-        self.exit_word_label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WYJ\u015aCIOWE:", None))
+        self.result_word_label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WYJ\u015aCIOWE:", None))
         self.turing_machine_tape.setText("")
         ___qtablewidgetitem = self.tape_state_table.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"STAN BIE\u017b\u0104CY", None));

@@ -1,6 +1,10 @@
 {
     "files": [
         "mainwindow.py",
-        "form.ui"
+        "form.ui",
+        "files_classes/__init__.py",
+        "files_classes/file_reader.py",
+        "constants/__init__.py",
+        "constants/constants.py"
     ]
 }

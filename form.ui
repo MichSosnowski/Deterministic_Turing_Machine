@@ -162,7 +162,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="exit_word_label">
+       <widget class="QLabel" name="result_word_label">
         <property name="text">
          <string>SŁOWO WYJŚCIOWE:</string>
         </property>
