@@ -123,15 +123,47 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.label = QLabel(self.centralwidget)
+        self.label.setObjectName(u"label")
+        font = QFont()
+        font.setBold(True)
+        font.setItalic(True)
+        self.label.setFont(font)
+        self.label.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_3.addWidget(self.label)
+
         self.entry_word_label = QLabel(self.centralwidget)
         self.entry_word_label.setObjectName(u"entry_word_label")
+        self.entry_word_label.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_3.addWidget(self.entry_word_label)
 
+        self.label_2 = QLabel(self.centralwidget)
+        self.label_2.setObjectName(u"label_2")
+        self.label_2.setFont(font)
+        self.label_2.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_3.addWidget(self.label_2)
+
         self.result_word_label = QLabel(self.centralwidget)
         self.result_word_label.setObjectName(u"result_word_label")
+        self.result_word_label.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_3.addWidget(self.result_word_label)
+
+        self.label_3 = QLabel(self.centralwidget)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setFont(font)
+        self.label_3.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_3.addWidget(self.label_3)
+
+        self.calculation_length_label = QLabel(self.centralwidget)
+        self.calculation_length_label.setObjectName(u"calculation_length_label")
+        self.calculation_length_label.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_3.addWidget(self.calculation_length_label)
 
 
         self.gridLayout_2.addLayout(self.verticalLayout_3, 3, 0, 3, 1)
@@ -200,8 +232,12 @@ class Ui_MainWindow(object):
         self.reset_button.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
         self.step_forward_button.setText(QCoreApplication.translate("MainWindow", u"KROK W PRZ\u00d3D", None))
         self.refresh_button.setText(QCoreApplication.translate("MainWindow", u"OD\u015aWIE\u017b", None))
-        self.entry_word_label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WEJ\u015aCIOWE:", None))
-        self.result_word_label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WYJ\u015aCIOWE:", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WEJ\u015aCIOWE", None))
+        self.entry_word_label.setText("")
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WYJ\u015aCIOWE", None))
+        self.result_word_label.setText("")
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"D\u0141UGO\u015a\u0106 OBLICZENIA", None))
+        self.calculation_length_label.setText("")
         self.turing_machine_tape.setText("")
         ___qtablewidgetitem = self.tape_state_table.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"STAN BIE\u017b\u0104CY", None));

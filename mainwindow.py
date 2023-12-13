@@ -19,7 +19,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.create_file_connection()
         self.add_text_to_file_text_browser()
         self.set_entry_word_label()
-        self.set_result_word_label(constants.NO_WORD)
+        self.set_result_word_label(constants.EMPTY_STRING)
 
     def create_file_connection(self) -> None:
         try:
@@ -44,11 +44,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_entry_word_label(self) -> None:
         self.entry_word_label.clear()
-        self.entry_word_label.setText(constants.ENTRY_WORD + self.file_reader.get_entry_word_from_file())
+        self.entry_word_label.setText(self.file_reader.get_entry_word_from_file())
 
     def set_result_word_label(self, result_text: str) -> None:
         self.result_word_label.clear()
-        self.result_word_label.setText(constants.RESULT_WORD + result_text)
+        self.result_word_label.setText(result_text)
 
     def add_commands_for_buttons(self) -> None:
         self.refresh_button.clicked.connect(self.set_contents_for_widgets)
