@@ -14,3 +14,4 @@ MESSAGE = f'Nie można znaleźć pliku {FILENAME}.\nSprawdź, czy plik istnieje 
 ENTRY_WORD = 'SŁOWO WEJŚCIOWE: '
 RESULT_WORD = 'SŁOWO WYJŚCIOWE: '
 NO_WORD = 'BRAK'
+PIXMAP_BACKGROUND_COLOR = '#f0f0f0'

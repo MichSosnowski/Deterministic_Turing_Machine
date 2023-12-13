@@ -1,7 +1,6 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QPixmap, QColor
 from ui_form import Ui_MainWindow
 from files_classes.file_reader import FileReader
 import constants.constants as constants
@@ -35,7 +34,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def add_pixmap_for_turing_machine_tape(self) -> None:
         canvas: QPixmap = QPixmap(self.turing_machine_tape.width(), self.turing_machine_tape.height())
-        canvas.fill(Qt.white)
+        canvas.fill(QColor(constants.PIXMAP_BACKGROUND_COLOR))
         self.turing_machine_tape.setPixmap(canvas)
         self.turing_machine_tape.setScaledContents(True)
 
