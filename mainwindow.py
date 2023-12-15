@@ -46,17 +46,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.file_text_browser.setText(self.file_reader.get_all_data_from_file())
 
     def draw_turing_machine(self) -> None:
-        self.draw_turing_machine_tape()
-
-    def draw_turing_machine_tape(self) -> None:
         canvas: QPixmap = self.turing_machine_label.pixmap()
-        painter: QPainter = QPainter(canvas)
         pen: QPen = QPen()
+        self.draw_turing_machine_tape(canvas, pen)
+        self.draw_turing_machine_cells(canvas, pen)
+
+    def draw_turing_machine_tape(self, canvas: QPixmap, pen: QPen) -> None:
+        painter: QPainter = QPainter(canvas)
         pen.setColor(QColor(constants.BROWN))
         painter.setPen(pen)
         painter.setBrush(QColor(constants.BROWN))
         painter.drawRect(constants.BEG_POINT_X_RECT, self.height() * constants.BEG_POINT_Y_RECT_COEFFICIENT,
                          self.width(), constants.END_POINT_Y_RECT)
+        painter.end()
+        self.turing_machine_label.setPixmap(canvas)
+
+    def draw_turing_machine_cells(self, canvas: QPixmap, pen: QPen) -> None:
+        painter: QPainter = QPainter(canvas)
+        pen.setColor(QColor(constants.PERU))
+        pen.setWidth(constants.CELL_WIDTH_PEN)
+        painter.setPen(pen)
+        x_loc_cell = constants.X_LOC_FIRST_CELL
+        y_loc_cell = self.height() * constants.CELLS_LOCATION_HEIGHT_COEFFICIENT + constants.Y_LOC_CELL_INCREASED
+        while x_loc_cell <= self.width():
+            painter.drawPoint(x_loc_cell, y_loc_cell)
+            x_loc_cell += constants.X_DIST_NEXT_CELL
         painter.end()
         self.turing_machine_label.setPixmap(canvas)
 
