@@ -1,6 +1,6 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PySide6.QtGui import QPixmap, QColor
+from PySide6.QtGui import QPixmap, QColor, QPainter, QPen
 from ui_form import Ui_MainWindow
 from files_classes.file_reader import FileReader
 import constants.constants as constants
@@ -12,7 +12,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super().__init__(parent)
         self.setupUi(self)
         self.set_contents_for_widgets()
-        self.add_pixmap_for_turing_machine_tape()
+        self.add_pixmap_for_turing_machine_label()
+        self.draw_turing_machine()
         self.add_commands_for_buttons()
 
     def set_contents_for_widgets(self) -> None:
@@ -32,15 +33,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QApplication.beep()
         QMessageBox.critical(self, title, message)
 
-    def add_pixmap_for_turing_machine_tape(self) -> None:
-        canvas: QPixmap = QPixmap(self.turing_machine_tape.width(), self.turing_machine_tape.height())
+    def add_pixmap_for_turing_machine_label(self) -> None:
+        pixmap_width: int = self.width() * constants.WIDTH_COEFFICIENT
+        pixmap_height: int = self.height() * constants.HEIGHT_COEFFICIENT
+        canvas: QPixmap = QPixmap(pixmap_width, pixmap_height)
         canvas.fill(QColor(constants.PIXMAP_BACKGROUND_COLOR))
-        self.turing_machine_tape.setPixmap(canvas)
-        self.turing_machine_tape.setScaledContents(True)
+        self.turing_machine_label.setPixmap(canvas)
+        self.turing_machine_label.setScaledContents(True)
 
     def add_text_to_file_text_browser(self) -> None:
         self.file_text_browser.clear()
         self.file_text_browser.setText(self.file_reader.get_all_data_from_file())
+
+    def draw_turing_machine(self) -> None:
+        self.draw_turing_machine_tape()
+
+    def draw_turing_machine_tape(self) -> None:
+        canvas: QPixmap = self.turing_machine_label.pixmap()
+        painter: QPainter = QPainter(canvas)
+        pen: QPen = QPen()
+        pen.setColor(QColor(constants.BROWN))
+        painter.setPen(pen)
+        painter.setBrush(QColor(constants.BROWN))
+        painter.drawRect(constants.BEG_POINT_X_RECT, self.height() * constants.BEG_POINT_Y_RECT_COEFFICIENT,
+                         self.width(), constants.END_POINT_Y_RECT)
+        painter.end()
+        self.turing_machine_label.setPixmap(canvas)
 
     def set_entry_word_label(self) -> None:
         self.entry_word_label.clear()

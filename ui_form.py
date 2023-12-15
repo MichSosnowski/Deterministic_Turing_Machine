@@ -168,10 +168,10 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addLayout(self.verticalLayout_3, 3, 0, 3, 1)
 
-        self.turing_machine_tape = QLabel(self.centralwidget)
-        self.turing_machine_tape.setObjectName(u"turing_machine_tape")
+        self.turing_machine_label = QLabel(self.centralwidget)
+        self.turing_machine_label.setObjectName(u"turing_machine_label")
 
-        self.gridLayout_2.addWidget(self.turing_machine_tape, 0, 1, 5, 1)
+        self.gridLayout_2.addWidget(self.turing_machine_label, 0, 1, 5, 1)
 
         self.tape_state_table = QTableWidget(self.centralwidget)
         if (self.tape_state_table.columnCount() < 5):
@@ -238,7 +238,7 @@ class Ui_MainWindow(object):
         self.result_word_label.setText("")
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"D\u0141UGO\u015a\u0106 OBLICZENIA", None))
         self.calculation_length_label.setText("")
-        self.turing_machine_tape.setText("")
+        self.turing_machine_label.setText("")
         ___qtablewidgetitem = self.tape_state_table.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"STAN BIE\u017b\u0104CY", None));
         ___qtablewidgetitem1 = self.tape_state_table.horizontalHeaderItem(1)

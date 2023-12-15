@@ -235,7 +235,7 @@
      </layout>
     </item>
     <item row="0" column="1" rowspan="5">
-     <widget class="QLabel" name="turing_machine_tape">
+     <widget class="QLabel" name="turing_machine_label">
       <property name="text">
        <string/>
       </property>
