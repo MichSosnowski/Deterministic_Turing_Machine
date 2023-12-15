@@ -33,6 +33,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QApplication.beep()
         QMessageBox.critical(self, title, message)
 
+    def add_text_to_file_text_browser(self) -> None:
+        self.file_text_browser.clear()
+        self.file_text_browser.setText(self.file_reader.get_all_data_from_file())
+
     def add_pixmap_for_turing_machine_label(self) -> None:
         pixmap_width: int = self.width() * constants.WIDTH_COEFFICIENT
         pixmap_height: int = self.height() * constants.HEIGHT_COEFFICIENT
@@ -40,10 +44,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         canvas.fill(QColor(constants.PIXMAP_BACKGROUND_COLOR))
         self.turing_machine_label.setPixmap(canvas)
         self.turing_machine_label.setScaledContents(True)
-
-    def add_text_to_file_text_browser(self) -> None:
-        self.file_text_browser.clear()
-        self.file_text_browser.setText(self.file_reader.get_all_data_from_file())
 
     def draw_turing_machine(self) -> None:
         canvas: QPixmap = self.turing_machine_label.pixmap()
