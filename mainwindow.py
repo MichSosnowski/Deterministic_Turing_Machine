@@ -1,8 +1,12 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
-from PySide6.QtGui import QPixmap, QColor, QPainter, QPen
+from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon
+from PySide6.QtCore import Qt, QPoint
 from ui_form import Ui_MainWindow
 from files_classes.file_reader import FileReader
+from gui.window_size import WindowSize
+from constants.constants import (HEAD_LOC_COEFFICIENT, HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE, HEAD_X_TOP_POINT_LOC_ABOVE_TAPE,
+                                 HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
 import constants.constants as constants
 
 
@@ -11,6 +15,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setupUi(self)
+        self.window_size: WindowSize = WindowSize(self.width(), self.height())
         self.set_contents_for_widgets()
         self.add_pixmap_for_turing_machine_label()
         self.draw_turing_machine()
@@ -50,14 +55,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pen: QPen = QPen()
         self.draw_turing_machine_tape(canvas, pen)
         self.draw_turing_machine_cells(canvas, pen)
+        self.draw_turing_machine_head(canvas, pen)
 
     def draw_turing_machine_tape(self, canvas: QPixmap, pen: QPen) -> None:
         painter: QPainter = QPainter(canvas)
         pen.setColor(QColor(constants.BROWN))
         painter.setPen(pen)
         painter.setBrush(QColor(constants.BROWN))
-        painter.drawRect(constants.BEG_POINT_X_RECT, self.height() * constants.BEG_POINT_Y_RECT_COEFFICIENT,
-                         self.width(), constants.END_POINT_Y_RECT)
+        painter.drawRect(constants.BEG_POINT_X_RECT, self.window_size.height * constants.BEG_POINT_Y_RECT_COEFFICIENT,
+                         self.window_size.width, constants.END_POINT_Y_RECT)
         painter.end()
         self.turing_machine_label.setPixmap(canvas)
 
@@ -67,10 +73,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pen.setWidth(constants.CELL_WIDTH_PEN)
         painter.setPen(pen)
         x_loc_cell = constants.X_LOC_FIRST_CELL
-        y_loc_cell = self.height() * constants.CELLS_LOCATION_HEIGHT_COEFFICIENT + constants.Y_LOC_CELL_INCREASED
-        while x_loc_cell <= self.width():
+        y_loc_cell = self.window_size.height * constants.CELLS_LOCATION_HEIGHT_COEFFICIENT + constants.Y_LOC_CELL_INCREASED
+        while x_loc_cell <= self.window_size.width:
             painter.drawPoint(x_loc_cell, y_loc_cell)
             x_loc_cell += constants.X_DIST_NEXT_CELL
+        painter.end()
+        self.turing_machine_label.setPixmap(canvas)
+
+    def draw_turing_machine_head(self, canvas: QPixmap, pen: QPen) -> None:
+        painter: QPainter = QPainter(canvas)
+        polygon: QPolygon = QPolygon()
+        (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT,
+                           self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE)
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT - HEAD_X_TOP_POINT_LOC_ABOVE_TAPE,
+                           self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_TOP_POINT_LOC_ABOVE_TAPE,
+                           self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE))
+        pen.setWidth(constants.HEAD_WIDTH_PEN)
+        painter.setBrush(Qt.black)
+        pen.setColor(Qt.black)
+        painter.setPen(pen)
+        painter.setRenderHint(QPainter.Antialiasing)
+        painter.drawPolygon(polygon)
         painter.end()
         self.turing_machine_label.setPixmap(canvas)
 
