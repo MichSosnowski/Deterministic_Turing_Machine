@@ -173,7 +173,12 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addWidget(self.turing_machine_label, 0, 1, 5, 1)
 
-        self.tape_state_table = QTableWidget(self.centralwidget)
+        self.groupBox_3 = QGroupBox(self.centralwidget)
+        self.groupBox_3.setObjectName(u"groupBox_3")
+        self.groupBox_3.setFlat(False)
+        self.verticalLayout = QVBoxLayout(self.groupBox_3)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.tape_state_table = QTableWidget(self.groupBox_3)
         if (self.tape_state_table.columnCount() < 5):
             self.tape_state_table.setColumnCount(5)
         __qtablewidgetitem = QTableWidgetItem()
@@ -203,7 +208,10 @@ class Ui_MainWindow(object):
         self.tape_state_table.horizontalHeader().setStretchLastSection(True)
         self.tape_state_table.verticalHeader().setCascadingSectionResizes(False)
 
-        self.gridLayout_2.addWidget(self.tape_state_table, 5, 1, 1, 1)
+        self.verticalLayout.addWidget(self.tape_state_table)
+
+
+        self.gridLayout_2.addWidget(self.groupBox_3, 5, 1, 1, 1)
 
         self.gridLayout_2.setRowStretch(0, 5)
         self.gridLayout_2.setRowStretch(1, 2)
@@ -227,18 +235,19 @@ class Ui_MainWindow(object):
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"WCZYTANA MASZYNA TURINGA", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"STEROWANIE MASZYN\u0104 TURINGA", None))
         self.stop_button.setText(QCoreApplication.translate("MainWindow", u"STOP", None))
-        self.step_backward_button.setText(QCoreApplication.translate("MainWindow", u"KROK W TY\u0141", None))
+        self.step_backward_button.setText(QCoreApplication.translate("MainWindow", u"KROK WSTECZ", None))
         self.start_button.setText(QCoreApplication.translate("MainWindow", u"START", None))
         self.reset_button.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
         self.step_forward_button.setText(QCoreApplication.translate("MainWindow", u"KROK W PRZ\u00d3D", None))
         self.refresh_button.setText(QCoreApplication.translate("MainWindow", u"OD\u015aWIE\u017b", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WEJ\u015aCIOWE", None))
         self.entry_word_label.setText("")
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WYJ\u015aCIOWE", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO OBLICZONE", None))
         self.result_word_label.setText("")
         self.label_3.setText(QCoreApplication.translate("MainWindow", u"D\u0141UGO\u015a\u0106 OBLICZENIA", None))
         self.calculation_length_label.setText("")
         self.turing_machine_label.setText("")
+        self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"AKTUALNIE ROZPATRYWANA RELACJA PRZEJ\u015aCIA", None))
         ___qtablewidgetitem = self.tape_state_table.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MainWindow", u"STAN BIE\u017b\u0104CY", None));
         ___qtablewidgetitem1 = self.tape_state_table.horizontalHeaderItem(1)
