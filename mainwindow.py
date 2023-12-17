@@ -1,9 +1,10 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont
 from PySide6.QtCore import Qt, QPoint
 import constants.constants as constants
 from ui_form import Ui_MainWindow
+from constants.enums import Indexes
 from files_classes.file_reader import FileReader
 from exceptions.exceptions import IncorrectFormatException
 from gui.window_size import WindowSize
@@ -23,6 +24,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.add_pixmap_for_turing_machine_label()
         self.draw_turing_machine()
         self.add_commands_for_buttons()
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        header: QHeaderView = self.tape_state_table.horizontalHeader()
+        header.setSectionResizeMode(Indexes.ZERO.value, QHeaderView.Stretch)
+        header.setSectionResizeMode(Indexes.ONE.value, QHeaderView.Stretch)
+        header.setSectionResizeMode(Indexes.TWO.value, QHeaderView.Stretch)
+        header.setSectionResizeMode(Indexes.THREE.value, QHeaderView.Stretch)
+        header.setSectionResizeMode(Indexes.FOUR.value, QHeaderView.Stretch)
 
     def set_contents_for_widgets(self) -> None:
         self.create_file_connection()
