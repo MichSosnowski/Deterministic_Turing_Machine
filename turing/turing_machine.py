@@ -60,6 +60,11 @@ class TuringMachine(QThread):
         fragment_tape.extend(repeat(constants.EMPTY_STRING, fragment_end_position - len(self.tape)))
         return fragment_tape
 
+    def get_actual_transition_function(self) -> tuple[tuple[str, str], tuple[str, str, str]]:
+        read_character: str = self.tape[self.position_head]
+        key: tuple[str, str] = (self.actual_state, read_character)
+        return (key, self.transition_function.get(key))
+
     def set_new_position_head(self, direction: str) -> None:
         if direction == constants.LEFT:
             self.position_head += constants.PREVIOUS_CELL

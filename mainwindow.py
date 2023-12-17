@@ -1,5 +1,5 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont
 from PySide6.QtCore import Qt, QPoint
 import constants.constants as constants
@@ -23,6 +23,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.turing_machine: TuringMachine = TuringMachine(self.file_reader)
         self.add_pixmap_for_turing_machine_label()
         self.draw_turing_machine()
+        self.fill_tape_state_table()
         self.add_commands_for_buttons()
 
     def resizeEvent(self, event):
@@ -127,6 +128,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         painter.end()
         self.turing_machine_label.setPixmap(canvas)
 
+    def fill_tape_state_table(self) -> None:
+        transition_function = self.turing_machine.get_actual_transition_function()
+        self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ZERO.value,
+                                      self.create_item_for_table(transition_function[Indexes.ZERO.value][Indexes.ZERO.value]))
+        self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ONE.value,
+                                      self.create_item_for_table(transition_function[Indexes.ZERO.value][Indexes.ONE.value]))
+        self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.TWO.value,
+                                      self.create_item_for_table(transition_function[Indexes.ONE.value][Indexes.ZERO.value]))
+        self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.THREE.value,
+                                      self.create_item_for_table(transition_function[Indexes.ONE.value][Indexes.ONE.value]))
+        self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.FOUR.value,
+                                      self.create_item_for_table(transition_function[Indexes.ONE.value][Indexes.TWO.value]))
+
+    def create_item_for_table(self, data: str) -> QTableWidgetItem:
+        item: QTableWidgetItem = QTableWidgetItem(data)
+        item.setTextAlignment(Qt.AlignHCenter)
+        return item
+
     def set_entry_word_label(self) -> None:
         self.entry_word_label.clear()
         self.entry_word_label.setText(self.file_reader.get_entry_word_from_file())
@@ -160,6 +179,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_step_forward_command(self) -> None:
         self.turing_machine.step_forward()
         self.draw_turing_machine()
+        self.fill_tape_state_table()
 
 
 if __name__ == "__main__":
