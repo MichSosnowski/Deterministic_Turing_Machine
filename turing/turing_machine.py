@@ -1,5 +1,6 @@
 from collections import deque
 from typing import Deque
+from itertools import repeat
 from PySide6.QtCore import QThread
 import constants.constants as constants
 from files_classes.file_reader import FileReader
@@ -41,10 +42,36 @@ class TuringMachine(QThread):
             tape_deque.appendleft(constants.EMPTY_CHAR)
             if len(tape_deque) < tape_size:
                 tape_deque.append(constants.EMPTY_CHAR)
-            filled_cells_count = len(tape_deque)
+            filled_cells_count: int = len(tape_deque)
 
     def get_initial_position_head(self) -> int:
         return self.tape.index(self.entry_word[Indexes.ZERO.value])
+
+    def get_fragment_of_tape(self) -> list[str]:
+        fragment_start_position: int = self.position_head - constants.INITIAL_FRAGMENT_POSITION_BACK
+        fragment_end_position: int = self.position_head + constants.END_FRAGMENT_POSITION_FORWARD
+        fragment_tape: list[str] = list()
+        if fragment_start_position < constants.FIRST_TAPE_INDEX:
+            fragment_tape.extend(repeat(constants.EMPTY_STRING, constants.FIRST_TAPE_INDEX - fragment_start_position))
+            fragment_start_position = constants.FIRST_TAPE_INDEX
+        for index in range(fragment_start_position, fragment_end_position):
+            if index < len(self.tape):
+                fragment_tape.append(self.tape[index])
+        fragment_tape.extend(repeat(constants.EMPTY_STRING, fragment_end_position - len(self.tape)))
+        return fragment_tape
+
+    def set_new_position_head(self, direction: str) -> None:
+        if direction == constants.LEFT:
+            self.position_head += constants.PREVIOUS_CELL
+        elif direction == constants.RIGHT:
+            self.position_head += constants.NEXT_CELL
+
+    def step_forward(self) -> None:
+        read_character: str = self.tape[self.position_head]
+        transition: tuple[str, str, str] = self.transition_function.get((self.actual_state, read_character))
+        self.actual_state: str = transition[Indexes.ZERO.value]
+        self.tape[self.position_head]: str = transition[Indexes.ONE.value]
+        self.set_new_position_head(transition[Indexes.TWO.value])
 
     def run(self):
         pass
