@@ -36,7 +36,7 @@ class FileReader:
     def get_accepting_states_from_file(self) -> list[str]:
         lines: list[str] = self.get_all_lines_from_file()
         accepting_states_index: int = lines.index(constants.ACCEPTING_STATES) + constants.NEXT_INDEX
-        accepting_states: list[str] = lines[accepting_states_index].split(constants.SPACE)
+        accepting_states: list[str] = lines[accepting_states_index][:constants.LAST_CHAR_INDEX].split(constants.SPACE)
         return accepting_states
 
     def get_transition_function_from_file(self) -> list[str]:

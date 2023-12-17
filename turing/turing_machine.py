@@ -12,7 +12,7 @@ class TuringMachine(QThread):
         super().__init__()
         self.entry_word: str = file_reader.get_entry_word_from_file()
         self.actual_state: str = file_reader.get_initial_state_from_file()
-        self.accepting_states: list[str] = file_reader.get_accepting_states_from_file
+        self.accepting_states: list[str] = file_reader.get_accepting_states_from_file()
         self.transition_function: dict[tuple[str, str], tuple[str, str, str]] = self.transform_transition_function(file_reader)
         self.tape: Deque[str] = self.create_tape()
         self.position_head: int = self.get_initial_position_head()
