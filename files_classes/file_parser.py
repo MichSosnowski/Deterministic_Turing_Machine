@@ -59,7 +59,7 @@ class FileParser:
     def check_entry_word(self, tape_alphabet: str) -> None:
         read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
         is_all_chars_in_tape_alphabet = list(map(lambda elem: elem in tape_alphabet, read_line))
-        if len(read_line) < constants.REQUIRED_COUNT or False in is_all_chars_in_tape_alphabet:
+        if len(read_line) < constants.REQUIRED_COUNT or len(read_line) > constants.MAX_LENGTH_ENTRY_WORD or False in is_all_chars_in_tape_alphabet:
             raise IncorrectFormatException
 
     def get_all_states(self) -> list[str]:

@@ -43,6 +43,7 @@ NEWLINE = '\n'
 CHAR_NOT_FOUND = -1
 REQUIRED_COUNT = 1
 REQUIRED_COUNT_TAPE_ALPHABET = 2
+MAX_LENGTH_ENTRY_WORD = 30
 
 
 # constants used in mainwindow.py
