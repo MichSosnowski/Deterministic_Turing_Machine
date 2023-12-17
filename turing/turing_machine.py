@@ -18,7 +18,7 @@ class TuringMachine(QThread):
         self.tape: Deque[str] = self.create_tape()
         self.position_head: int = self.get_initial_position_head()
         self.result_word = constants.EMPTY_STRING
-        self.result_length = constants.INITIAL_CALCULATION_LENGTH
+        self.calculation_length = constants.INITIAL_CALCULATION_LENGTH
 
     def transform_transition_function(self, file_reader: FileReader) -> dict[tuple[str, str], tuple[str, str, str]]:
         transition_function: dict[tuple(str, str), tuple(str, str, str)] = dict()
@@ -73,11 +73,13 @@ class TuringMachine(QThread):
             self.position_head += constants.NEXT_CELL
 
     def step_forward(self) -> None:
-        read_character: str = self.tape[self.position_head]
-        transition: tuple[str, str, str] = self.transition_function.get((self.actual_state, read_character))
-        self.actual_state: str = transition[Indexes.ZERO.value]
-        self.tape[self.position_head]: str = transition[Indexes.ONE.value]
-        self.set_new_position_head(transition[Indexes.TWO.value])
+        if self.actual_state not in self.accepting_states:
+            read_character: str = self.tape[self.position_head]
+            transition: tuple[str, str, str] = self.transition_function.get((self.actual_state, read_character))
+            self.actual_state: str = transition[Indexes.ZERO.value]
+            self.tape[self.position_head]: str = transition[Indexes.ONE.value]
+            self.set_new_position_head(transition[Indexes.TWO.value])
+            self.calculation_length += constants.CALCULATION_LENGTH_INCREASE
 
     def run(self):
         pass
