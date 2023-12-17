@@ -11,6 +11,8 @@
         "files_classes/file_parser.py",
         "exceptions/__init__.py",
         "exceptions/exceptions.py",
-        "constants/enums.py"
+        "constants/enums.py",
+        "turing/__init__.py",
+        "turing/turing_machine.py"
     ]
 }

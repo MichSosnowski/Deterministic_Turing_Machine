@@ -1,27 +1,37 @@
-# constants used in file_reader.py and mainwindow.py
+# constants used in file_reader.py, mainwindow.py and turing_machine.py
 EMPTY_STRING = ''
 
 
 # constants used in file_reader.py and file_parser.py
+ENTRY_WORD = 'slowo wejsciowe:\n'
+INITIAL_STATE = 'stan poczatkowy:\n'
+ACCEPTING_STATES = 'stany akceptujace:\n'
+TRANSITION_FUNCTION = 'relacja przejscia:\n'
+
+
+# constants used in file_reader.py, file_parser.py and turing_machine.py
 LAST_CHAR_INDEX = -1
+SPACE = ' '
+
+
+# constants used in file_parser.py and turing_machine.py
+EMPTY_CHAR = '#'
+
+
+# constants used in turing_machine.py
+INITIAL_TAPE_SIZE = 32
+INITIAL_CALCULATION_LENGTH = 0
 
 
 # constants used in file_reader.py
 NEXT_INDEX = 1
-SEARCH_LINE = 'slowo wejsciowe:\n'
 
 
 # constants used in file_parser.py
 TAPE_ALPHABET = 'alfabet tasmowy:\n'
 ENTRY_ALPHABET = 'alfabet wejsciowy:\n'
-ENTRY_WORD = 'slowo wejsciowe:\n'
 STATES = 'stany:\n'
-INITIAL_STATE = 'stan poczatkowy:\n'
-ACCEPTING_STATES = 'stany akceptujace:\n'
-TRANSITION_FUNCTION = 'relacja przejscia:\n'
-EMPTY_CHAR = '#'
 NEWLINE = '\n'
-SPACE = ' '
 LEFT = 'L'
 RIGHT = 'P'
 CHAR_NOT_FOUND = -1
