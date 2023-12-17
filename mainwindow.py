@@ -130,16 +130,23 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def fill_tape_state_table(self) -> None:
         transition_function = self.turing_machine.get_actual_transition_function()
-        self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ZERO.value,
-                                      self.create_item_for_table(transition_function[Indexes.ZERO.value][Indexes.ZERO.value]))
-        self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ONE.value,
-                                      self.create_item_for_table(transition_function[Indexes.ZERO.value][Indexes.ONE.value]))
-        self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.TWO.value,
-                                      self.create_item_for_table(transition_function[Indexes.ONE.value][Indexes.ZERO.value]))
-        self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.THREE.value,
-                                      self.create_item_for_table(transition_function[Indexes.ONE.value][Indexes.ONE.value]))
-        self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.FOUR.value,
-                                      self.create_item_for_table(transition_function[Indexes.ONE.value][Indexes.TWO.value]))
+        if transition_function != constants.EMPTY_STRING:
+            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ZERO.value,
+                                          self.create_item_for_table(transition_function[Indexes.ZERO.value][Indexes.ZERO.value]))
+            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ONE.value,
+                                          self.create_item_for_table(transition_function[Indexes.ZERO.value][Indexes.ONE.value]))
+            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.TWO.value,
+                                          self.create_item_for_table(transition_function[Indexes.ONE.value][Indexes.ZERO.value]))
+            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.THREE.value,
+                                          self.create_item_for_table(transition_function[Indexes.ONE.value][Indexes.ONE.value]))
+            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.FOUR.value,
+                                          self.create_item_for_table(transition_function[Indexes.ONE.value][Indexes.TWO.value]))
+        else:
+            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ZERO.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
+            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ONE.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
+            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.TWO.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
+            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.THREE.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
+            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.FOUR.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
 
     def create_item_for_table(self, data: str) -> QTableWidgetItem:
         item: QTableWidgetItem = QTableWidgetItem(data)

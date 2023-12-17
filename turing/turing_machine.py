@@ -63,7 +63,8 @@ class TuringMachine(QThread):
     def get_actual_transition_function(self) -> tuple[tuple[str, str], tuple[str, str, str]]:
         read_character: str = self.tape[self.position_head]
         key: tuple[str, str] = (self.actual_state, read_character)
-        return (key, self.transition_function.get(key))
+        value: tuple[str, str, str] = self.transition_function.get(key, constants.EMPTY_STRING)
+        return (key, value) if value != constants.EMPTY_STRING else constants.EMPTY_STRING
 
     def set_new_position_head(self, direction: str) -> None:
         if direction == constants.LEFT:
