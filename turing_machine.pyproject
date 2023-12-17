@@ -7,6 +7,10 @@
         "constants/__init__.py",
         "constants/constants.py",
         "gui/__init__.py",
-        "gui/window_size.py"
+        "gui/window_size.py",
+        "files_classes/file_parser.py",
+        "exceptions/__init__.py",
+        "exceptions/exceptions.py",
+        "constants/enums.py"
     ]
 }

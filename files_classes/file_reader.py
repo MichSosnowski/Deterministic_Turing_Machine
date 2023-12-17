@@ -1,16 +1,16 @@
 import constants.constants as constants
+from .file_parser import FileParser
 
 class FileReader:
 
     def __init__(self, filename: str) -> None:
         self.filename: str = filename
         self.check_file_exists()
+        file_parser: FileParser = FileParser(filename)
+        file_parser.parse_file()
 
     def check_file_exists(self) -> None:
-        try:
-            open(self.filename).close()
-        except FileNotFoundError:
-            raise FileNotFoundError
+        open(self.filename).close()
 
     def get_all_data_from_file(self) -> str:
         data: str = constants.EMPTY_STRING

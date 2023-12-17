@@ -2,10 +2,31 @@
 EMPTY_STRING = ''
 
 
-# constants used in file_reader.py
+# constants used in file_reader.py and file_parser.py
 LAST_CHAR_INDEX = -1
+
+
+# constants used in file_reader.py
 NEXT_INDEX = 1
 SEARCH_LINE = 'slowo wejsciowe:\n'
+
+
+# constants used in file_parser.py
+TAPE_ALPHABET = 'alfabet tasmowy:\n'
+ENTRY_ALPHABET = 'alfabet wejsciowy:\n'
+ENTRY_WORD = 'slowo wejsciowe:\n'
+STATES = 'stany:\n'
+INITIAL_STATE = 'stan poczatkowy:\n'
+ACCEPTING_STATES = 'stany akceptujace:\n'
+TRANSITION_FUNCTION = 'relacja przejscia:\n'
+EMPTY_CHAR = '#'
+NEWLINE = '\n'
+SPACE = ' '
+LEFT = 'L'
+RIGHT = 'P'
+CHAR_NOT_FOUND = -1
+REQUIRED_COUNT = 1
+REQUIRED_COUNT_TAPE_ALPHABET = 2
 
 
 # constants used in mainwindow.py
@@ -15,6 +36,8 @@ WINDOW_TITLE = 'Maszyna Turinga'
 FILENAME = 'turing_machine.txt'
 MESSAGE_TITLE = 'Brak wymaganego pliku!'
 MESSAGE = f'Nie można znaleźć pliku {FILENAME}.\nSprawdź, czy plik istnieje i spróbuj ponownie.'
+MESSAGE_TITLE_FORMAT = 'Niepoprawny format!'
+MESSAGE_FORMAT = 'Niepoprawny format pliku wejściowego.\nSprawdź format pliku i spróbuj ponownie.'
 PIXMAP_BACKGROUND_COLOR = '#f0f0f0'
 BROWN = 'brown'
 PERU = 'peru'

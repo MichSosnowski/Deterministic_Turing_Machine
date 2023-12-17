@@ -2,12 +2,13 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon
 from PySide6.QtCore import Qt, QPoint
+import constants.constants as constants
 from ui_form import Ui_MainWindow
 from files_classes.file_reader import FileReader
+from exceptions.exceptions import IncorrectFormatException
 from gui.window_size import WindowSize
 from constants.constants import (HEAD_LOC_COEFFICIENT, HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE, HEAD_X_TOP_POINT_LOC_ABOVE_TAPE,
                                  HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
-import constants.constants as constants
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -32,6 +33,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.file_reader: FileReader = FileReader(constants.FILENAME)
         except FileNotFoundError:
             self.show_file_error_dialog(constants.MESSAGE_TITLE, constants.MESSAGE)
+            exit(constants.EXIT_FAILURE)
+        except (IncorrectFormatException, IndexError):
+            self.show_file_error_dialog(constants.MESSAGE_TITLE_FORMAT, constants.MESSAGE_FORMAT)
             exit(constants.EXIT_FAILURE)
 
     def show_file_error_dialog(self, title: str, message: str) -> None:
