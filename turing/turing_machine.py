@@ -47,7 +47,9 @@ class TuringMachine(QThread):
             filled_cells_count: int = len(tape_deque)
 
     def get_initial_position_head(self) -> int:
-        return self.tape.index(self.entry_word[Indexes.ZERO.value])
+        if self.entry_word != constants.EMPTY_CHAR:
+            return self.tape.index(self.entry_word[Indexes.ZERO.value])
+        return constants.EMPTY_CHAR_ENTRY_WORD_POSITION
 
     def get_fragment_of_tape(self) -> list[str]:
         fragment_start_position: int = self.position_head - constants.INITIAL_FRAGMENT_POSITION_BACK
