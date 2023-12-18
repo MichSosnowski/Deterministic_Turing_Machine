@@ -28,7 +28,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fill_tape_state_table()
         self.add_commands_for_buttons()
 
-    def resizeEvent(self, event):
+    def resizeEvent(self, event) -> None:
         super().resizeEvent(event)
         header: QHeaderView = self.tape_state_table.horizontalHeader()
         header.setSectionResizeMode(Indexes.ZERO.value, QHeaderView.Stretch)
