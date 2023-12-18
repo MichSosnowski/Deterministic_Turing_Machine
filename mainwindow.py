@@ -3,7 +3,7 @@ from itertools import islice
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont
-from PySide6.QtCore import Qt, QWaitCondition, QPoint
+from PySide6.QtCore import Qt, QPoint
 
 import turing.thread_config as config
 import constants.constants as constants
@@ -22,10 +22,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setupUi(self)
-        self.wait_condition: QWaitCondition = QWaitCondition()
         self.window_size: WindowSize = WindowSize(self.width(), self.height())
         self.set_contents_for_widgets()
-        self.turing_machine: TuringMachine = TuringMachine(self.file_reader, self.wait_condition)
+        self.turing_machine: TuringMachine = TuringMachine(self.file_reader)
         self.add_pixmap_for_turing_machine_label()
         self.draw_turing_machine()
         self.fill_tape_state_table()
@@ -42,7 +41,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.stop_thread()
                 event.accept()
             else:
-                self.wait_condition.wakeAll()
                 event.ignore()
 
     def set_size_column_table(self) -> None:
@@ -168,7 +166,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def redraw_turing_machine(self) -> None:
         self.draw_turing_machine()
         self.fill_tape_state_table()
-        self.wait_condition.wakeAll()
 
     def create_item_for_table(self, data: str) -> QTableWidgetItem:
         item: QTableWidgetItem = QTableWidgetItem(data)
