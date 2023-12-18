@@ -1,6 +1,7 @@
 import constants.constants as constants
 from .file_parser import FileParser
 
+
 class FileReader:
 
     def __init__(self, filename: str) -> None:

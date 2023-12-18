@@ -1,10 +1,12 @@
 from collections import deque
 from typing import Deque
 from itertools import repeat
+
 from PySide6.QtCore import QThread
+
 import constants.constants as constants
-from files_classes.file_reader import FileReader
 from constants.enums import Indexes
+from files_classes.file_reader import FileReader
 
 
 class TuringMachine(QThread):

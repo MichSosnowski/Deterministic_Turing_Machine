@@ -1,7 +1,9 @@
 from typing import TextIO
+
 import constants.constants as constants
-from exceptions.exceptions import IncorrectFormatException
 from constants.enums import Indexes
+from exceptions.exceptions import IncorrectFormatException
+
 
 class FileParser:
 

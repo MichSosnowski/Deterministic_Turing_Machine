@@ -1,10 +1,12 @@
 import sys
+
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont
 from PySide6.QtCore import Qt, QPoint
+
 import constants.constants as constants
-from ui_form import Ui_MainWindow
 from constants.enums import Indexes
+from ui_form import Ui_MainWindow
 from files_classes.file_reader import FileReader
 from exceptions.exceptions import IncorrectFormatException
 from gui.window_size import WindowSize
