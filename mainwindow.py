@@ -3,8 +3,9 @@ from itertools import islice
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont
-from PySide6.QtCore import Qt, QPoint
+from PySide6.QtCore import Qt, QWaitCondition, QPoint
 
+import turing.thread_config as config
 import constants.constants as constants
 from constants.enums import Indexes
 from ui_form import Ui_MainWindow
@@ -21,9 +22,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setupUi(self)
+        self.wait_condition: QWaitCondition = QWaitCondition()
         self.window_size: WindowSize = WindowSize(self.width(), self.height())
         self.set_contents_for_widgets()
-        self.turing_machine: TuringMachine = TuringMachine(self.file_reader)
+        self.turing_machine: TuringMachine = TuringMachine(self.file_reader, self.wait_condition)
         self.add_pixmap_for_turing_machine_label()
         self.draw_turing_machine()
         self.fill_tape_state_table()
@@ -31,12 +33,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def resizeEvent(self, event) -> None:
         super().resizeEvent(event)
+        self.set_size_column_table()
+
+    def closeEvent(self, event) -> None:
+        if self.turing_machine.isRunning():
+            button = self.show_warning_dialog(constants.MESSAGE_TITLE_END_PROGRAM, constants.MESSAGE_END_PROGRAM)
+            if button == QMessageBox.StandardButton.Ok:
+                self.stop_thread()
+                event.accept()
+            else:
+                self.wait_condition.wakeAll()
+                event.ignore()
+
+    def set_size_column_table(self) -> None:
         header: QHeaderView = self.tape_state_table.horizontalHeader()
-        header.setSectionResizeMode(Indexes.ZERO.value, QHeaderView.Stretch)
-        header.setSectionResizeMode(Indexes.ONE.value, QHeaderView.Stretch)
-        header.setSectionResizeMode(Indexes.TWO.value, QHeaderView.Stretch)
-        header.setSectionResizeMode(Indexes.THREE.value, QHeaderView.Stretch)
-        header.setSectionResizeMode(Indexes.FOUR.value, QHeaderView.Stretch)
+        for index in islice(Indexes, Indexes.FIVE.value):
+            header.setSectionResizeMode(index.value, QHeaderView.Stretch)
 
     def set_contents_for_widgets(self) -> None:
         self.create_file_connection()
@@ -48,13 +60,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         try:
             self.file_reader: FileReader = FileReader(constants.FILENAME)
         except FileNotFoundError:
-            self.show_file_error_dialog(constants.MESSAGE_TITLE, constants.MESSAGE)
+            self.show_error_dialog(constants.MESSAGE_TITLE, constants.MESSAGE)
             exit(constants.EXIT_FAILURE)
         except (IncorrectFormatException, IndexError):
-            self.show_file_error_dialog(constants.MESSAGE_TITLE_FORMAT, constants.MESSAGE_FORMAT)
+            self.show_error_dialog(constants.MESSAGE_TITLE_FORMAT, constants.MESSAGE_FORMAT)
             exit(constants.EXIT_FAILURE)
 
-    def show_file_error_dialog(self, title: str, message: str) -> None:
+    def show_warning_dialog(self, title: str, message: str) -> None:
+        QApplication.beep()
+        button = QMessageBox.warning(self, title, message, QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Cancel)
+        return button
+
+    def show_error_dialog(self, title: str, message: str) -> None:
         QApplication.beep()
         QMessageBox.critical(self, title, message)
 
@@ -148,6 +165,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             for index in islice(Indexes, Indexes.FIVE.value):
                 self.tape_state_table.setItem(Indexes.ZERO.value, index.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
 
+    def redraw_turing_machine(self) -> None:
+        self.draw_turing_machine()
+        self.fill_tape_state_table()
+        self.wait_condition.wakeAll()
+
     def create_item_for_table(self, data: str) -> QTableWidgetItem:
         item: QTableWidgetItem = QTableWidgetItem(data)
         item.setTextAlignment(Qt.AlignHCenter)
@@ -167,6 +189,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.stop_button.clicked.connect(self.set_stop_button_command)
         self.step_forward_button.clicked.connect(self.set_step_forward_command)
 
+    def stop_thread(self) -> None:
+        config.finish_thread = True
+        self.turing_machine.wait()
+        config.finish_thread = False
+
+    def switch_enabled_buttons(self) -> None:
+        self.refresh_button.setEnabled(True)
+        self.start_button.setEnabled(True)
+        self.stop_button.setDisabled(True)
+        self.step_backward_button.setEnabled(True)
+        self.step_forward_button.setEnabled(True)
+        self.reset_button.setEnabled(True)
+
     def set_start_button_command(self) -> None:
         self.refresh_button.setDisabled(True)
         self.start_button.setDisabled(True)
@@ -174,6 +209,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.step_backward_button.setDisabled(True)
         self.step_forward_button.setDisabled(True)
         self.reset_button.setDisabled(True)
+        self.turing_machine.thread_signals.draw.connect(self.redraw_turing_machine)
+        self.turing_machine.thread_signals.end.connect(self.switch_enabled_buttons)
+        self.turing_machine.thread_signals.end.connect(self.turing_machine.quit)
+        self.turing_machine.start()
 
     def set_stop_button_command(self) -> None:
         self.refresh_button.setEnabled(True)
@@ -182,11 +221,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.step_backward_button.setEnabled(True)
         self.step_forward_button.setEnabled(True)
         self.reset_button.setEnabled(True)
+        self.stop_thread()
 
     def set_step_forward_command(self) -> None:
         self.turing_machine.step_forward()
-        self.draw_turing_machine()
-        self.fill_tape_state_table()
+        self.redraw_turing_machine()
 
 
 if __name__ == "__main__":

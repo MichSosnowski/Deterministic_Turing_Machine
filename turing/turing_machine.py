@@ -2,17 +2,22 @@ from collections import deque
 from typing import Deque
 from itertools import repeat
 
-from PySide6.QtCore import QThread
+from PySide6.QtCore import QThread, QMutex, QWaitCondition
 
 import constants.constants as constants
+import turing.thread_config as config
 from constants.enums import Indexes
 from files_classes.file_reader import FileReader
+from turing.thread_signals import ThreadSignals
 
 
 class TuringMachine(QThread):
 
-    def __init__(self, file_reader: FileReader):
+    def __init__(self, file_reader: FileReader, wait_condition: QWaitCondition):
         super().__init__()
+        self.thread_signals = ThreadSignals()
+        self.wait_condition = wait_condition
+        self.mutex: QMutex = QMutex()      # mutex for waiting for a main thread
         self.entry_word: str = file_reader.get_entry_word_from_file()
         self.actual_state: str = file_reader.get_initial_state_from_file()
         self.accepting_states: list[str] = file_reader.get_accepting_states_from_file()
@@ -76,6 +81,11 @@ class TuringMachine(QThread):
         elif direction == constants.RIGHT:
             self.position_head += constants.NEXT_CELL
 
+    def wait_for_wake(self):
+        self.mutex.lock()
+        self.wait_condition.wait(self.mutex)
+        self.mutex.unlock()
+
     def step_forward(self) -> None:
         if self.actual_state not in self.accepting_states:
             read_character: str = self.tape[self.position_head]
@@ -85,5 +95,13 @@ class TuringMachine(QThread):
             self.set_new_position_head(transition[Indexes.TWO.value])
             self.calculation_length += constants.CALCULATION_LENGTH_INCREASE
 
-    def run(self):
-        pass
+    def run(self) -> None:
+        while self.actual_state not in self.accepting_states:
+            self.step_forward()
+            self.thread_signals.draw.emit()
+            self.wait_for_wake()
+            self.sleep(constants.THREAD_SLEEP_SECS)
+            if config.finish_thread:
+                self.thread_signals.end.emit()
+                return
+        self.thread_signals.end.emit()

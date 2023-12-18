@@ -31,6 +31,7 @@ INITIAL_CALCULATION_LENGTH = 0
 PREVIOUS_CELL = -1
 NEXT_CELL = 1
 CALCULATION_LENGTH_INCREASE = 1
+THREAD_SLEEP_SECS = 1
 
 
 # constants used in file_reader.py
@@ -57,6 +58,8 @@ MESSAGE_TITLE = 'Brak wymaganego pliku!'
 MESSAGE = f'Nie można znaleźć pliku {FILENAME}.\nSprawdź, czy plik istnieje i spróbuj ponownie.'
 MESSAGE_TITLE_FORMAT = 'Niepoprawny format!'
 MESSAGE_FORMAT = 'Niepoprawny format pliku wejściowego.\nSprawdź format pliku i spróbuj ponownie.'
+MESSAGE_TITLE_END_PROGRAM = 'Zamknąć program?'
+MESSAGE_END_PROGRAM = 'Maszyna Turinga wciąż działa.\nCzy na pewno chcesz wyjść?'
 PIXMAP_BACKGROUND_COLOR = '#f0f0f0'
 BROWN = 'brown'
 PERU = 'peru'
