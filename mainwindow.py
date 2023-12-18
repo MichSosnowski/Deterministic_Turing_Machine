@@ -1,4 +1,5 @@
 import sys
+from itertools import islice
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont
@@ -144,11 +145,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.FOUR.value,
                                           self.create_item_for_table(transition_function[Indexes.ONE.value][Indexes.TWO.value]))
         else:
-            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ZERO.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
-            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ONE.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
-            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.TWO.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
-            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.THREE.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
-            self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.FOUR.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
+            for index in islice(Indexes, Indexes.FIVE.value):
+                self.tape_state_table.setItem(Indexes.ZERO.value, index.value, self.create_item_for_table(constants.FILL_TABLE_NO_TRANSITION))
 
     def create_item_for_table(self, data: str) -> QTableWidgetItem:
         item: QTableWidgetItem = QTableWidgetItem(data)
