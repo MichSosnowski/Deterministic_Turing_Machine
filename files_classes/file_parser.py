@@ -25,9 +25,9 @@ class FileParser:
 
     def analyze_entry_alphabet_and_word(self, tape_alphabet: str) -> None:
         self.is_correct_line(constants.ENTRY_ALPHABET)
-        self.check_entry_alphabet(tape_alphabet)
+        entry_alphabet: str = self.check_entry_alphabet(tape_alphabet)
         self.is_correct_line(constants.ENTRY_WORD)
-        self.check_entry_word(tape_alphabet)
+        self.check_entry_word(entry_alphabet)
 
     def analyze_states(self) -> list[str]:
         self.is_correct_line(constants.STATES)
@@ -53,16 +53,17 @@ class FileParser:
             raise IncorrectFormatException
         return read_line
 
-    def check_entry_alphabet(self, tape_alphabet: str) -> None:
+    def check_entry_alphabet(self, tape_alphabet: str) -> str:
         read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
         is_all_chars_in_tape_alphabet = list(map(lambda elem: elem in tape_alphabet, read_line))
         if len(read_line) < constants.REQUIRED_COUNT or False in is_all_chars_in_tape_alphabet:
             raise IncorrectFormatException
+        return read_line
 
-    def check_entry_word(self, tape_alphabet: str) -> None:
+    def check_entry_word(self, entry_alphabet: str) -> None:
         read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
-        is_all_chars_in_tape_alphabet = list(map(lambda elem: elem in tape_alphabet, read_line))
-        if len(read_line) < constants.REQUIRED_COUNT or len(read_line) > constants.MAX_LENGTH_ENTRY_WORD or False in is_all_chars_in_tape_alphabet:
+        is_all_chars_in_entry_alphabet = list(map(lambda elem: elem in entry_alphabet, read_line))
+        if len(read_line) < constants.REQUIRED_COUNT or len(read_line) > constants.MAX_LENGTH_ENTRY_WORD or False in is_all_chars_in_entry_alphabet:
             raise IncorrectFormatException
 
     def get_all_states(self) -> list[str]:
