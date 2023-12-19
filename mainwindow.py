@@ -1,7 +1,7 @@
 import sys
 from itertools import islice
 
-from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem, QFileDialog
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont
 from PySide6.QtCore import Qt, QPoint
 
@@ -22,12 +22,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setupUi(self)
+        self.filename: str = constants.EMPTY_STRING
         self.window_size: WindowSize = WindowSize(self.width(), self.height())
-        self.set_contents_for_widgets()
-        self.turing_machine: TuringMachine = TuringMachine(self.file_reader)
+        self.turing_machine = None
         self.add_pixmap_for_turing_machine_label()
         self.draw_turing_machine()
-        self.fill_tape_state_table()
         self.add_commands_for_buttons()
 
     def resizeEvent(self, event) -> None:
@@ -35,7 +34,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.set_size_column_table()
 
     def closeEvent(self, event) -> None:
-        if self.turing_machine.isRunning():
+        if self.turing_machine and self.turing_machine.isRunning():
             button = self.show_warning_dialog(constants.MESSAGE_TITLE_END_PROGRAM, constants.MESSAGE_END_PROGRAM)
             if button == QMessageBox.StandardButton.Ok:
                 self.stop_thread()
@@ -53,13 +52,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.add_text_to_file_text_browser()
         self.set_entry_word_label()
         self.set_result_word_label(constants.EMPTY_STRING)
+        self.turing_machine: TuringMachine = TuringMachine(self.file_reader)
+        self.draw_turing_machine()
+        self.fill_tape_state_table()
 
     def create_file_connection(self) -> None:
         try:
-            self.file_reader: FileReader = FileReader(constants.FILENAME)
-        except FileNotFoundError:
-            self.show_error_dialog(constants.MESSAGE_TITLE, constants.MESSAGE)
-            exit(constants.EXIT_FAILURE)
+            self.file_reader: FileReader = FileReader(self.filename)
         except (IncorrectFormatException, IndexError):
             self.show_error_dialog(constants.MESSAGE_TITLE_FORMAT, constants.MESSAGE_FORMAT)
             exit(constants.EXIT_FAILURE)
@@ -135,16 +134,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.turing_machine_label.setPixmap(canvas)
 
     def draw_contents_of_tape_cells(self, canvas: QPixmap, pen: QPen) -> None:
-        painter: QPainter = QPainter(canvas)
-        text_font: QFont = QFont(constants.FAMILY_FONT, constants.POINT_SIZE)
-        painter.setFont(text_font)
-        fragment_tape: list[str] = self.turing_machine.get_fragment_of_tape()
-        first_letter_pos = constants.FIRST_LETTER_POS
-        for elem in fragment_tape:
-            painter.drawText(first_letter_pos, self.window_size.height * constants.LETTER_HEIGHT_COEFFICIENT, elem)
-            first_letter_pos += constants.NEXT_LETTER_POS
-        painter.end()
-        self.turing_machine_label.setPixmap(canvas)
+        if self.turing_machine:
+            painter: QPainter = QPainter(canvas)
+            text_font: QFont = QFont(constants.FAMILY_FONT, constants.POINT_SIZE)
+            painter.setFont(text_font)
+            fragment_tape: list[str] = self.turing_machine.get_fragment_of_tape()
+            first_letter_pos = constants.FIRST_LETTER_POS
+            for elem in fragment_tape:
+                painter.drawText(first_letter_pos, self.window_size.height * constants.LETTER_HEIGHT_COEFFICIENT, elem)
+                first_letter_pos += constants.NEXT_LETTER_POS
+            painter.end()
+            self.turing_machine_label.setPixmap(canvas)
 
     def fill_tape_state_table(self) -> None:
         transition_function = self.turing_machine.get_actual_transition_function()
@@ -180,7 +180,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.result_word_label.clear()
         self.result_word_label.setText(result_text)
 
+    def load_file(self) -> None:
+        temp_filename: str = self.filename
+        self.get_name_of_file()
+        if self.filename != constants.EMPTY_STRING:
+            self.set_contents_for_widgets()
+            self.refresh_button.setEnabled(True)
+            self.start_button.setEnabled(True)
+            self.stop_button.setDisabled(True)
+            self.step_backward_button.setEnabled(True)
+            self.step_forward_button.setEnabled(True)
+            self.reset_button.setEnabled(True)
+        else:
+            self.filename: str = temp_filename
+
+    def get_name_of_file(self) -> None:
+        self.filename: str = (constants.EMPTY_STRING, constants.EMPTY_STRING)
+        if self.filename == (constants.EMPTY_STRING, constants.EMPTY_STRING):
+            self.filename: tuple[str, str] = QFileDialog.getOpenFileName(self, constants.FILE_OPEN_TITLE, constants.CURRENT_DIR,
+                                                                         constants.TXT_FILTER)
+        self.filename: str = self.filename[constants.FILENAME_INDEX]
+
     def add_commands_for_buttons(self) -> None:
+        self.load_file_button.clicked.connect(self.load_file)
         self.refresh_button.clicked.connect(self.set_contents_for_widgets)
         self.start_button.clicked.connect(self.set_start_button_command)
         self.stop_button.clicked.connect(self.set_stop_button_command)
@@ -192,6 +214,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         config.finish_thread = False
 
     def switch_enabled_buttons(self) -> None:
+        self.load_file_button.setEnabled(True)
         self.refresh_button.setEnabled(True)
         self.start_button.setEnabled(True)
         self.stop_button.setDisabled(True)
@@ -200,6 +223,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.reset_button.setEnabled(True)
 
     def set_start_button_command(self) -> None:
+        self.load_file_button.setDisabled(True)
         self.refresh_button.setDisabled(True)
         self.start_button.setDisabled(True)
         self.stop_button.setEnabled(True)
@@ -212,12 +236,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.turing_machine.start()
 
     def set_stop_button_command(self) -> None:
-        self.refresh_button.setEnabled(True)
-        self.start_button.setEnabled(True)
-        self.stop_button.setDisabled(True)
-        self.step_backward_button.setEnabled(True)
-        self.step_forward_button.setEnabled(True)
-        self.reset_button.setEnabled(True)
+        self.switch_enabled_buttons()
         self.stop_thread()
 
     def set_step_forward_command(self) -> None:
