@@ -1,3 +1,4 @@
+import time
 from collections import deque
 from typing import Deque
 from itertools import repeat
@@ -92,7 +93,7 @@ class TuringMachine(QThread):
         while self.actual_state not in self.accepting_states:
             self.step_forward()
             self.thread_signals.draw.emit()
-            self.sleep(constants.THREAD_SLEEP_SECS)
+            time.sleep(constants.THREAD_SLEEP_SECS)
             if config.finish_thread:
                 self.thread_signals.end.emit()
                 return
