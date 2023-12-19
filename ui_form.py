@@ -67,21 +67,25 @@ class Ui_MainWindow(object):
 
         self.step_backward_button = QPushButton(self.groupBox)
         self.step_backward_button.setObjectName(u"step_backward_button")
+        self.step_backward_button.setEnabled(False)
 
         self.gridLayout.addWidget(self.step_backward_button, 2, 0, 1, 1)
 
         self.start_button = QPushButton(self.groupBox)
         self.start_button.setObjectName(u"start_button")
+        self.start_button.setEnabled(False)
 
         self.gridLayout.addWidget(self.start_button, 1, 0, 1, 1)
 
         self.reset_button = QPushButton(self.groupBox)
         self.reset_button.setObjectName(u"reset_button")
+        self.reset_button.setEnabled(False)
 
         self.gridLayout.addWidget(self.reset_button, 3, 0, 1, 2)
 
         self.step_forward_button = QPushButton(self.groupBox)
         self.step_forward_button.setObjectName(u"step_forward_button")
+        self.step_forward_button.setEnabled(False)
 
         self.gridLayout.addWidget(self.step_forward_button, 2, 1, 1, 1)
 
@@ -100,26 +104,48 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addLayout(self.horizontalLayout_2, 6, 1, 2, 1)
 
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.gridLayout_4 = QGridLayout()
+        self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_4.addItem(self.horizontalSpacer_5, 2, 0, 1, 1)
+
+        self.pushButton = QPushButton(self.centralwidget)
+        self.pushButton.setObjectName(u"pushButton")
+
+        self.gridLayout_4.addWidget(self.pushButton, 1, 1, 1, 1)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_4.addItem(self.verticalSpacer, 0, 1, 1, 1)
+
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout.addItem(self.horizontalSpacer)
-
-        self.refresh_button = QPushButton(self.centralwidget)
-        self.refresh_button.setObjectName(u"refresh_button")
-
-        self.horizontalLayout.addWidget(self.refresh_button)
+        self.gridLayout_4.addItem(self.horizontalSpacer, 1, 0, 1, 1)
 
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.horizontalLayout.addItem(self.horizontalSpacer_2)
+        self.gridLayout_4.addItem(self.horizontalSpacer_2, 1, 2, 1, 1)
 
-        self.horizontalLayout.setStretch(0, 1)
-        self.horizontalLayout.setStretch(1, 1)
-        self.horizontalLayout.setStretch(2, 1)
+        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.gridLayout_2.addLayout(self.horizontalLayout, 6, 0, 2, 1)
+        self.gridLayout_4.addItem(self.horizontalSpacer_6, 2, 2, 1, 1)
+
+        self.refresh_button = QPushButton(self.centralwidget)
+        self.refresh_button.setObjectName(u"refresh_button")
+        self.refresh_button.setEnabled(False)
+
+        self.gridLayout_4.addWidget(self.refresh_button, 2, 1, 1, 1)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_4.addItem(self.verticalSpacer_2, 3, 1, 1, 1)
+
+        self.gridLayout_4.setColumnStretch(0, 1)
+        self.gridLayout_4.setColumnStretch(1, 4)
+        self.gridLayout_4.setColumnStretch(2, 1)
+
+        self.gridLayout_2.addLayout(self.gridLayout_4, 6, 0, 2, 1)
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -239,6 +265,7 @@ class Ui_MainWindow(object):
         self.start_button.setText(QCoreApplication.translate("MainWindow", u"START", None))
         self.reset_button.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
         self.step_forward_button.setText(QCoreApplication.translate("MainWindow", u"KROK W PRZ\u00d3D", None))
+        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"WCZYTAJ PLIK", None))
         self.refresh_button.setText(QCoreApplication.translate("MainWindow", u"OD\u015aWIE\u017b", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WEJ\u015aCIOWE", None))
         self.entry_word_label.setText("")
