@@ -110,10 +110,10 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4.addItem(self.horizontalSpacer_5, 2, 0, 1, 1)
 
-        self.pushButton = QPushButton(self.centralwidget)
-        self.pushButton.setObjectName(u"pushButton")
+        self.load_file_button = QPushButton(self.centralwidget)
+        self.load_file_button.setObjectName(u"load_file_button")
 
-        self.gridLayout_4.addWidget(self.pushButton, 1, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.load_file_button, 1, 1, 1, 1)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
@@ -265,7 +265,7 @@ class Ui_MainWindow(object):
         self.start_button.setText(QCoreApplication.translate("MainWindow", u"START", None))
         self.reset_button.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
         self.step_forward_button.setText(QCoreApplication.translate("MainWindow", u"KROK W PRZ\u00d3D", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"WCZYTAJ PLIK", None))
+        self.load_file_button.setText(QCoreApplication.translate("MainWindow", u"WCZYTAJ PLIK", None))
         self.refresh_button.setText(QCoreApplication.translate("MainWindow", u"OD\u015aWIE\u017b", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WEJ\u015aCIOWE", None))
         self.entry_word_label.setText("")
