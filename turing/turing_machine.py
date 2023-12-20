@@ -51,7 +51,7 @@ class TuringMachine(QThread):
             filled_cells_count: int = len(tape_deque)
 
     def get_initial_position_head(self) -> int:
-        if self.entry_word != constants.EMPTY_CHAR:
+        if self.entry_word:
             return self.tape.index(self.entry_word[Indexes.ZERO.value])
         return constants.EMPTY_CHAR_ENTRY_WORD_POSITION
 
@@ -72,7 +72,7 @@ class TuringMachine(QThread):
         read_character: str = self.tape[self.position_head]
         key: tuple[str, str] = (self.actual_state, read_character)
         value: tuple[str, str, str] = self.transition_function.get(key, constants.EMPTY_STRING)
-        return (key, value) if value != constants.EMPTY_STRING else constants.EMPTY_STRING
+        return (key, value) if value else constants.EMPTY_STRING
 
     def set_new_position_head(self, direction: str) -> None:
         if direction == constants.LEFT:
