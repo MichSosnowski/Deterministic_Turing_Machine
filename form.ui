@@ -22,6 +22,9 @@
         <property name="title">
          <string>WCZYTANA MASZYNA TURINGA</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
           <widget class="QTextBrowser" name="file_text_browser">
@@ -57,6 +60,9 @@
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
          <string>STEROWANIE MASZYNĄ TURINGA</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
         <layout class="QGridLayout" name="gridLayout" columnstretch="1,1">
          <item row="1" column="1">
@@ -319,6 +325,9 @@
      <widget class="QGroupBox" name="groupBox_3">
       <property name="title">
        <string>AKTUALNIE ROZPATRYWANA RELACJA PRZEJŚCIA</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="flat">
        <bool>false</bool>

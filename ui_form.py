@@ -34,6 +34,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.groupBox_2 = QGroupBox(self.centralwidget)
         self.groupBox_2.setObjectName(u"groupBox_2")
+        self.groupBox_2.setAlignment(Qt.AlignCenter)
         self.gridLayout_3 = QGridLayout(self.groupBox_2)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.file_text_browser = QTextBrowser(self.groupBox_2)
@@ -57,6 +58,7 @@ class Ui_MainWindow(object):
 
         self.groupBox = QGroupBox(self.centralwidget)
         self.groupBox.setObjectName(u"groupBox")
+        self.groupBox.setAlignment(Qt.AlignCenter)
         self.gridLayout = QGridLayout(self.groupBox)
         self.gridLayout.setObjectName(u"gridLayout")
         self.stop_button = QPushButton(self.groupBox)
@@ -201,6 +203,7 @@ class Ui_MainWindow(object):
 
         self.groupBox_3 = QGroupBox(self.centralwidget)
         self.groupBox_3.setObjectName(u"groupBox_3")
+        self.groupBox_3.setAlignment(Qt.AlignCenter)
         self.groupBox_3.setFlat(False)
         self.verticalLayout = QVBoxLayout(self.groupBox_3)
         self.verticalLayout.setObjectName(u"verticalLayout")
