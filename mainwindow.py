@@ -48,20 +48,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             header.setSectionResizeMode(index.value, QHeaderView.Stretch)
 
     def set_contents_for_widgets(self) -> None:
-        self.create_file_connection()
+        self.file_reader: FileReader = FileReader(self.filename)
         self.add_text_to_file_text_browser()
         self.set_entry_word_label()
         self.set_result_word_label(constants.EMPTY_STRING)
         self.turing_machine: TuringMachine = TuringMachine(self.file_reader)
         self.draw_turing_machine()
         self.fill_tape_state_table()
-
-    def create_file_connection(self) -> None:
-        try:
-            self.file_reader: FileReader = FileReader(self.filename)
-        except (IncorrectFormatException, IndexError):
-            self.show_error_dialog(constants.MESSAGE_TITLE_FORMAT, constants.MESSAGE_FORMAT)
-            exit(constants.EXIT_FAILURE)
 
     def show_warning_dialog(self, title: str, message: str) -> None:
         QApplication.beep()
@@ -183,20 +176,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def load_file(self) -> None:
         temp_filename: str = self.filename
         self.get_name_of_file()
-        if self.filename != constants.EMPTY_STRING:
+        try:
             self.set_contents_for_widgets()
-            self.refresh_button.setEnabled(True)
-            self.start_button.setEnabled(True)
-            self.stop_button.setDisabled(True)
-            self.step_backward_button.setEnabled(True)
-            self.step_forward_button.setEnabled(True)
-            self.reset_button.setEnabled(True)
-        else:
+        except FileNotFoundError:
             self.filename: str = temp_filename
+        except (IncorrectFormatException, IndexError):
+            self.show_error_dialog(constants.MESSAGE_TITLE_FORMAT, constants.MESSAGE_FORMAT)
+            self.filename: str = temp_filename
+        else:
+            self.switch_enabled_buttons()
 
     def get_name_of_file(self) -> None:
-        self.filename: str = (constants.EMPTY_STRING, constants.EMPTY_STRING)
-        if self.filename == (constants.EMPTY_STRING, constants.EMPTY_STRING):
+        self.filename: str = constants.EMPTY_STRING
+        if self.filename == constants.EMPTY_STRING:
             self.filename: tuple[str, str] = QFileDialog.getOpenFileName(self, constants.FILE_OPEN_TITLE, constants.CURRENT_DIR,
                                                                          constants.TXT_FILTER)
         self.filename: str = self.filename[constants.FILENAME_INDEX]
