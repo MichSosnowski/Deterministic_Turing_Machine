@@ -49,21 +49,25 @@ class FileParser:
 
     def check_tape_alphabet(self) -> str:
         read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
-        if len(read_line) < constants.REQUIRED_COUNT_TAPE_ALPHABET or read_line.find(constants.EMPTY_CHAR) == constants.CHAR_NOT_FOUND:
+        if (len(read_line) < constants.REQUIRED_COUNT_TAPE_ALPHABET
+            or read_line.find(constants.EMPTY_CHAR) == constants.CHAR_NOT_FOUND):
             raise IncorrectFormatException
         return read_line
 
     def check_entry_alphabet(self, tape_alphabet: str) -> str:
         read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
         is_all_chars_in_tape_alphabet = list(map(lambda elem: elem in tape_alphabet, read_line))
-        if len(read_line) < constants.REQUIRED_COUNT or False in is_all_chars_in_tape_alphabet:
+        if (len(read_line) < constants.REQUIRED_COUNT
+            or False in is_all_chars_in_tape_alphabet):
             raise IncorrectFormatException
         return read_line
 
     def check_entry_word(self, entry_alphabet: str) -> None:
         read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
         is_all_chars_in_entry_alphabet = list(map(lambda elem: elem in entry_alphabet, read_line))
-        if len(read_line) < constants.REQUIRED_COUNT or len(read_line) > constants.MAX_LENGTH_ENTRY_WORD or False in is_all_chars_in_entry_alphabet:
+        if (len(read_line) < constants.REQUIRED_COUNT
+            or len(read_line) > constants.MAX_LENGTH_ENTRY_WORD
+            or False in is_all_chars_in_entry_alphabet):
             raise IncorrectFormatException
 
     def get_all_states(self) -> list[str]:
@@ -75,14 +79,16 @@ class FileParser:
 
     def check_initial_state(self, states: list[str]) -> None:
         read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
-        if len(read_line) != constants.REQUIRED_COUNT or read_line not in states:
+        if (len(read_line) != constants.REQUIRED_COUNT
+            or read_line not in states):
             raise IncorrectFormatException
 
     def check_accepting_states(self, states: list[str]) -> None:
         read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
         accepting_states: list[str] = read_line.split(constants.SPACE)
         is_accepting_states_in_states = list(map(lambda elem: elem in states, accepting_states))
-        if len(read_line) < constants.REQUIRED_COUNT or False in is_accepting_states_in_states:
+        if (len(read_line) < constants.REQUIRED_COUNT
+            or False in is_accepting_states_in_states):
             raise IncorrectFormatException
 
     def check_transition_function(self, tape_alphabet: str, states: list[str]) -> None:
@@ -101,11 +107,11 @@ class FileParser:
 
     def analyze_line_elements(self, line_elements: list[str], tape_alphabet: str, states: list[str]) -> None:
         moves: tuple(str, str) = (constants.LEFT, constants.RIGHT)
-        if (line_elements[Indexes.ZERO.value] not in states or
-            line_elements[Indexes.ONE.value] not in tape_alphabet or
-            line_elements[Indexes.TWO.value] not in states or
-            line_elements[Indexes.THREE.value] not in tape_alphabet or
-            line_elements[Indexes.FOUR.value] not in moves):
+        if (line_elements[Indexes.ZERO.value] not in states
+            or line_elements[Indexes.ONE.value] not in tape_alphabet
+            or line_elements[Indexes.TWO.value] not in states
+            or line_elements[Indexes.THREE.value] not in tape_alphabet
+            or line_elements[Indexes.FOUR.value] not in moves):
                 raise IncorrectFormatException
 
     def check_eof(self) -> None:

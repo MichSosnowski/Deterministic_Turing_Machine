@@ -141,7 +141,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def fill_tape_state_table(self) -> None:
         transition_function = self.turing_machine.get_actual_transition_function()
-        if transition_function != constants.EMPTY_STRING:
+        if transition_function:
             self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ZERO.value,
                                           self.create_item_for_table(transition_function[Indexes.ZERO.value][Indexes.ZERO.value]))
             self.tape_state_table.setItem(Indexes.ZERO.value, Indexes.ONE.value,
@@ -188,7 +188,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def get_name_of_file(self) -> None:
         self.filename: str = constants.EMPTY_STRING
-        if self.filename == constants.EMPTY_STRING:
+        if not self.filename:
             self.filename: tuple[str, str] = QFileDialog.getOpenFileName(self, constants.FILE_OPEN_TITLE, constants.CURRENT_DIR,
                                                                          constants.TXT_FILTER)
         self.filename: str = self.filename[constants.FILENAME_INDEX]
