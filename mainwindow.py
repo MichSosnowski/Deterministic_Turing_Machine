@@ -2,8 +2,8 @@ import sys
 from itertools import islice
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem, QFileDialog
-from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont
-from PySide6.QtCore import Qt, QPoint
+from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont, QGuiApplication
+from PySide6.QtCore import Qt, QPoint, QRect
 
 import turing.thread_config as config
 import constants.constants as constants
@@ -24,10 +24,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.filename: str = constants.EMPTY_STRING
         self.window_size: WindowSize = WindowSize(self.width(), self.height())
+        self.center_window()
         self.turing_machine = None
         self.add_pixmap_for_turing_machine_label()
         self.draw_turing_machine()
         self.add_commands_for_buttons()
+
+    def center_window(self) -> None:
+        frameGeometry: QRect = self.frameGeometry()
+        screen_center = QGuiApplication.primaryScreen().availableGeometry().center()
+        frameGeometry.moveCenter(screen_center)
+        self.move(frameGeometry.topLeft())
 
     def resizeEvent(self, event) -> None:
         super().resizeEvent(event)
@@ -75,7 +82,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         canvas: QPixmap = QPixmap(pixmap_width, pixmap_height)
         canvas.fill(QColor(constants.PIXMAP_BACKGROUND_COLOR))
         self.turing_machine_label.setPixmap(canvas)
-        self.turing_machine_label.setScaledContents(True)
 
     def draw_turing_machine(self) -> None:
         canvas: QPixmap = self.turing_machine_label.pixmap()
