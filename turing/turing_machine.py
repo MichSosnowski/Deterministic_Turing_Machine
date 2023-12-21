@@ -22,7 +22,7 @@ class TuringMachine(QThread):
         self.accepting_states: list[str] = file_reader.get_accepting_states_from_file()
         self.transition_function: dict[tuple[str, str], tuple[str, str, str]] = self.transform_transition_function(file_reader)
         self.tape: Deque[str] = self.create_tape()
-        self.position_head: int = self.get_initial_position_head()
+        self.head_position: int = self.get_initial_head_position()
         self.result_word = constants.EMPTY_STRING
         self.calculation_length = constants.INITIAL_CALCULATION_LENGTH
 
@@ -50,14 +50,18 @@ class TuringMachine(QThread):
                 tape_deque.append(constants.EMPTY_CHAR)
             filled_cells_count: int = len(tape_deque)
 
-    def get_initial_position_head(self) -> int:
+    def get_initial_head_position(self) -> int:
         if self.entry_word:
             return self.tape.index(self.entry_word[Indexes.ZERO.value])
         return constants.EMPTY_CHAR_ENTRY_WORD_POSITION
 
+    def get_actual_head_position(self) -> int:
+        return self.head_position
+
     def get_fragment_of_tape(self) -> list[str]:
-        fragment_start_position: int = self.position_head - constants.INITIAL_FRAGMENT_POSITION_BACK
-        fragment_end_position: int = self.position_head + constants.END_FRAGMENT_POSITION_FORWARD
+        return self.tape
+        '''fragment_start_position: int = self.head_position - constants.INITIAL_FRAGMENT_POSITION_BACK
+        fragment_end_position: int = self.head_position + constants.END_FRAGMENT_POSITION_FORWARD
         fragment_tape: list[str] = list()
         if fragment_start_position < constants.FIRST_TAPE_INDEX:
             fragment_tape.extend(repeat(constants.EMPTY_STRING, constants.FIRST_TAPE_INDEX - fragment_start_position))
@@ -66,27 +70,27 @@ class TuringMachine(QThread):
             if index < len(self.tape):
                 fragment_tape.append(self.tape[index])
         fragment_tape.extend(repeat(constants.EMPTY_STRING, fragment_end_position - len(self.tape)))
-        return fragment_tape
+        return fragment_tape'''
 
     def get_actual_transition_function(self) -> tuple[tuple[str, str], tuple[str, str, str]]:
-        read_character: str = self.tape[self.position_head]
+        read_character: str = self.tape[self.head_position]
         key: tuple[str, str] = (self.actual_state, read_character)
         value: tuple[str, str, str] = self.transition_function.get(key, constants.EMPTY_STRING)
         return (key, value) if value else constants.EMPTY_STRING
 
-    def set_new_position_head(self, direction: str) -> None:
+    def set_new_head_position(self, direction: str) -> None:
         if direction == constants.LEFT:
-            self.position_head += constants.PREVIOUS_CELL
+            self.head_position += constants.PREVIOUS_CELL
         elif direction == constants.RIGHT:
-            self.position_head += constants.NEXT_CELL
+            self.head_position += constants.NEXT_CELL
 
     def step_forward(self) -> None:
         if self.actual_state not in self.accepting_states:
-            read_character: str = self.tape[self.position_head]
+            read_character: str = self.tape[self.head_position]
             transition: tuple[str, str, str] = self.transition_function.get((self.actual_state, read_character))
             self.actual_state: str = transition[Indexes.ZERO.value]
-            self.tape[self.position_head]: str = transition[Indexes.ONE.value]
-            self.set_new_position_head(transition[Indexes.TWO.value])
+            self.tape[self.head_position]: str = transition[Indexes.ONE.value]
+            self.set_new_head_position(transition[Indexes.TWO.value])
             self.calculation_length += constants.CALCULATION_LENGTH_INCREASE
 
     def run(self) -> None:

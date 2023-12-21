@@ -86,6 +86,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def draw_turing_machine(self) -> None:
         canvas: QPixmap = self.turing_machine_label.pixmap()
+        canvas.fill(QColor(constants.PIXMAP_BACKGROUND_COLOR))
         pen: QPen = QPen()
         self.draw_turing_machine_tape(canvas, pen)
         self.draw_turing_machine_cells(canvas, pen)
@@ -117,13 +118,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def draw_turing_machine_head(self, canvas: QPixmap, pen: QPen) -> None:
         painter: QPainter = QPainter(canvas)
-        polygon: QPolygon = QPolygon()
-        (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_BOTTOM_POINT_LOC_ABOVE_TAPE,
-                           self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE)
-                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_TOP_LEFT_POINT_LOC_ABOVE_TAPE,
-                           self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
-                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_TOP_RIGHT_POINT_LOC_ABOVE_TAPE,
-                           self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE))
+        polygon: QPolygon = self.create_head()
         pen.setWidth(constants.HEAD_WIDTH_PEN)
         painter.setBrush(Qt.black)
         pen.setColor(Qt.black)
@@ -132,6 +127,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         painter.drawPolygon(polygon)
         painter.end()
         self.turing_machine_label.setPixmap(canvas)
+
+    def create_head(self) -> QPolygon:
+        polygon: QPolygon = QPolygon()
+        head_position: int = self.turing_machine.get_actual_head_position() if self.turing_machine else constants.INITIAL_HEAD_POSITION
+        (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_BOTTOM_POINT_LOC_ABOVE_TAPE[head_position],
+                           self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE)
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_TOP_LEFT_POINT_LOC_ABOVE_TAPE[head_position],
+                           self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_TOP_RIGHT_POINT_LOC_ABOVE_TAPE[head_position],
+                           self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE))
+        return polygon
 
     def draw_contents_of_tape_cells(self, canvas: QPixmap, pen: QPen) -> None:
         painter: QPainter = QPainter(canvas)
