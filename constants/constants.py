@@ -2,6 +2,10 @@
 EMPTY_STRING: str = ''
 
 
+# constants used in file_parser.py, mainwindow.py and turing_machine.py
+EMPTY_CHAR: str = '#'
+
+
 # constants used in file_reader.py and file_parser.py
 ENTRY_WORD: str = 'slowo wejsciowe:\n'
 INITIAL_STATE: str = 'stan poczatkowy:\n'
@@ -14,14 +18,16 @@ LAST_CHAR_INDEX: int = -1
 SPACE: str = ' '
 
 
+# constants used in mainwindow.py and turing_machine.py
+INITIAL_TAPE_SIZE: int = 32
+
+
 # constants used in file_parser.py and turing_machine.py
-EMPTY_CHAR: str = '#'
 LEFT: str = 'L'
 RIGHT: str = 'P'
 
 
 # constants used in turing_machine.py
-INITIAL_TAPE_SIZE: int = 32
 DRAWN_TAPE_SIZE: int = 19
 FIRST_TAPE_INDEX: int = 0
 EMPTY_CHAR_ENTRY_WORD_POSITION: int = 10
@@ -73,13 +79,15 @@ X_LOC_FIRST_CELL: int = 18
 Y_LOC_CELL_INCREASED: int = 23
 X_DIST_NEXT_CELL: int = 35
 HEAD_LOC_COEFFICIENT: int = 3
+HEAD_X_BOTTOM_POINT_LOC_ABOVE_TAPE: int = 77
 HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE: int = 70
-HEAD_X_TOP_POINT_LOC_ABOVE_TAPE: int = 20
+HEAD_X_TOP_LEFT_POINT_LOC_ABOVE_TAPE: int = 57
+HEAD_X_TOP_RIGHT_POINT_LOC_ABOVE_TAPE: int = 97
 HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE: int = 100
 HEAD_WIDTH_PEN: int = 1
 FAMILY_FONT: str = 'Times'
-POINT_SIZE: int = 22
-FIRST_LETTER_POS: int = 6
+POINT_SIZE: int = 25
+FIRST_LETTER_POS: int = 5
 NEXT_LETTER_POS: int = 35
-LETTER_HEIGHT_COEFFICIENT: float = 0.354
+LETTER_HEIGHT_COEFFICIENT: float = 0.347
 FILL_TABLE_NO_TRANSITION: str = ' '

@@ -1,5 +1,6 @@
 import sys
-from itertools import islice
+from itertools import islice, repeat
+from typing import Iterator
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem, QFileDialog
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont, QGuiApplication
@@ -12,8 +13,8 @@ from ui_form import Ui_MainWindow
 from files_classes.file_reader import FileReader
 from exceptions.exceptions import IncorrectFormatException
 from gui.window_size import WindowSize
-from constants.constants import (HEAD_LOC_COEFFICIENT, HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE, HEAD_X_TOP_POINT_LOC_ABOVE_TAPE,
-                                 HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
+from constants.constants import (HEAD_LOC_COEFFICIENT, HEAD_X_BOTTOM_POINT_LOC_ABOVE_TAPE, HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE,
+                                 HEAD_X_TOP_LEFT_POINT_LOC_ABOVE_TAPE, HEAD_X_TOP_RIGHT_POINT_LOC_ABOVE_TAPE, HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
 from turing.turing_machine import TuringMachine
 
 
@@ -117,11 +118,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def draw_turing_machine_head(self, canvas: QPixmap, pen: QPen) -> None:
         painter: QPainter = QPainter(canvas)
         polygon: QPolygon = QPolygon()
-        (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT,
+        (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_BOTTOM_POINT_LOC_ABOVE_TAPE,
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE)
-                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT - HEAD_X_TOP_POINT_LOC_ABOVE_TAPE,
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_TOP_LEFT_POINT_LOC_ABOVE_TAPE,
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
-                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_TOP_POINT_LOC_ABOVE_TAPE,
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_TOP_RIGHT_POINT_LOC_ABOVE_TAPE,
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE))
         pen.setWidth(constants.HEAD_WIDTH_PEN)
         painter.setBrush(Qt.black)
@@ -133,17 +134,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.turing_machine_label.setPixmap(canvas)
 
     def draw_contents_of_tape_cells(self, canvas: QPixmap, pen: QPen) -> None:
+        painter: QPainter = QPainter(canvas)
+        text_font: QFont = QFont(constants.FAMILY_FONT, constants.POINT_SIZE)
+        painter.setFont(text_font)
+        first_letter_pos = constants.FIRST_LETTER_POS
         if self.turing_machine:
-            painter: QPainter = QPainter(canvas)
-            text_font: QFont = QFont(constants.FAMILY_FONT, constants.POINT_SIZE)
-            painter.setFont(text_font)
             fragment_tape: list[str] = self.turing_machine.get_fragment_of_tape()
-            first_letter_pos = constants.FIRST_LETTER_POS
-            for elem in fragment_tape:
-                painter.drawText(first_letter_pos, self.window_size.height * constants.LETTER_HEIGHT_COEFFICIENT, elem)
-                first_letter_pos += constants.NEXT_LETTER_POS
-            painter.end()
-            self.turing_machine_label.setPixmap(canvas)
+        else:
+            fragment_tape: Iterator[str] = repeat(constants.EMPTY_CHAR, constants.INITIAL_TAPE_SIZE)
+        for elem in fragment_tape:
+            painter.drawText(first_letter_pos, self.window_size.height * constants.LETTER_HEIGHT_COEFFICIENT, elem)
+            first_letter_pos += constants.NEXT_LETTER_POS
+        painter.end()
+        self.turing_machine_label.setPixmap(canvas)
 
     def fill_tape_state_table(self) -> None:
         transition_function = self.turing_machine.get_actual_transition_function()
