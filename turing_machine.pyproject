@@ -13,7 +13,7 @@
         "exceptions/exceptions.py",
         "constants/enums.py",
         "turing/__init__.py",
-        "turing/thread_config.py",
+        "turing/config.py",
         "turing/turing_machine.py",
         "turing/thread_signals.py"
     ]

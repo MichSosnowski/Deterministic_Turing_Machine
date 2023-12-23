@@ -6,7 +6,7 @@ from itertools import repeat, islice
 from PySide6.QtCore import QThread, QMutex, QWaitCondition
 
 import constants.constants as constants
-import turing.thread_config as config
+import turing.config as config
 from constants.enums import Indexes
 from files_classes.file_reader import FileReader
 from turing.thread_signals import ThreadSignals
@@ -16,9 +16,9 @@ class TuringMachine(QThread):
 
     def __init__(self, file_reader: FileReader, wait_condition: QWaitCondition):
         super().__init__()
-        self.thread_signals = ThreadSignals()
-        self.mutex = QMutex()
-        self.wait_condition = wait_condition
+        self.thread_signals: ThreadSignals = ThreadSignals()
+        self.mutex: QMutex = QMutex()
+        self.wait_condition: QWaitCondition = wait_condition
         self.entry_word: str = file_reader.get_entry_word_from_file()
         self.actual_state: str = file_reader.get_initial_state_from_file()
         self.accepting_states: list[str] = file_reader.get_accepting_states_from_file()
@@ -28,8 +28,7 @@ class TuringMachine(QThread):
         self.head_position_fragment_tape: int = self.get_initial_head_position()
         self.first_index_fragment_tape: int = constants.FIRST_TAPE_INDEX
         self.last_index_fragment_tape: int = constants.LAST_TAPE_FRAGMENT_INDEX
-        self.result_word = constants.EMPTY_STRING
-        self.calculation_length = constants.INITIAL_CALCULATION_LENGTH
+        self.calculation_length: int = constants.INITIAL_CALCULATION_LENGTH
 
     def transform_transition_function(self, file_reader: FileReader) -> dict[tuple[str, str], tuple[str, str, str]]:
         transition_function: dict[tuple(str, str), tuple(str, str, str)] = dict()
@@ -114,6 +113,14 @@ class TuringMachine(QThread):
             self.wait_for_wake()
             config.extend_tape_right: bool = False
 
+    def get_result_word(self) -> str:
+        result_word_letters: list[str] = [elem for elem in self.tape if elem != constants.EMPTY_CHAR]
+        result_word: str = constants.EMPTY_STRING.join(result_word_letters)
+        return result_word
+
+    def get_calculation_length(self) -> int:
+        return self.calculation_length
+
     def step_forward(self) -> None:
         if self.actual_state not in self.accepting_states:
             read_character: str = self.tape[self.head_position_tape]
@@ -123,6 +130,8 @@ class TuringMachine(QThread):
             self.set_new_head_position(transition[Indexes.TWO.value])
             self.calculation_length += constants.CALCULATION_LENGTH_INCREASE
             self.extend_tape()
+        if self.actual_state in self.accepting_states:
+            config.finish_step_work = True
 
     def run(self) -> None:
         while self.actual_state not in self.accepting_states:
@@ -131,6 +140,7 @@ class TuringMachine(QThread):
             self.inform_about_extend_tape()
             time.sleep(constants.THREAD_SLEEP_SECS)
             if config.finish_thread:
-                self.thread_signals.end.emit()
+                self.thread_signals.stop.emit()
                 return
-        self.thread_signals.end.emit()
+        else:
+            self.thread_signals.end.emit()

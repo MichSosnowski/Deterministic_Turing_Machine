@@ -6,7 +6,7 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderVie
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont, QGuiApplication
 from PySide6.QtCore import Qt, QPoint, QRect, QWaitCondition
 
-import turing.thread_config as config
+import turing.config as config
 import constants.constants as constants
 from constants.enums import Indexes
 from ui_form import Ui_MainWindow
@@ -61,6 +61,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.add_text_to_file_text_browser()
         self.set_entry_word_label()
         self.set_result_word_label(constants.EMPTY_STRING)
+        self.set_calculation_length_label(constants.EMPTY_STRING)
         self.turing_machine: TuringMachine = TuringMachine(self.file_reader, self.wait_condition)
         self.draw_turing_machine()
         self.fill_tape_state_table()
@@ -193,6 +194,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.result_word_label.clear()
         self.result_word_label.setText(result_text)
 
+    def set_calculation_length_label(self, calculation_length_text: str) -> None:
+        self.calculation_length_label.clear()
+        self.calculation_length_label.setText(calculation_length_text)
+
     def load_file(self) -> None:
         temp_filename: str = self.filename
         self.get_name_of_file()
@@ -246,6 +251,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.step_forward_button.setEnabled(True)
         self.reset_button.setEnabled(True)
 
+    def execute_success_end_step(self) -> None:
+        self.set_result_word_label(self.turing_machine.get_result_word())
+        self.set_calculation_length_label(str(self.turing_machine.get_calculation_length()))
+        self.show_info_dialog(constants.SUCCESS_END_INFO_TITLE, constants.SUCCESS_END_INFO_MESSAGE)
+        config.finish_step_work: bool = False
+
+    def execute_success_end_thread(self) -> None:
+        self.execute_success_end_step()
+        self.turing_machine.thread_signals.end.disconnect(self.switch_enabled_buttons)
+        self.turing_machine.thread_signals.end.disconnect(self.execute_success_end_thread)
+        self.turing_machine.thread_signals.end.disconnect(self.turing_machine.quit)
+
     def set_start_button_command(self) -> None:
         self.load_file_button.setDisabled(True)
         self.refresh_button.setDisabled(True)
@@ -256,18 +273,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.reset_button.setDisabled(True)
         self.turing_machine.thread_signals.draw.connect(self.redraw_turing_machine)
         self.turing_machine.thread_signals.extend_tape.connect(self.show_extend_tape_info)
+        self.turing_machine.thread_signals.stop.connect(self.switch_enabled_buttons)
+        self.turing_machine.thread_signals.stop.connect(self.turing_machine.quit)
         self.turing_machine.thread_signals.end.connect(self.switch_enabled_buttons)
         self.turing_machine.thread_signals.end.connect(self.turing_machine.quit)
+        self.turing_machine.thread_signals.end.connect(self.execute_success_end_thread)
         self.turing_machine.start()
 
     def set_stop_button_command(self) -> None:
         self.switch_enabled_buttons()
         self.stop_thread()
+        self.turing_machine.thread_signals.stop.disconnect(self.switch_enabled_buttons)
+        self.turing_machine.thread_signals.end.disconnect(self.switch_enabled_buttons)
+        self.turing_machine.thread_signals.end.disconnect(self.execute_success_end_thread)
+        self.turing_machine.thread_signals.end.disconnect(self.turing_machine.quit)
 
     def set_step_forward_command(self) -> None:
         self.turing_machine.step_forward()
         self.redraw_turing_machine()
         self.inform_about_extend_tape()
+        if config.finish_step_work:
+            self.execute_success_end_step()
 
 
 if __name__ == "__main__":
