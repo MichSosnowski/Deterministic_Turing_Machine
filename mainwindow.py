@@ -4,7 +4,7 @@ from typing import Iterator
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem, QFileDialog
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont, QGuiApplication
-from PySide6.QtCore import Qt, QPoint, QRect
+from PySide6.QtCore import Qt, QPoint, QRect, QWaitCondition
 
 import turing.thread_config as config
 import constants.constants as constants
@@ -25,6 +25,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.filename: str = constants.EMPTY_STRING
         self.window_size: WindowSize = WindowSize(self.width(), self.height())
+        self.wait_condition: QWaitCondition = QWaitCondition()
         self.center_window()
         self.turing_machine = None
         self.add_pixmap_for_turing_machine_label()
@@ -60,9 +61,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.add_text_to_file_text_browser()
         self.set_entry_word_label()
         self.set_result_word_label(constants.EMPTY_STRING)
-        self.turing_machine: TuringMachine = TuringMachine(self.file_reader)
+        self.turing_machine: TuringMachine = TuringMachine(self.file_reader, self.wait_condition)
         self.draw_turing_machine()
         self.fill_tape_state_table()
+
+    def show_info_dialog(self, title: str, message: str) -> None:
+        QApplication.beep()
+        QMessageBox.information(self, title, message)
 
     def show_warning_dialog(self, title: str, message: str) -> None:
         QApplication.beep()
@@ -208,6 +213,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                                          constants.TXT_FILTER)
         self.filename: str = self.filename[constants.FILENAME_INDEX]
 
+    def show_extend_tape_info(self, message: str) -> None:
+        self.show_info_dialog(constants.EXTEND_TAPE_INFO_TITLE, message)
+        self.wait_condition.wakeAll()
+
+    def inform_about_extend_tape(self) -> None:
+        if config.extend_tape_left:
+            self.show_info_dialog(constants.EXTEND_TAPE_INFO_TITLE, constants.EXTEND_TAPE_LEFT_INFO)
+            config.extend_tape_left: bool = False
+        elif config.extend_tape_right:
+            self.show_info_dialog(constants.EXTEND_TAPE_INFO_TITLE, constants.EXTEND_TAPE_RIGHT_INFO)
+            config.extend_tape_right: bool = False
+
     def add_commands_for_buttons(self) -> None:
         self.load_file_button.clicked.connect(self.load_file)
         self.refresh_button.clicked.connect(self.set_contents_for_widgets)
@@ -238,6 +255,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.step_forward_button.setDisabled(True)
         self.reset_button.setDisabled(True)
         self.turing_machine.thread_signals.draw.connect(self.redraw_turing_machine)
+        self.turing_machine.thread_signals.extend_tape.connect(self.show_extend_tape_info)
         self.turing_machine.thread_signals.end.connect(self.switch_enabled_buttons)
         self.turing_machine.thread_signals.end.connect(self.turing_machine.quit)
         self.turing_machine.start()
@@ -249,6 +267,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_step_forward_command(self) -> None:
         self.turing_machine.step_forward()
         self.redraw_turing_machine()
+        self.inform_about_extend_tape()
 
 
 if __name__ == "__main__":

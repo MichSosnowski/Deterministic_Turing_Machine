@@ -44,6 +44,8 @@ PREVIOUS_CELL: int = -1
 NEXT_CELL: int = 1
 CALCULATION_LENGTH_INCREASE: int = 1
 THREAD_SLEEP_SECS: float = 0.25
+EXTEND_TAPE_LEFT_INFO: str = 'Nastąpiło rozszerzenie taśmy z jej lewej strony.'
+EXTEND_TAPE_RIGHT_INFO: str = 'Nastąpiło rozszerzenie taśmy z jej prawej strony.'
 
 
 # constants used in file_reader.py
@@ -70,6 +72,7 @@ MESSAGE_END_PROGRAM: str = 'Maszyna Turinga wciąż działa.\nCzy na pewno chces
 FILE_OPEN_TITLE: str = 'Wybierz plik z opisem maszyny Turinga...'
 CURRENT_DIR: str = '.'
 TXT_FILTER: str = 'Pliki tekstowe (*.txt)'
+EXTEND_TAPE_INFO_TITLE: str = 'Rozszerzenie taśmy'
 FILENAME_INDEX: int = 0
 PIXMAP_BACKGROUND_COLOR: str = '#f0f0f0'
 BROWN: str = 'brown'

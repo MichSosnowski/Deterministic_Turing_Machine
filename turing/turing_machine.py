@@ -3,7 +3,7 @@ from collections import deque
 from typing import Deque
 from itertools import repeat, islice
 
-from PySide6.QtCore import QThread
+from PySide6.QtCore import QThread, QMutex, QWaitCondition
 
 import constants.constants as constants
 import turing.thread_config as config
@@ -14,9 +14,11 @@ from turing.thread_signals import ThreadSignals
 
 class TuringMachine(QThread):
 
-    def __init__(self, file_reader: FileReader):
+    def __init__(self, file_reader: FileReader, wait_condition: QWaitCondition):
         super().__init__()
         self.thread_signals = ThreadSignals()
+        self.mutex = QMutex()
+        self.wait_condition = wait_condition
         self.entry_word: str = file_reader.get_entry_word_from_file()
         self.actual_state: str = file_reader.get_initial_state_from_file()
         self.accepting_states: list[str] = file_reader.get_accepting_states_from_file()
@@ -51,8 +53,15 @@ class TuringMachine(QThread):
             self.head_position_tape += constants.EXTEND_TAPE_SIZE
             self.first_index_fragment_tape += constants.EXTEND_TAPE_SIZE
             self.last_index_fragment_tape += constants.EXTEND_TAPE_SIZE
+            config.extend_tape_left: bool = True
         elif self.head_position_tape == len(self.tape) + constants.PREVIOUS_CELL:
             self.tape.extend(repeat(constants.EMPTY_CHAR, constants.EXTEND_TAPE_SIZE))
+            config.extend_tape_right: bool = True
+
+    def wait_for_wake(self) -> None:
+        self.mutex.lock()
+        self.wait_condition.wait(self.mutex)
+        self.mutex.unlock()
 
     def fill_tape_with_empty_char(self, tape_deque: Deque[str], tape_size: int) -> None:
         filled_cells_count: int = len(tape_deque)
@@ -95,6 +104,16 @@ class TuringMachine(QThread):
             self.head_position_tape += constants.NEXT_CELL
             self.head_position_fragment_tape += constants.NEXT_CELL
 
+    def inform_about_extend_tape(self) -> None:
+        if config.extend_tape_left:
+            self.thread_signals.extend_tape.emit(constants.EXTEND_TAPE_LEFT_INFO)
+            self.wait_for_wake()
+            config.extend_tape_left: bool = False
+        elif config.extend_tape_right:
+            self.thread_signals.extend_tape.emit(constants.EXTEND_TAPE_RIGHT_INFO)
+            self.wait_for_wake()
+            config.extend_tape_right: bool = False
+
     def step_forward(self) -> None:
         if self.actual_state not in self.accepting_states:
             read_character: str = self.tape[self.head_position_tape]
@@ -109,6 +128,7 @@ class TuringMachine(QThread):
         while self.actual_state not in self.accepting_states:
             self.step_forward()
             self.thread_signals.draw.emit()
+            self.inform_about_extend_tape()
             time.sleep(constants.THREAD_SLEEP_SECS)
             if config.finish_thread:
                 self.thread_signals.end.emit()
