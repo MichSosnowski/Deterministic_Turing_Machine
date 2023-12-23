@@ -1,7 +1,6 @@
 import time
 from collections import deque
 from typing import Deque
-from itertools import repeat
 
 from PySide6.QtCore import QThread
 
@@ -60,17 +59,6 @@ class TuringMachine(QThread):
 
     def get_fragment_of_tape(self) -> list[str]:
         return self.tape
-        '''fragment_start_position: int = self.head_position - constants.INITIAL_FRAGMENT_POSITION_BACK
-        fragment_end_position: int = self.head_position + constants.END_FRAGMENT_POSITION_FORWARD
-        fragment_tape: list[str] = list()
-        if fragment_start_position < constants.FIRST_TAPE_INDEX:
-            fragment_tape.extend(repeat(constants.EMPTY_STRING, constants.FIRST_TAPE_INDEX - fragment_start_position))
-            fragment_start_position = constants.FIRST_TAPE_INDEX
-        for index in range(fragment_start_position, fragment_end_position):
-            if index < len(self.tape):
-                fragment_tape.append(self.tape[index])
-        fragment_tape.extend(repeat(constants.EMPTY_STRING, fragment_end_position - len(self.tape)))
-        return fragment_tape'''
 
     def get_actual_transition_function(self) -> tuple[tuple[str, str], tuple[str, str, str]]:
         read_character: str = self.tape[self.head_position]
