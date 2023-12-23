@@ -90,8 +90,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         pen: QPen = QPen()
         self.draw_turing_machine_tape(canvas, pen)
         self.draw_turing_machine_cells(canvas, pen)
-        self.draw_turing_machine_head(canvas, pen)
         self.draw_contents_of_tape_cells(canvas, pen)
+        self.draw_turing_machine_head(canvas, pen)
 
     def draw_turing_machine_tape(self, canvas: QPixmap, pen: QPen) -> None:
         painter: QPainter = QPainter(canvas)
@@ -130,7 +130,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def create_head(self) -> QPolygon:
         polygon: QPolygon = QPolygon()
-        head_position: int = self.turing_machine.get_actual_head_position() if self.turing_machine else constants.INITIAL_HEAD_POSITION
+        head_position: int = self.turing_machine.get_actual_head_position_fragment_tape() if self.turing_machine else constants.INITIAL_HEAD_POSITION
         (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_BOTTOM_POINT_LOC_ABOVE_TAPE[head_position],
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE)
                  << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_TOP_LEFT_POINT_LOC_ABOVE_TAPE[head_position],

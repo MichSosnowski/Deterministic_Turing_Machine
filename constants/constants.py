@@ -23,6 +23,7 @@ SPACE: str = ' '
 
 # constants used in mainwindow.py and turing_machine.py
 INITIAL_TAPE_SIZE: int = 32
+INITIAL_HEAD_POSITION: int = 15
 
 
 # constants used in file_parser.py and turing_machine.py
@@ -33,6 +34,8 @@ RIGHT: str = 'P'
 # constants used in turing_machine.py
 DRAWN_TAPE_SIZE: int = 19
 FIRST_TAPE_INDEX: int = 0
+LAST_TAPE_FRAGMENT_INDEX: int = 31
+EXTEND_TAPE_SIZE: int = 16
 EMPTY_CHAR_ENTRY_WORD_POSITION: int = 15
 INITIAL_FRAGMENT_POSITION_BACK: int = 9
 END_FRAGMENT_POSITION_FORWARD: int = 10
@@ -97,4 +100,3 @@ FIRST_LETTER_POS: int = 5
 NEXT_LETTER_POS: int = 35
 LETTER_HEIGHT_COEFFICIENT: float = 0.347
 FILL_TABLE_NO_TRANSITION: str = ' '
-INITIAL_HEAD_POSITION = 15

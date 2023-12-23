@@ -1,6 +1,7 @@
 import time
 from collections import deque
 from typing import Deque
+from itertools import repeat, islice
 
 from PySide6.QtCore import QThread
 
@@ -21,7 +22,10 @@ class TuringMachine(QThread):
         self.accepting_states: list[str] = file_reader.get_accepting_states_from_file()
         self.transition_function: dict[tuple[str, str], tuple[str, str, str]] = self.transform_transition_function(file_reader)
         self.tape: Deque[str] = self.create_tape()
-        self.head_position: int = self.get_initial_head_position()
+        self.head_position_tape: int = self.get_initial_head_position()
+        self.head_position_fragment_tape: int = self.get_initial_head_position()
+        self.first_index_fragment_tape: int = constants.FIRST_TAPE_INDEX
+        self.last_index_fragment_tape: int = constants.LAST_TAPE_FRAGMENT_INDEX
         self.result_word = constants.EMPTY_STRING
         self.calculation_length = constants.INITIAL_CALCULATION_LENGTH
 
@@ -41,6 +45,15 @@ class TuringMachine(QThread):
         self.fill_tape_with_empty_char(tape_deque, constants.INITIAL_TAPE_SIZE)
         return tape_deque
 
+    def extend_tape(self) -> None:
+        if self.head_position_tape == constants.FIRST_TAPE_INDEX:
+            self.tape.extendleft(repeat(constants.EMPTY_CHAR, constants.EXTEND_TAPE_SIZE))
+            self.head_position_tape += constants.EXTEND_TAPE_SIZE
+            self.first_index_fragment_tape += constants.EXTEND_TAPE_SIZE
+            self.last_index_fragment_tape += constants.EXTEND_TAPE_SIZE
+        elif self.head_position_tape == len(self.tape) + constants.PREVIOUS_CELL:
+            self.tape.extend(repeat(constants.EMPTY_CHAR, constants.EXTEND_TAPE_SIZE))
+
     def fill_tape_with_empty_char(self, tape_deque: Deque[str], tape_size: int) -> None:
         filled_cells_count: int = len(tape_deque)
         while filled_cells_count < tape_size:
@@ -54,32 +67,43 @@ class TuringMachine(QThread):
             return self.tape.index(self.entry_word[Indexes.ZERO.value])
         return constants.EMPTY_CHAR_ENTRY_WORD_POSITION
 
-    def get_actual_head_position(self) -> int:
-        return self.head_position
+    def get_actual_head_position_fragment_tape(self) -> int:
+        return self.head_position_fragment_tape
 
     def get_fragment_of_tape(self) -> list[str]:
-        return self.tape
+        if self.head_position_fragment_tape == constants.FIRST_TAPE_INDEX:
+            self.first_index_fragment_tape -= constants.EXTEND_TAPE_SIZE
+            self.last_index_fragment_tape -= constants.EXTEND_TAPE_SIZE
+            self.head_position_fragment_tape: int = constants.INITIAL_HEAD_POSITION + constants.NEXT_CELL
+        elif self.head_position_fragment_tape == constants.LAST_TAPE_FRAGMENT_INDEX:
+            self.first_index_fragment_tape += constants.EXTEND_TAPE_SIZE
+            self.last_index_fragment_tape += constants.EXTEND_TAPE_SIZE
+            self.head_position_fragment_tape: int = constants.INITIAL_HEAD_POSITION
+        return islice(self.tape, self.first_index_fragment_tape, self.last_index_fragment_tape + constants.NEXT_CELL)
 
     def get_actual_transition_function(self) -> tuple[tuple[str, str], tuple[str, str, str]]:
-        read_character: str = self.tape[self.head_position]
+        read_character: str = self.tape[self.head_position_tape]
         key: tuple[str, str] = (self.actual_state, read_character)
         value: tuple[str, str, str] = self.transition_function.get(key, constants.EMPTY_STRING)
         return (key, value) if value else constants.EMPTY_STRING
 
     def set_new_head_position(self, direction: str) -> None:
         if direction == constants.LEFT:
-            self.head_position += constants.PREVIOUS_CELL
+            self.head_position_tape += constants.PREVIOUS_CELL
+            self.head_position_fragment_tape += constants.PREVIOUS_CELL
         elif direction == constants.RIGHT:
-            self.head_position += constants.NEXT_CELL
+            self.head_position_tape += constants.NEXT_CELL
+            self.head_position_fragment_tape += constants.NEXT_CELL
 
     def step_forward(self) -> None:
         if self.actual_state not in self.accepting_states:
-            read_character: str = self.tape[self.head_position]
+            read_character: str = self.tape[self.head_position_tape]
             transition: tuple[str, str, str] = self.transition_function.get((self.actual_state, read_character))
             self.actual_state: str = transition[Indexes.ZERO.value]
-            self.tape[self.head_position]: str = transition[Indexes.ONE.value]
+            self.tape[self.head_position_tape]: str = transition[Indexes.ONE.value]
             self.set_new_head_position(transition[Indexes.TWO.value])
             self.calculation_length += constants.CALCULATION_LENGTH_INCREASE
+            self.extend_tape()
 
     def run(self) -> None:
         while self.actual_state not in self.accepting_states:
