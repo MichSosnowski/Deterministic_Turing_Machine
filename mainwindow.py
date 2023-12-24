@@ -70,10 +70,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         QApplication.beep()
         QMessageBox.information(self, title, message)
 
-    def show_warning_dialog(self, title: str, message: str) -> None:
+    def show_warning_dialog(self, title: str, message: str) -> QMessageBox.StandardButton:
         QApplication.beep()
-        button = QMessageBox.warning(self, title, message, QMessageBox.StandardButton.Ok, QMessageBox.StandardButton.Cancel)
-        return button
+        warning_message_box = QMessageBox()
+        warning_message_box.setIcon(QMessageBox.Warning)
+        warning_message_box.setWindowTitle(title)
+        warning_message_box.setText(message)
+        warning_message_box.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
+        cancel_button = warning_message_box.button(QMessageBox.StandardButton.Cancel)
+        cancel_button.setText(constants.CANCEL)
+        return warning_message_box.exec()
 
     def show_error_dialog(self, title: str, message: str) -> None:
         QApplication.beep()
