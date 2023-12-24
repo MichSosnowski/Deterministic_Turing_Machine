@@ -24,6 +24,17 @@ class FileWriter:
     def clear_file(self) -> None:
         open(self.filename, constants.WRITE_MODE).close()
 
+    def write_entry_word(self, entry_word: str) -> None:
+        entry_word_text: str = f'{constants.ENTRY_WORD_FILE}{entry_word}\n\n'
+        with open(self.filename, constants.APPEND_MODE) as file:
+            file.write(entry_word_text)
+
+    def write_head_position(self, head_position: int) -> None:
+        head_position_shift: int = head_position + constants.SHIFT_DUE_TO_STATE
+        head_position_text: str = f'{constants.HEAD_CHAR:>{head_position_shift}}\n'
+        with open(self.filename, constants.APPEND_MODE) as file:
+            file.write(head_position_text)
+
     def write_state(self, state: str) -> None:
         state_text: str = f'{state}: '
         with open(self.filename, constants.APPEND_MODE) as file:
@@ -34,20 +45,15 @@ class FileWriter:
             for cell in tape:
                 file.write(cell)
             file.write(constants.NEWLINE)
-
-    def write_head_position(self, head_position: int) -> None:
-        head_position_shift: int = head_position + constants.SHIFT_DUE_TO_STATE
-        head_position_text: str = f'{constants.HEAD_CHAR:>{head_position_shift}}\n\n'
-        with open(self.filename, constants.APPEND_MODE) as file:
-            file.write(head_position_text)
+            file.write(constants.NEWLINE)
 
     def write_info_text(self, info: str) -> None:
         with open(self.filename, constants.APPEND_MODE) as file:
             file.write(info)
 
     def write_success_end(self, info: str, result_word: str, calculation_length: str) -> None:
-        result_word_text: str = f'{constants.RESULT_WORD}{result_word}\n'
-        calculation_length_text: str = f'{constants.CALCULATION_LENGTH}{calculation_length}\n'
+        result_word_text: str = f'{constants.RESULT_WORD_FILE}{result_word}\n'
+        calculation_length_text: str = f'{constants.CALCULATION_LENGTH_FILE}{calculation_length}\n'
         with open(self.filename, constants.APPEND_MODE) as file:
             file.write(info)
             file.write(result_word_text)

@@ -31,6 +31,7 @@ class TuringMachine(QThread):
         self.last_index_fragment_tape: int = constants.LAST_TAPE_FRAGMENT_INDEX
         self.calculation_length: int = constants.INITIAL_CALCULATION_LENGTH
         self.file_writer: FileWriter = FileWriter(file_reader.filename)
+        self.file_writer.write_entry_word(self.entry_word)
         self.write_state_of_turing_machine_file()
 
     def transform_transition_function(self, file_reader: FileReader) -> dict[tuple[str, str], tuple[str, str, str]]:
@@ -127,9 +128,9 @@ class TuringMachine(QThread):
         return self.calculation_length
 
     def write_state_of_turing_machine_file(self) -> None:
+        self.file_writer.write_head_position(self.head_position_tape)
         self.file_writer.write_state(self.actual_state)
         self.file_writer.write_tape(self.tape)
-        self.file_writer.write_head_position(self.head_position_tape)
 
     def step_forward(self) -> None:
         if self.actual_state not in self.accepting_states:
