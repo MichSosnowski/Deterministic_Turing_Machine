@@ -31,6 +31,10 @@ LEFT: str = 'L'
 RIGHT: str = 'P'
 
 
+# constants used in file_parser.py and file_writer.py
+NEWLINE: str = '\n'
+
+
 # constants used in turing_machine.py
 DRAWN_TAPE_SIZE: int = 19
 FIRST_TAPE_INDEX: int = 0
@@ -46,6 +50,8 @@ CALCULATION_LENGTH_INCREASE: int = 1
 THREAD_SLEEP_SECS: float = 0.25
 EXTEND_TAPE_LEFT_INFO: str = 'Nastąpiło rozszerzenie taśmy z jej lewej strony.'
 EXTEND_TAPE_RIGHT_INFO: str = 'Nastąpiło rozszerzenie taśmy z jej prawej strony.'
+EXTEND_TAPE_LEFT_INFO_FILE: str = 'ROZSZERZENIE TAŚMY Z LEWEJ STRONY\n\n'
+EXTEND_TAPE_RIGHT_INFO_FILE: str = 'ROZSZERZENIE TAŚMY Z PRAWEJ STRONY\n\n'
 
 
 # constants used in file_reader.py
@@ -56,11 +62,20 @@ NEXT_INDEX: int = 1
 TAPE_ALPHABET: str = 'alfabet tasmowy:\n'
 ENTRY_ALPHABET: str = 'alfabet wejsciowy:\n'
 STATES: str = 'stany:\n'
-NEWLINE: str = '\n'
 CHAR_NOT_FOUND: int = -1
 REQUIRED_COUNT: int = 1
 REQUIRED_COUNT_TAPE_ALPHABET: int = 2
 MAX_LENGTH_ENTRY_WORD: int = 30
+
+
+# constants used in file_writer.py
+RESULT_DIRECTORY: str = 'wyniki'
+INDIRECT_PATH_TO_RESULT_DIRECTORY: str = '.\\wyniki\\'
+FILENAME_COMPLEMENT: str = '_wynik'
+WRITE_MODE = 'w'
+APPEND_MODE = 'a'
+HEAD_CHAR = '^'
+SHIFT_DUE_TO_STATE: int = 4
 
 
 # constants used in mainwindow.py

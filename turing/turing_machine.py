@@ -9,6 +9,7 @@ import constants.constants as constants
 import turing.config as config
 from constants.enums import Indexes
 from files_classes.file_reader import FileReader
+from files_classes.file_writer import FileWriter
 from turing.thread_signals import ThreadSignals
 
 
@@ -29,6 +30,8 @@ class TuringMachine(QThread):
         self.first_index_fragment_tape: int = constants.FIRST_TAPE_INDEX
         self.last_index_fragment_tape: int = constants.LAST_TAPE_FRAGMENT_INDEX
         self.calculation_length: int = constants.INITIAL_CALCULATION_LENGTH
+        self.file_writer: FileWriter = FileWriter(file_reader.filename)
+        self.write_state_of_turing_machine_file()
 
     def transform_transition_function(self, file_reader: FileReader) -> dict[tuple[str, str], tuple[str, str, str]]:
         transition_function: dict[tuple(str, str), tuple(str, str, str)] = dict()
@@ -52,9 +55,11 @@ class TuringMachine(QThread):
             self.head_position_tape += constants.EXTEND_TAPE_SIZE
             self.first_index_fragment_tape += constants.EXTEND_TAPE_SIZE
             self.last_index_fragment_tape += constants.EXTEND_TAPE_SIZE
+            self.file_writer.write_info_extend_tape(constants.EXTEND_TAPE_LEFT_INFO_FILE)
             config.extend_tape_left: bool = True
         elif self.head_position_tape == len(self.tape) + constants.PREVIOUS_CELL:
             self.tape.extend(repeat(constants.EMPTY_CHAR, constants.EXTEND_TAPE_SIZE))
+            self.file_writer.write_info_extend_tape(constants.EXTEND_TAPE_RIGHT_INFO_FILE)
             config.extend_tape_right: bool = True
 
     def wait_for_wake(self) -> None:
@@ -121,6 +126,11 @@ class TuringMachine(QThread):
     def get_calculation_length(self) -> int:
         return self.calculation_length
 
+    def write_state_of_turing_machine_file(self) -> None:
+        self.file_writer.write_state(self.actual_state)
+        self.file_writer.write_tape(self.tape)
+        self.file_writer.write_head_position(self.head_position_tape)
+
     def step_forward(self) -> None:
         if self.actual_state not in self.accepting_states:
             read_character: str = self.tape[self.head_position_tape]
@@ -131,6 +141,7 @@ class TuringMachine(QThread):
                 self.set_new_head_position(transition[Indexes.TWO.value])
                 self.calculation_length += constants.CALCULATION_LENGTH_INCREASE
                 self.extend_tape()
+                self.write_state_of_turing_machine_file()
             else:
                 config.error = True
                 return

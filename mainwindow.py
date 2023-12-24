@@ -34,7 +34,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def center_window(self) -> None:
         frameGeometry: QRect = self.frameGeometry()
-        screen_center = QGuiApplication.primaryScreen().availableGeometry().center()
+        screen_center: QPoint = QGuiApplication.primaryScreen().availableGeometry().center()
         frameGeometry.moveCenter(screen_center)
         self.move(frameGeometry.topLeft())
 
