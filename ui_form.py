@@ -61,38 +61,52 @@ class Ui_MainWindow(object):
         self.groupBox.setAlignment(Qt.AlignCenter)
         self.gridLayout = QGridLayout(self.groupBox)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.stop_button = QPushButton(self.groupBox)
-        self.stop_button.setObjectName(u"stop_button")
-        self.stop_button.setEnabled(False)
+        self.slow_head_button = QPushButton(self.groupBox)
+        self.slow_head_button.setObjectName(u"slow_head_button")
+        self.slow_head_button.setEnabled(False)
 
-        self.gridLayout.addWidget(self.stop_button, 1, 1, 1, 1)
-
-        self.step_backward_button = QPushButton(self.groupBox)
-        self.step_backward_button.setObjectName(u"step_backward_button")
-        self.step_backward_button.setEnabled(False)
-
-        self.gridLayout.addWidget(self.step_backward_button, 2, 0, 1, 1)
-
-        self.start_button = QPushButton(self.groupBox)
-        self.start_button.setObjectName(u"start_button")
-        self.start_button.setEnabled(False)
-
-        self.gridLayout.addWidget(self.start_button, 1, 0, 1, 1)
-
-        self.reset_button = QPushButton(self.groupBox)
-        self.reset_button.setObjectName(u"reset_button")
-        self.reset_button.setEnabled(False)
-
-        self.gridLayout.addWidget(self.reset_button, 3, 0, 1, 2)
+        self.gridLayout.addWidget(self.slow_head_button, 3, 1, 1, 1)
 
         self.step_forward_button = QPushButton(self.groupBox)
         self.step_forward_button.setObjectName(u"step_forward_button")
         self.step_forward_button.setEnabled(False)
 
-        self.gridLayout.addWidget(self.step_forward_button, 2, 1, 1, 1)
+        self.gridLayout.addWidget(self.step_forward_button, 2, 2, 1, 1)
+
+        self.start_button = QPushButton(self.groupBox)
+        self.start_button.setObjectName(u"start_button")
+        self.start_button.setEnabled(False)
+
+        self.gridLayout.addWidget(self.start_button, 3, 0, 1, 1)
+
+        self.step_backward_button = QPushButton(self.groupBox)
+        self.step_backward_button.setObjectName(u"step_backward_button")
+        self.step_backward_button.setEnabled(False)
+
+        self.gridLayout.addWidget(self.step_backward_button, 2, 1, 1, 1)
+
+        self.stop_button = QPushButton(self.groupBox)
+        self.stop_button.setObjectName(u"stop_button")
+        self.stop_button.setEnabled(False)
+
+        self.gridLayout.addWidget(self.stop_button, 3, 3, 1, 1)
+
+        self.fast_head_button = QPushButton(self.groupBox)
+        self.fast_head_button.setObjectName(u"fast_head_button")
+        self.fast_head_button.setEnabled(False)
+
+        self.gridLayout.addWidget(self.fast_head_button, 3, 2, 1, 1)
+
+        self.reset_button = QPushButton(self.groupBox)
+        self.reset_button.setObjectName(u"reset_button")
+        self.reset_button.setEnabled(False)
+
+        self.gridLayout.addWidget(self.reset_button, 4, 1, 1, 2)
 
         self.gridLayout.setColumnStretch(0, 1)
         self.gridLayout.setColumnStretch(1, 1)
+        self.gridLayout.setColumnStretch(2, 1)
+        self.gridLayout.setColumnStretch(3, 1)
 
         self.horizontalLayout_2.addWidget(self.groupBox)
 
@@ -263,11 +277,13 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"WCZYTANA MASZYNA TURINGA", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"STEROWANIE MASZYN\u0104 TURINGA", None))
-        self.stop_button.setText(QCoreApplication.translate("MainWindow", u"STOP", None))
-        self.step_backward_button.setText(QCoreApplication.translate("MainWindow", u"KROK WSTECZ", None))
-        self.start_button.setText(QCoreApplication.translate("MainWindow", u"START", None))
-        self.reset_button.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
+        self.slow_head_button.setText(QCoreApplication.translate("MainWindow", u"SPOWOLNIJ G\u0141OWIC\u0118", None))
         self.step_forward_button.setText(QCoreApplication.translate("MainWindow", u"KROK W PRZ\u00d3D", None))
+        self.start_button.setText(QCoreApplication.translate("MainWindow", u"START", None))
+        self.step_backward_button.setText(QCoreApplication.translate("MainWindow", u"KROK WSTECZ", None))
+        self.stop_button.setText(QCoreApplication.translate("MainWindow", u"STOP", None))
+        self.fast_head_button.setText(QCoreApplication.translate("MainWindow", u"PRZYSPIESZ G\u0141OWIC\u0118", None))
+        self.reset_button.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
         self.load_file_button.setText(QCoreApplication.translate("MainWindow", u"WCZYTAJ PLIK", None))
         self.refresh_button.setText(QCoreApplication.translate("MainWindow", u"OD\u015aWIE\u017b", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"S\u0141OWO WEJ\u015aCIOWE", None))

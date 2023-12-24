@@ -31,6 +31,7 @@ class TuringMachine(QThread):
         self.first_index_fragment_tape: int = constants.FIRST_TAPE_INDEX
         self.last_index_fragment_tape: int = constants.LAST_TAPE_FRAGMENT_INDEX
         self.calculation_length: int = constants.INITIAL_CALCULATION_LENGTH
+        self.thread_sleep_secs: float = constants.INITIAL_SPEED_THREAD
         self.file_writer: FileWriter = FileWriter(file_reader.filename)
         self.file_writer.write_entry_word(self.entry_word)
         self.write_state_of_turing_machine_file()
@@ -68,6 +69,16 @@ class TuringMachine(QThread):
         self.mutex.lock()
         self.wait_condition.wait(self.mutex)
         self.mutex.unlock()
+
+    def speed_thread_up(self) -> None:
+        if config.speed_head and self.thread_sleep_secs > constants.FASTEST_SPEED_THREAD:
+            self.thread_sleep_secs /= constants.COEFFICIENT_SPEED_THREAD
+            config.speed_head: bool = False
+
+    def slow_thread_down(self) -> None:
+        if config.slow_head and self.thread_sleep_secs < constants.SLOWEST_SPEED_THREAD:
+            self.thread_sleep_secs *= constants.COEFFICIENT_SPEED_THREAD
+            config.slow_head: bool = False
 
     def fill_tape_with_empty_char(self, tape_deque: Deque[str], tape_size: int) -> None:
         filled_cells_count: int = len(tape_deque)
@@ -166,7 +177,9 @@ class TuringMachine(QThread):
                 break
             self.thread_signals.draw.emit()
             self.inform_about_extend_tape()
-            time.sleep(constants.THREAD_SLEEP_SECS)
+            self.slow_thread_down()
+            self.speed_thread_up()
+            time.sleep(self.thread_sleep_secs)
             if config.finish_thread:
                 self.thread_signals.stop.emit()
                 return

@@ -64,28 +64,28 @@
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
-        <layout class="QGridLayout" name="gridLayout" columnstretch="1,1">
-         <item row="1" column="1">
-          <widget class="QPushButton" name="stop_button">
+        <layout class="QGridLayout" name="gridLayout" columnstretch="1,1,1,1">
+         <item row="3" column="1">
+          <widget class="QPushButton" name="slow_head_button">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>STOP</string>
+            <string>SPOWOLNIJ GŁOWICĘ</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
-          <widget class="QPushButton" name="step_backward_button">
+         <item row="2" column="2">
+          <widget class="QPushButton" name="step_forward_button">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
-            <string>KROK WSTECZ</string>
+            <string>KROK W PRZÓD</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="3" column="0">
           <widget class="QPushButton" name="start_button">
            <property name="enabled">
             <bool>false</bool>
@@ -95,23 +95,43 @@
            </property>
           </widget>
          </item>
-         <item row="3" column="0" colspan="2">
+         <item row="2" column="1">
+          <widget class="QPushButton" name="step_backward_button">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>KROK WSTECZ</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="3">
+          <widget class="QPushButton" name="stop_button">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>STOP</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="QPushButton" name="fast_head_button">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>PRZYSPIESZ GŁOWICĘ</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="1" colspan="2">
           <widget class="QPushButton" name="reset_button">
            <property name="enabled">
             <bool>false</bool>
            </property>
            <property name="text">
             <string>RESET</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QPushButton" name="step_forward_button">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>KROK W PRZÓD</string>
            </property>
           </widget>
          </item>

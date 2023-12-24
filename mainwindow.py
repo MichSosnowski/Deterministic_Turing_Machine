@@ -240,8 +240,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.load_file_button.clicked.connect(self.load_file)
         self.refresh_button.clicked.connect(self.set_contents_for_widgets)
         self.start_button.clicked.connect(self.set_start_button_command)
+        self.slow_head_button.clicked.connect(self.slow_thread_down)
+        self.fast_head_button.clicked.connect(self.speed_thread_up)
         self.stop_button.clicked.connect(self.set_stop_button_command)
         self.step_forward_button.clicked.connect(self.set_step_forward_command)
+
+    def slow_thread_down(self) -> None:
+        config.slow_head: bool = True
+
+    def speed_thread_up(self) -> None:
+        config.speed_head: bool = True
 
     def stop_thread(self) -> None:
         config.finish_thread = True
@@ -252,6 +260,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.load_file_button.setEnabled(True)
         self.refresh_button.setEnabled(True)
         self.start_button.setEnabled(True)
+        self.slow_head_button.setDisabled(True)
+        self.fast_head_button.setDisabled(True)
         self.stop_button.setDisabled(True)
         self.step_backward_button.setEnabled(True)
         self.step_forward_button.setEnabled(True)
@@ -300,6 +310,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.load_file_button.setDisabled(True)
         self.refresh_button.setDisabled(True)
         self.start_button.setDisabled(True)
+        self.slow_head_button.setEnabled(True)
+        self.fast_head_button.setEnabled(True)
         self.stop_button.setEnabled(True)
         self.step_backward_button.setDisabled(True)
         self.step_forward_button.setDisabled(True)
