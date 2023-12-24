@@ -52,6 +52,8 @@ EXTEND_TAPE_LEFT_INFO: str = 'Nastąpiło rozszerzenie taśmy z jej lewej strony
 EXTEND_TAPE_RIGHT_INFO: str = 'Nastąpiło rozszerzenie taśmy z jej prawej strony.'
 EXTEND_TAPE_LEFT_INFO_FILE: str = 'ROZSZERZENIE TAŚMY Z LEWEJ STRONY\n\n'
 EXTEND_TAPE_RIGHT_INFO_FILE: str = 'ROZSZERZENIE TAŚMY Z PRAWEJ STRONY\n\n'
+ERROR_INFO_FILE: str = 'MASZYNA TURINGA ZAKOŃCZYŁA DZIAŁANIE Z BŁĘDEM\n'
+SUCCESS_END_INFO_FILE: str = 'MASZYNA TURINGA ZAKOŃCZYŁA DZIAŁANIE POMYŚLNIE\n'
 
 
 # constants used in file_reader.py
@@ -72,10 +74,12 @@ MAX_LENGTH_ENTRY_WORD: int = 30
 RESULT_DIRECTORY: str = 'wyniki'
 INDIRECT_PATH_TO_RESULT_DIRECTORY: str = '.\\wyniki\\'
 FILENAME_COMPLEMENT: str = '_wynik'
-WRITE_MODE = 'w'
-APPEND_MODE = 'a'
-HEAD_CHAR = '^'
+WRITE_MODE: str = 'w'
+APPEND_MODE: str = 'a'
+HEAD_CHAR: str = '^'
 SHIFT_DUE_TO_STATE: int = 4
+RESULT_WORD: str = 'SŁOWO OBLICZONE: '
+CALCULATION_LENGTH: str = 'DŁUGOŚĆ OBLICZENIA: '
 
 
 # constants used in mainwindow.py

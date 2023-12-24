@@ -41,6 +41,14 @@ class FileWriter:
         with open(self.filename, constants.APPEND_MODE) as file:
             file.write(head_position_text)
 
-    def write_info_extend_tape(self, info: str) -> None:
+    def write_info_text(self, info: str) -> None:
         with open(self.filename, constants.APPEND_MODE) as file:
             file.write(info)
+
+    def write_success_end(self, info: str, result_word: str, calculation_length: str) -> None:
+        result_word_text: str = f'{constants.RESULT_WORD}{result_word}\n'
+        calculation_length_text: str = f'{constants.CALCULATION_LENGTH}{calculation_length}\n'
+        with open(self.filename, constants.APPEND_MODE) as file:
+            file.write(info)
+            file.write(result_word_text)
+            file.write(calculation_length_text)

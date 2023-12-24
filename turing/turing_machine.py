@@ -55,11 +55,11 @@ class TuringMachine(QThread):
             self.head_position_tape += constants.EXTEND_TAPE_SIZE
             self.first_index_fragment_tape += constants.EXTEND_TAPE_SIZE
             self.last_index_fragment_tape += constants.EXTEND_TAPE_SIZE
-            self.file_writer.write_info_extend_tape(constants.EXTEND_TAPE_LEFT_INFO_FILE)
+            self.file_writer.write_info_text(constants.EXTEND_TAPE_LEFT_INFO_FILE)
             config.extend_tape_left: bool = True
         elif self.head_position_tape == len(self.tape) + constants.PREVIOUS_CELL:
             self.tape.extend(repeat(constants.EMPTY_CHAR, constants.EXTEND_TAPE_SIZE))
-            self.file_writer.write_info_extend_tape(constants.EXTEND_TAPE_RIGHT_INFO_FILE)
+            self.file_writer.write_info_text(constants.EXTEND_TAPE_RIGHT_INFO_FILE)
             config.extend_tape_right: bool = True
 
     def wait_for_wake(self) -> None:
@@ -143,9 +143,12 @@ class TuringMachine(QThread):
                 self.extend_tape()
                 self.write_state_of_turing_machine_file()
             else:
+                self.file_writer.write_info_text(constants.ERROR_INFO_FILE)
                 config.error = True
                 return
         if self.actual_state in self.accepting_states:
+            result_word: str = self.get_result_word()
+            self.file_writer.write_success_end(constants.SUCCESS_END_INFO_FILE, result_word, self.calculation_length)
             config.finish_step_work = True
 
     def run(self) -> None:
