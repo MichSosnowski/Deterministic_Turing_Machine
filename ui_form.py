@@ -115,7 +115,7 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addItem(self.horizontalSpacer_3)
 
         self.horizontalLayout_2.setStretch(0, 1)
-        self.horizontalLayout_2.setStretch(1, 1)
+        self.horizontalLayout_2.setStretch(1, 3)
         self.horizontalLayout_2.setStretch(2, 1)
 
         self.gridLayout_2.addLayout(self.horizontalLayout_2, 6, 1, 2, 1)
