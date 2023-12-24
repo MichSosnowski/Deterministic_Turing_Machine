@@ -17,6 +17,7 @@ class TuringMachine(QThread):
 
     def __init__(self, file_reader: FileReader, wait_condition: QWaitCondition):
         super().__init__()
+        config.result_text_in_file: bool = False
         self.thread_signals: ThreadSignals = ThreadSignals()
         self.mutex: QMutex = QMutex()
         self.wait_condition: QWaitCondition = wait_condition
@@ -144,12 +145,16 @@ class TuringMachine(QThread):
                 self.extend_tape()
                 self.write_state_of_turing_machine_file()
             else:
-                self.file_writer.write_info_text(constants.ERROR_INFO_FILE)
+                if not config.result_text_in_file:
+                    self.file_writer.write_info_text(constants.ERROR_INFO_FILE)
+                    config.result_text_in_file: bool = True
                 config.error = True
                 return
         if self.actual_state in self.accepting_states:
-            result_word: str = self.get_result_word()
-            self.file_writer.write_success_end(constants.SUCCESS_END_INFO_FILE, result_word, self.calculation_length)
+            if not config.result_text_in_file:
+                result_word: str = self.get_result_word()
+                self.file_writer.write_success_end(constants.SUCCESS_END_INFO_FILE, result_word, self.calculation_length)
+                config.result_text_in_file: bool = True
             config.finish_step_work = True
 
     def run(self) -> None:

@@ -52,7 +52,7 @@ EXTEND_TAPE_LEFT_INFO: str = 'Nastąpiło rozszerzenie taśmy z jej lewej strony
 EXTEND_TAPE_RIGHT_INFO: str = 'Nastąpiło rozszerzenie taśmy z jej prawej strony.'
 EXTEND_TAPE_LEFT_INFO_FILE: str = 'ROZSZERZENIE TAŚMY Z LEWEJ STRONY\n\n'
 EXTEND_TAPE_RIGHT_INFO_FILE: str = 'ROZSZERZENIE TAŚMY Z PRAWEJ STRONY\n\n'
-ERROR_INFO_FILE: str = 'MASZYNA TURINGA ZAKOŃCZYŁA SWOJE DZIAŁANIE Z BŁĘDEM\n'
+ERROR_INFO_FILE: str = 'MASZYNA TURINGA ZAKOŃCZYŁA SWOJE DZIAŁANIE BŁĘDEM\n'
 SUCCESS_END_INFO_FILE: str = 'MASZYNA TURINGA ZAKOŃCZYŁA SWOJE DZIAŁANIE POMYŚLNIE\n'
 
 
@@ -92,8 +92,8 @@ MESSAGE_END_PROGRAM: str = 'Maszyna Turinga wciąż działa.\nCzy na pewno chces
 CANCEL: str = 'Anuluj'
 FILE_OPEN_TITLE: str = 'Wybierz plik z opisem maszyny Turinga...'
 SUCCESS_END_OR_ERROR_INFO_TITLE: str = 'Koniec obliczeń!'
-SUCCESS_END_INFO_MESSAGE: str = 'Maszyna Turinga zakończyła swoje działanie z sukcesem.'
-ERROR_INFO_MESSAGE: str = 'Maszyna Turinga zakończyła swoje działanie z błędem.'
+SUCCESS_END_INFO_MESSAGE: str = 'Maszyna Turinga zakończyła swoje działanie pomyślnie.'
+ERROR_INFO_MESSAGE: str = 'Maszyna Turinga zakończyła swoje działanie błędem.'
 CURRENT_DIR: str = '.'
 TXT_FILTER: str = 'Pliki tekstowe (*.txt)'
 EXTEND_TAPE_INFO_TITLE: str = 'Rozszerzenie taśmy'
