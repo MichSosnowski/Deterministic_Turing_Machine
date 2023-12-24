@@ -125,17 +125,25 @@ class TuringMachine(QThread):
         if self.actual_state not in self.accepting_states:
             read_character: str = self.tape[self.head_position_tape]
             transition: tuple[str, str, str] = self.transition_function.get((self.actual_state, read_character))
-            self.actual_state: str = transition[Indexes.ZERO.value]
-            self.tape[self.head_position_tape]: str = transition[Indexes.ONE.value]
-            self.set_new_head_position(transition[Indexes.TWO.value])
-            self.calculation_length += constants.CALCULATION_LENGTH_INCREASE
-            self.extend_tape()
+            if transition:
+                self.actual_state: str = transition[Indexes.ZERO.value]
+                self.tape[self.head_position_tape]: str = transition[Indexes.ONE.value]
+                self.set_new_head_position(transition[Indexes.TWO.value])
+                self.calculation_length += constants.CALCULATION_LENGTH_INCREASE
+                self.extend_tape()
+            else:
+                config.error = True
+                return
         if self.actual_state in self.accepting_states:
             config.finish_step_work = True
 
     def run(self) -> None:
         while self.actual_state not in self.accepting_states:
             self.step_forward()
+            if config.error:
+                self.thread_signals.error.emit()
+                config.error = False
+                break
             self.thread_signals.draw.emit()
             self.inform_about_extend_tape()
             time.sleep(constants.THREAD_SLEEP_SECS)

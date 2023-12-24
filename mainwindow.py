@@ -254,11 +254,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def execute_success_end_step(self) -> None:
         self.set_result_word_label(self.turing_machine.get_result_word())
         self.set_calculation_length_label(str(self.turing_machine.get_calculation_length()))
-        self.show_info_dialog(constants.SUCCESS_END_INFO_TITLE, constants.SUCCESS_END_INFO_MESSAGE)
+        self.show_info_dialog(constants.SUCCESS_END_OR_ERROR_INFO_TITLE, constants.SUCCESS_END_INFO_MESSAGE)
         config.finish_step_work: bool = False
 
     def execute_success_end_thread(self) -> None:
         self.execute_success_end_step()
+        self.turing_machine.thread_signals.error.disconnect(self.switch_enabled_buttons)
+        self.turing_machine.thread_signals.error.disconnect(self.turing_machine.quit)
+        self.turing_machine.thread_signals.error.disconnect(self.execute_error_thread)
+        self.turing_machine.thread_signals.end.disconnect(self.switch_enabled_buttons)
+        self.turing_machine.thread_signals.end.disconnect(self.execute_success_end_thread)
+        self.turing_machine.thread_signals.end.disconnect(self.turing_machine.quit)
+
+    def execute_error_step(self) -> None:
+        self.show_info_dialog(constants.SUCCESS_END_OR_ERROR_INFO_TITLE, constants.ERROR_INFO_MESSAGE)
+        config.error: bool = False
+
+    def execute_error_thread(self) -> None:
+        self.execute_error_step()
+        self.turing_machine.thread_signals.error.disconnect(self.switch_enabled_buttons)
+        self.turing_machine.thread_signals.error.disconnect(self.turing_machine.quit)
+        self.turing_machine.thread_signals.error.disconnect(self.execute_error_thread)
         self.turing_machine.thread_signals.end.disconnect(self.switch_enabled_buttons)
         self.turing_machine.thread_signals.end.disconnect(self.execute_success_end_thread)
         self.turing_machine.thread_signals.end.disconnect(self.turing_machine.quit)
@@ -275,6 +291,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.turing_machine.thread_signals.extend_tape.connect(self.show_extend_tape_info)
         self.turing_machine.thread_signals.stop.connect(self.switch_enabled_buttons)
         self.turing_machine.thread_signals.stop.connect(self.turing_machine.quit)
+        self.turing_machine.thread_signals.error.connect(self.switch_enabled_buttons)
+        self.turing_machine.thread_signals.error.connect(self.turing_machine.quit)
+        self.turing_machine.thread_signals.error.connect(self.execute_error_thread)
         self.turing_machine.thread_signals.end.connect(self.switch_enabled_buttons)
         self.turing_machine.thread_signals.end.connect(self.turing_machine.quit)
         self.turing_machine.thread_signals.end.connect(self.execute_success_end_thread)
@@ -284,12 +303,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.switch_enabled_buttons()
         self.stop_thread()
         self.turing_machine.thread_signals.stop.disconnect(self.switch_enabled_buttons)
+        self.turing_machine.thread_signals.stop.disconnect(self.turing_machine.quit)
+        self.turing_machine.thread_signals.error.disconnect(self.switch_enabled_buttons)
+        self.turing_machine.thread_signals.error.disconnect(self.turing_machine.quit)
+        self.turing_machine.thread_signals.error.disconnect(self.execute_error_thread)
         self.turing_machine.thread_signals.end.disconnect(self.switch_enabled_buttons)
         self.turing_machine.thread_signals.end.disconnect(self.execute_success_end_thread)
         self.turing_machine.thread_signals.end.disconnect(self.turing_machine.quit)
 
     def set_step_forward_command(self) -> None:
         self.turing_machine.step_forward()
+        if config.error:
+            self.execute_error_step()
+            return
         self.redraw_turing_machine()
         self.inform_about_extend_tape()
         if config.finish_step_work:
