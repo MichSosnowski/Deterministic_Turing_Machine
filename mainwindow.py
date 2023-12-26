@@ -359,6 +359,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.result_word_label.clear()
         self.calculation_length_label.clear()
         self.restore_state_turing_machine(Indexes.ZERO.value)
+        self.turing_machine.reset_state_of_written_file()
         self.redraw_turing_machine()
         self.history_turing_machine.clear()
 

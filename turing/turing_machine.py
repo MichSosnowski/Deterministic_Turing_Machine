@@ -52,6 +52,13 @@ class TuringMachine(QThread):
         self.calculation_length: int = memento.calculation_length
         self.write_to_file.insert(Indexes.ZERO.value, False)
 
+    def reset_state_of_written_file(self) -> None:
+        self.file_writer.clear_file()
+        self.file_writer.write_entry_word(self.entry_word)
+        self.write_to_file.pop(Indexes.ZERO.value)
+        self.write_state_of_turing_machine_file()
+        config.result_text_in_file: bool = False
+
     def transform_transition_function(self, file_reader: FileReader) -> dict[tuple[str, str], tuple[str, str, str]]:
         transition_function: dict[tuple(str, str), tuple(str, str, str)] = dict()
         transition_function_list: list[str] = file_reader.get_transition_function_from_file()
