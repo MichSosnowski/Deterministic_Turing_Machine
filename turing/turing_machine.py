@@ -34,7 +34,8 @@ class TuringMachine(QThread):
         self.calculation_length: int = constants.INITIAL_CALCULATION_LENGTH
         self.thread_sleep_secs: float = constants.INITIAL_SPEED_THREAD
         self.write_to_file: list[bool] = [True]
-        self.file_writer: FileWriter = FileWriter(file_reader.filename)
+        shift_due_to_states: int = max(map(len, file_reader.get_states_from_file()))
+        self.file_writer: FileWriter = FileWriter(file_reader.filename, shift_due_to_states)
         self.file_writer.write_entry_word(self.entry_word)
         self.write_state_of_turing_machine_file()
 

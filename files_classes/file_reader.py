@@ -29,6 +29,12 @@ class FileReader:
         entry_word_index: int = lines.index(constants.ENTRY_WORD) + constants.NEXT_INDEX
         return lines[entry_word_index][:constants.LAST_CHAR_INDEX]
 
+    def get_states_from_file(self) -> list[str]:
+        lines: list[str] = self.get_all_lines_from_file()
+        states_index: int = lines.index(constants.STATES) + constants.NEXT_INDEX
+        states: list[str] = lines[states_index][:constants.LAST_CHAR_INDEX].split(constants.SPACE)
+        return states
+
     def get_initial_state_from_file(self) -> str:
         lines: list[str] = self.get_all_lines_from_file()
         initial_state_index: int = lines.index(constants.INITIAL_STATE) + constants.NEXT_INDEX

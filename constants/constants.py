@@ -1,6 +1,11 @@
 from itertools import count
 
 
+# constants used in file_reader.py, file_writer.py, file_parser.py and turing_machine.py
+LAST_CHAR_INDEX: int = -1
+SPACE: str = ' '
+
+
 # constants used in file_reader.py, mainwindow.py and turing_machine.py
 EMPTY_STRING: str = ''
 
@@ -11,14 +16,10 @@ EMPTY_CHAR: str = '#'
 
 # constants used in file_reader.py and file_parser.py
 ENTRY_WORD: str = 'slowo wejsciowe:\n'
+STATES: str = 'stany:\n'
 INITIAL_STATE: str = 'stan poczatkowy:\n'
 ACCEPTING_STATES: str = 'stany akceptujace:\n'
 TRANSITION_FUNCTION: str = 'relacja przejscia:\n'
-
-
-# constants used in file_reader.py, file_parser.py and turing_machine.py
-LAST_CHAR_INDEX: int = -1
-SPACE: str = ' '
 
 
 # constants used in mainwindow.py and turing_machine.py
@@ -80,7 +81,7 @@ FILENAME_COMPLEMENT: str = '_wynik'
 WRITE_MODE: str = 'w'
 APPEND_MODE: str = 'a'
 HEAD_CHAR: str = 'v'
-SHIFT_DUE_TO_STATE: int = 4
+SHIFT_DUE_TO_STATE: int = 3
 ENTRY_WORD_FILE: str = 'SŁOWO WEJŚCIOWE: '
 RESULT_WORD_FILE: str = 'SŁOWO OBLICZONE: '
 CALCULATION_LENGTH_FILE: str = 'DŁUGOŚĆ OBLICZENIA: '

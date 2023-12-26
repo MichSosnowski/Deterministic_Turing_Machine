@@ -7,9 +7,10 @@ import constants.constants as constants
 
 class FileWriter:
 
-    def __init__(self, filename: str) -> None:
+    def __init__(self, filename: str, shift_states: int) -> None:
         self.create_directory_for_results()
         self.filename: str = self.create_name_for_result_file(filename)
+        self.shift_states = shift_states
         self.clear_file()
 
     def create_directory_for_results(self) -> None:
@@ -30,13 +31,14 @@ class FileWriter:
             file.write(entry_word_text)
 
     def write_head_position(self, head_position: int) -> None:
-        head_position_shift: int = head_position + constants.SHIFT_DUE_TO_STATE
+        head_position_shift: int = head_position + self.shift_states + constants.SHIFT_DUE_TO_STATE
         head_position_text: str = f'{constants.HEAD_CHAR:>{head_position_shift}}\n'
         with open(self.filename, constants.APPEND_MODE) as file:
             file.write(head_position_text)
 
     def write_state(self, state: str) -> None:
-        state_text: str = f'{state}: '
+        additional_space_count: int = self.shift_states - len(state)
+        state_text: str = f'{state}: ' + constants.SPACE * additional_space_count
         with open(self.filename, constants.APPEND_MODE) as file:
             file.write(state_text)
 
