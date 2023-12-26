@@ -83,9 +83,12 @@ class TuringMachine(QThread):
                 self.file_writer.write_info_text(constants.EXTEND_TAPE_RIGHT_INFO_FILE)
             config.extend_tape_right: bool = True
 
-    def wait_for_wake(self) -> None:
+    def wait_for_wake(self, miliseconds: int = constants.STANDARD_MILISECONDS_WAIT_MUTEX) -> None:
         self.mutex.lock()
-        self.wait_condition.wait(self.mutex)
+        if miliseconds:
+            self.wait_condition.wait(self.mutex, miliseconds)
+        else:
+            self.wait_condition.wait(self.mutex)
         self.mutex.unlock()
 
     def speed_thread_up(self) -> None:
@@ -192,7 +195,7 @@ class TuringMachine(QThread):
     def run(self) -> None:
         while self.actual_state not in self.accepting_states:
             self.thread_signals.save.emit()
-            self.wait_for_wake()
+            self.wait_for_wake(constants.SAVE_MILISECONDS_WAIT_MUTEX)
             self.step_forward()
             if config.error:
                 self.thread_signals.error.emit()
