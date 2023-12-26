@@ -55,7 +55,8 @@ class TuringMachine(QThread):
     def reset_state_of_written_file(self) -> None:
         self.file_writer.clear_file()
         self.file_writer.write_entry_word(self.entry_word)
-        self.write_to_file.pop(Indexes.ZERO.value)
+        if not self.write_to_file[Indexes.ZERO.value]:
+            self.write_to_file.pop(Indexes.ZERO.value)
         self.write_state_of_turing_machine_file()
         config.result_text_in_file: bool = False
 
