@@ -16,6 +16,7 @@
         "turing/config.py",
         "turing/turing_machine.py",
         "turing/thread_signals.py",
-        "files_classes/file_writer.py"
+        "files_classes/file_writer.py",
+        "turing/turing_memento.py"
     ]
 }

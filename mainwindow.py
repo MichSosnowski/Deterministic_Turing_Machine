@@ -26,11 +26,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.filename: str = constants.EMPTY_STRING
         self.window_size: WindowSize = WindowSize(self.width(), self.height())
         self.wait_condition: QWaitCondition = QWaitCondition()
+        self.history_turing_machine: list[TuringMachine] = list()
         self.center_window()
         self.turing_machine = None
         self.add_pixmap_for_turing_machine_label()
         self.draw_turing_machine()
         self.add_commands_for_buttons()
+
+    def save_state_turing_machine(self) -> None:
+        self.history_turing_machine.append(self.turing_machine.save_state())
+        self.wait_condition.wakeAll()
+
+    def restore_state_turing_machine(self, index: int = constants.LAST_INDEX_HISTORY) -> None:
+        if len(self.history_turing_machine):
+            self.turing_machine.restore_state(self.history_turing_machine.pop(index))
 
     def center_window(self) -> None:
         frameGeometry: QRect = self.frameGeometry()
@@ -63,6 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.set_result_word_label(constants.EMPTY_STRING)
         self.set_calculation_length_label(constants.EMPTY_STRING)
         self.turing_machine: TuringMachine = TuringMachine(self.file_reader, self.wait_condition)
+        self.history_turing_machine.clear()
         self.draw_turing_machine()
         self.fill_tape_state_table()
 
@@ -244,6 +254,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.fast_head_button.clicked.connect(self.speed_thread_up)
         self.stop_button.clicked.connect(self.set_stop_button_command)
         self.step_forward_button.clicked.connect(self.set_step_forward_command)
+        self.step_backward_button.clicked.connect(self.set_step_backward_command)
+        self.reset_button.clicked.connect(self.set_reset_button_command)
 
     def slow_thread_down(self) -> None:
         config.slow_head: bool = True
@@ -275,6 +287,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def connect_signals(self) -> None:
         self.turing_machine.thread_signals.draw.connect(self.redraw_turing_machine)
+        self.turing_machine.thread_signals.save.connect(self.save_state_turing_machine)
         self.turing_machine.thread_signals.extend_tape.connect(self.show_extend_tape_info)
         self.turing_machine.thread_signals.stop.connect(self.switch_enabled_buttons)
         self.turing_machine.thread_signals.stop.connect(self.turing_machine.quit)
@@ -287,6 +300,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def disconnect_signals(self) -> None:
         self.turing_machine.thread_signals.draw.disconnect(self.redraw_turing_machine)
+        self.turing_machine.thread_signals.save.disconnect(self.save_state_turing_machine)
         self.turing_machine.thread_signals.extend_tape.disconnect(self.show_extend_tape_info)
         self.turing_machine.thread_signals.stop.disconnect(self.switch_enabled_buttons)
         self.turing_machine.thread_signals.error.disconnect(self.switch_enabled_buttons)
@@ -325,6 +339,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.disconnect_signals()
 
     def set_step_forward_command(self) -> None:
+        self.save_state_turing_machine()
         self.turing_machine.step_forward()
         if config.error:
             self.execute_error_step()
@@ -333,6 +348,19 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.inform_about_extend_tape()
         if config.finish_step_work:
             self.execute_success_end_step()
+
+    def set_step_backward_command(self) -> None:
+        self.result_word_label.clear()
+        self.calculation_length_label.clear()
+        self.restore_state_turing_machine()
+        self.redraw_turing_machine()
+
+    def set_reset_button_command(self) -> None:
+        self.result_word_label.clear()
+        self.calculation_length_label.clear()
+        self.restore_state_turing_machine(Indexes.ZERO.value)
+        self.redraw_turing_machine()
+        self.history_turing_machine.clear()
 
 
 if __name__ == "__main__":

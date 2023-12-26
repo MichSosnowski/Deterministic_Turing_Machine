@@ -11,6 +11,7 @@ from constants.enums import Indexes
 from files_classes.file_reader import FileReader
 from files_classes.file_writer import FileWriter
 from turing.thread_signals import ThreadSignals
+from turing.turing_memento import TuringMachineMemento
 
 
 class TuringMachine(QThread):
@@ -32,9 +33,23 @@ class TuringMachine(QThread):
         self.last_index_fragment_tape: int = constants.LAST_TAPE_FRAGMENT_INDEX
         self.calculation_length: int = constants.INITIAL_CALCULATION_LENGTH
         self.thread_sleep_secs: float = constants.INITIAL_SPEED_THREAD
+        self.write_to_file: list[bool] = [True]
         self.file_writer: FileWriter = FileWriter(file_reader.filename)
         self.file_writer.write_entry_word(self.entry_word)
         self.write_state_of_turing_machine_file()
+
+    def save_state(self) -> TuringMachineMemento:
+        return TuringMachineMemento(self)
+
+    def restore_state(self, memento: TuringMachineMemento) -> None:
+        self.actual_state: str = memento.actual_state
+        self.tape: Deque[str] = memento.tape
+        self.head_position_tape: int = memento.head_position_tape
+        self.head_position_fragment_tape: int = memento.head_position_fragment_tape
+        self.first_index_fragment_tape: int = memento.first_index_fragment_tape
+        self.last_index_fragment_tape: int = memento.last_index_fragment_tape
+        self.calculation_length: int = memento.calculation_length
+        self.write_to_file.insert(Indexes.ZERO.value, False)
 
     def transform_transition_function(self, file_reader: FileReader) -> dict[tuple[str, str], tuple[str, str, str]]:
         transition_function: dict[tuple(str, str), tuple(str, str, str)] = dict()
@@ -58,11 +73,13 @@ class TuringMachine(QThread):
             self.head_position_tape += constants.EXTEND_TAPE_SIZE
             self.first_index_fragment_tape += constants.EXTEND_TAPE_SIZE
             self.last_index_fragment_tape += constants.EXTEND_TAPE_SIZE
-            self.file_writer.write_info_text(constants.EXTEND_TAPE_LEFT_INFO_FILE)
+            if self.write_to_file[Indexes.ZERO.value]:
+                self.file_writer.write_info_text(constants.EXTEND_TAPE_LEFT_INFO_FILE)
             config.extend_tape_left: bool = True
         elif self.head_position_tape == len(self.tape) + constants.PREVIOUS_CELL:
             self.tape.extend(repeat(constants.EMPTY_CHAR, constants.EXTEND_TAPE_SIZE))
-            self.file_writer.write_info_text(constants.EXTEND_TAPE_RIGHT_INFO_FILE)
+            if self.write_to_file[Indexes.ZERO.value]:
+                self.file_writer.write_info_text(constants.EXTEND_TAPE_RIGHT_INFO_FILE)
             config.extend_tape_right: bool = True
 
     def wait_for_wake(self) -> None:
@@ -140,9 +157,10 @@ class TuringMachine(QThread):
         return self.calculation_length
 
     def write_state_of_turing_machine_file(self) -> None:
-        self.file_writer.write_head_position(self.head_position_tape)
-        self.file_writer.write_state(self.actual_state)
-        self.file_writer.write_tape(self.tape)
+        if self.write_to_file[Indexes.ZERO.value]:
+            self.file_writer.write_head_position(self.head_position_tape)
+            self.file_writer.write_state(self.actual_state)
+            self.file_writer.write_tape(self.tape)
 
     def step_forward(self) -> None:
         if self.actual_state not in self.accepting_states:
@@ -156,20 +174,24 @@ class TuringMachine(QThread):
                 self.extend_tape()
                 self.write_state_of_turing_machine_file()
             else:
-                if not config.result_text_in_file:
+                if not config.result_text_in_file and self.write_to_file[Indexes.ZERO.value]:
                     self.file_writer.write_info_text(constants.ERROR_INFO_FILE)
                     config.result_text_in_file: bool = True
                 config.error = True
                 return
         if self.actual_state in self.accepting_states:
-            if not config.result_text_in_file:
+            if not config.result_text_in_file and self.write_to_file[Indexes.ZERO.value]:
                 result_word: str = self.get_result_word()
                 self.file_writer.write_success_end(constants.SUCCESS_END_INFO_FILE, result_word, self.calculation_length)
                 config.result_text_in_file: bool = True
             config.finish_step_work = True
+        if not self.write_to_file[Indexes.ZERO.value]:
+            self.write_to_file.pop(Indexes.ZERO.value)
 
     def run(self) -> None:
         while self.actual_state not in self.accepting_states:
+            self.thread_signals.save.emit()
+            self.wait_for_wake()
             self.step_forward()
             if config.error:
                 self.thread_signals.error.emit()
