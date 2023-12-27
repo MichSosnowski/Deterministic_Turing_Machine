@@ -80,7 +80,8 @@ class FileParser:
 
     def check_initial_state(self, states: list[str]) -> None:
         read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
-        if (len(read_line) != constants.REQUIRED_COUNT
+        read_line_list: list[str] = read_line.split(constants.SPACE)
+        if (len(read_line_list) != constants.REQUIRED_COUNT
             or read_line not in states):
             raise IncorrectFormatException
 
