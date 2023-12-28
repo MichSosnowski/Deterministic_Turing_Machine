@@ -15,6 +15,7 @@ from exceptions.exceptions import IncorrectFormatException
 from gui.window_size import WindowSize
 from constants.constants import HEAD_LOC_COEFFICIENT, HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE, HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE
 from turing.turing_machine import TuringMachine
+from turing.turing_memento import TuringMachineMemento
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -39,6 +40,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def restore_state_turing_machine(self, index: int = constants.LAST_INDEX_HISTORY) -> None:
         if len(self.history_turing_machine):
             self.turing_machine.restore_state(self.history_turing_machine.pop(index))
+
+    def remove_memento_from_history_error_end(self) -> None:
+        last_item: TuringMachineMemento = self.history_turing_machine.pop()
+        if self.turing_machine != last_item:
+            self.history_turing_machine.append(last_item)
 
     def center_window(self) -> None:
         frameGeometry: QRect = self.frameGeometry()
@@ -71,8 +77,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.set_result_word_label(constants.EMPTY_STRING)
         self.set_calculation_length_label(constants.EMPTY_STRING)
         self.turing_machine: TuringMachine = TuringMachine(self.file_reader, self.wait_condition)
-        self.start_button.setEnabled(True)
-        self.step_forward_button.setEnabled(True)
         self.history_turing_machine.clear()
         self.add_pixmap_for_turing_machine_label()
         self.draw_turing_machine()
@@ -344,8 +348,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def execute_success_end_step(self) -> None:
         self.set_result_word_label(self.turing_machine.get_result_word())
         self.set_calculation_length_label(str(self.turing_machine.get_calculation_length()))
-        self.start_button.setDisabled(True)
-        self.step_forward_button.setDisabled(True)
+        self.remove_memento_from_history_error_end()
         self.show_info_dialog(constants.SUCCESS_END_OR_ERROR_INFO_TITLE, constants.SUCCESS_END_INFO_MESSAGE)
         config.finish_step_work: bool = False
 
@@ -354,8 +357,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.disconnect_signals()
 
     def execute_error_step(self) -> None:
-        self.start_button.setDisabled(True)
-        self.step_forward_button.setDisabled(True)
+        self.remove_memento_from_history_error_end()
         self.show_info_dialog(constants.SUCCESS_END_OR_ERROR_INFO_TITLE, constants.ERROR_INFO_MESSAGE)
         config.error: bool = False
 
@@ -396,8 +398,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_step_backward_command(self) -> None:
         self.result_word_label.clear()
         self.calculation_length_label.clear()
-        self.start_button.setEnabled(True)
-        self.step_forward_button.setEnabled(True)
         self.restore_state_turing_machine()
         self.add_pixmap_for_turing_machine_label()
         self.redraw_turing_machine()
@@ -405,8 +405,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_reset_button_command(self) -> None:
         self.result_word_label.clear()
         self.calculation_length_label.clear()
-        self.start_button.setEnabled(True)
-        self.step_forward_button.setEnabled(True)
         self.restore_state_turing_machine(Indexes.ZERO.value)
         self.turing_machine.reset_state_of_written_file()
         self.add_pixmap_for_turing_machine_label()

@@ -36,6 +36,15 @@ class TuringMachine(QThread):
         self.file_writer.write_entry_word(self.entry_word)
         self.write_state_of_turing_machine_file()
 
+    def __eq__(self, memento: TuringMachineMemento) -> bool:
+        return (self.actual_state == memento.actual_state
+                and self.tape == memento.tape
+                and self.head_position_tape == memento.head_position_tape
+                and self.calculation_length == memento.calculation_length)
+
+    def __ne__(self, memento: TuringMachineMemento) -> bool:
+        return not self == memento
+
     def save_state(self) -> TuringMachineMemento:
         return TuringMachineMemento(self)
 
