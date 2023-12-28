@@ -1,6 +1,6 @@
 import sys
-from itertools import islice, repeat
-from typing import Iterator
+from itertools import islice, repeat, count
+from typing import Iterator, Deque
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QHeaderView, QTableWidgetItem, QFileDialog
 from PySide6.QtGui import QPixmap, QColor, QPainter, QPen, QPolygon, QFont, QGuiApplication
@@ -13,8 +13,7 @@ from ui_form import Ui_MainWindow
 from files_classes.file_reader import FileReader
 from exceptions.exceptions import IncorrectFormatException
 from gui.window_size import WindowSize
-from constants.constants import (HEAD_LOC_COEFFICIENT, HEAD_X_BOTTOM_POINT_LOC_ABOVE_TAPE, HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE,
-                                 HEAD_X_TOP_LEFT_POINT_LOC_ABOVE_TAPE, HEAD_X_TOP_RIGHT_POINT_LOC_ABOVE_TAPE, HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
+from constants.constants import HEAD_LOC_COEFFICIENT, HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE, HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE
 from turing.turing_machine import TuringMachine
 
 
@@ -73,6 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.set_calculation_length_label(constants.EMPTY_STRING)
         self.turing_machine: TuringMachine = TuringMachine(self.file_reader, self.wait_condition)
         self.history_turing_machine.clear()
+        self.add_pixmap_for_turing_machine_label()
         self.draw_turing_machine()
         self.fill_tape_state_table()
 
@@ -99,9 +99,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.file_text_browser.clear()
         self.file_text_browser.setText(self.file_reader.get_all_data_from_file())
 
+    def get_new_pixmap_width(self) -> float:
+        if not self.turing_machine:
+            return self.window_size.width * constants.WIDTH_COEFFICIENT
+        else:
+            return len(self.turing_machine.get_tape()) * constants.ONE_CELL_WIDTH
+
     def add_pixmap_for_turing_machine_label(self) -> None:
-        pixmap_width: int = self.width() * constants.WIDTH_COEFFICIENT
-        pixmap_height: int = self.height() * constants.HEIGHT_COEFFICIENT
+        pixmap_width: float = self.get_new_pixmap_width()
+        pixmap_height: float = self.window_size.height * constants.HEIGHT_COEFFICIENT
         canvas: QPixmap = QPixmap(pixmap_width, pixmap_height)
         canvas.fill(QColor(constants.PIXMAP_BACKGROUND_COLOR))
         self.turing_machine_label.setPixmap(canvas)
@@ -115,26 +121,34 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.draw_contents_of_tape_cells(canvas, pen)
         self.draw_turing_machine_head(canvas, pen)
 
+    def paint_tape(self, painter: QPainter) -> None:
+        rect_width: float = len(self.turing_machine.tape) * constants.ONE_CELL_WIDTH if self.turing_machine else self.window_size.width
+        painter.drawRect(constants.BEG_POINT_X_RECT, self.window_size.height * constants.BEG_POINT_Y_RECT_COEFFICIENT,
+                         rect_width, constants.END_POINT_Y_RECT)
+
     def draw_turing_machine_tape(self, canvas: QPixmap, pen: QPen) -> None:
         painter: QPainter = QPainter(canvas)
         pen.setColor(QColor(constants.BROWN))
         painter.setPen(pen)
         painter.setBrush(QColor(constants.BROWN))
-        painter.drawRect(constants.BEG_POINT_X_RECT, self.window_size.height * constants.BEG_POINT_Y_RECT_COEFFICIENT,
-                         self.window_size.width, constants.END_POINT_Y_RECT)
+        self.paint_tape(painter)
         painter.end()
         self.turing_machine_label.setPixmap(canvas)
+
+    def draw_cells(self, painter: QPainter) -> None:
+        x_loc_cell = constants.X_LOC_FIRST_CELL
+        y_loc_cell = self.window_size.height * constants.CELLS_LOCATION_HEIGHT_COEFFICIENT + constants.Y_LOC_CELL_INCREASED
+        max_width: float = len(self.turing_machine.tape) * constants.ONE_CELL_WIDTH if self.turing_machine else self.window_size.width
+        while x_loc_cell <= max_width:
+            painter.drawPoint(x_loc_cell, y_loc_cell)
+            x_loc_cell += constants.X_DIST_NEXT_CELL
 
     def draw_turing_machine_cells(self, canvas: QPixmap, pen: QPen) -> None:
         painter: QPainter = QPainter(canvas)
         pen.setColor(QColor(constants.PERU))
         pen.setWidth(constants.CELL_WIDTH_PEN)
         painter.setPen(pen)
-        x_loc_cell = constants.X_LOC_FIRST_CELL
-        y_loc_cell = self.window_size.height * constants.CELLS_LOCATION_HEIGHT_COEFFICIENT + constants.Y_LOC_CELL_INCREASED
-        while x_loc_cell <= self.window_size.width:
-            painter.drawPoint(x_loc_cell, y_loc_cell)
-            x_loc_cell += constants.X_DIST_NEXT_CELL
+        self.draw_cells(painter)
         painter.end()
         self.turing_machine_label.setPixmap(canvas)
 
@@ -150,27 +164,48 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         painter.end()
         self.turing_machine_label.setPixmap(canvas)
 
+    def set_positions_of_head(self) -> None:
+        if self.turing_machine:
+            _iter = count(constants.HEAD_X_BOTTOM_FIRST, constants.NEXT_VALUE)
+            self.head_x_bottom_point_loc_above_tape: int = [next(_iter) for _ in range(len(self.turing_machine.get_tape()))]
+            _iter = count(constants.HEAD_X_TOP_LEFT_FIRST, constants.NEXT_VALUE)
+            self.head_x_top_left_point_loc_above_tape: int = [next(_iter) for _ in range(len(self.turing_machine.get_tape()))]
+            _iter = count(constants.HEAD_X_TOP_RIGHT_FIRST, constants.NEXT_VALUE)
+            self.head_x_top_right_point_loc_aboce_tape: int = [next(_iter) for _ in range(len(self.turing_machine.get_tape()))]
+        else:
+            _iter = count(constants.HEAD_X_BOTTOM_FIRST, constants.NEXT_VALUE)
+            self.head_x_bottom_point_loc_above_tape: int = [next(_iter) for _ in range(constants.INITIAL_TAPE_SIZE)]
+            _iter = count(constants.HEAD_X_TOP_LEFT_FIRST, constants.NEXT_VALUE)
+            self.head_x_top_left_point_loc_above_tape: int = [next(_iter) for _ in range(constants.INITIAL_TAPE_SIZE)]
+            _iter = count(constants.HEAD_X_TOP_RIGHT_FIRST, constants.NEXT_VALUE)
+            self.head_x_top_right_point_loc_aboce_tape: int = [next(_iter) for _ in range(constants.INITIAL_TAPE_SIZE)]
+
     def create_head(self) -> QPolygon:
         polygon: QPolygon = QPolygon()
-        head_position: int = self.turing_machine.get_actual_head_position_fragment_tape() if self.turing_machine else constants.INITIAL_HEAD_POSITION
-        (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_BOTTOM_POINT_LOC_ABOVE_TAPE[head_position],
+        head_position: int = self.turing_machine.get_actual_head_position() if self.turing_machine else constants.INITIAL_HEAD_POSITION
+        self.set_positions_of_head()
+        (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_bottom_point_loc_above_tape[head_position],
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE)
-                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_TOP_LEFT_POINT_LOC_ABOVE_TAPE[head_position],
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_top_left_point_loc_above_tape[head_position],
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
-                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + HEAD_X_TOP_RIGHT_POINT_LOC_ABOVE_TAPE[head_position],
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_top_right_point_loc_aboce_tape[head_position],
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE))
         return polygon
+
+    def get_tape_from_turing_machine(self) -> Deque[str]:
+        if self.turing_machine:
+            tape: Deque[str] = self.turing_machine.get_tape()
+        else:
+            tape: Iterator[str] = repeat(constants.EMPTY_CHAR, constants.INITIAL_TAPE_SIZE)
+        return tape
 
     def draw_contents_of_tape_cells(self, canvas: QPixmap, pen: QPen) -> None:
         painter: QPainter = QPainter(canvas)
         text_font: QFont = QFont(constants.FAMILY_FONT, constants.POINT_SIZE)
         painter.setFont(text_font)
         first_letter_pos = constants.FIRST_LETTER_POS
-        if self.turing_machine:
-            fragment_tape: list[str] = self.turing_machine.get_fragment_of_tape()
-        else:
-            fragment_tape: Iterator[str] = repeat(constants.EMPTY_CHAR, constants.INITIAL_TAPE_SIZE)
-        for elem in fragment_tape:
+        tape = self.get_tape_from_turing_machine()
+        for elem in tape:
             painter.drawText(first_letter_pos, self.window_size.height * constants.LETTER_HEIGHT_COEFFICIENT, elem)
             first_letter_pos += constants.NEXT_LETTER_POS
         painter.end()
@@ -234,7 +269,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                                                          constants.TXT_FILTER)
         self.filename: str = self.filename[constants.FILENAME_INDEX]
 
-    def show_extend_tape_info(self, message: str) -> None:
+    def execute_extend_tape(self, message: str) -> None:
+        self.add_pixmap_for_turing_machine_label()
+        self.redraw_turing_machine()
         self.show_info_dialog(constants.EXTEND_TAPE_INFO_TITLE, message)
         self.wait_condition.wakeAll()
 
@@ -288,7 +325,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def connect_signals(self) -> None:
         self.turing_machine.thread_signals.draw.connect(self.redraw_turing_machine)
         self.turing_machine.thread_signals.save.connect(self.save_state_turing_machine)
-        self.turing_machine.thread_signals.extend_tape.connect(self.show_extend_tape_info)
+        self.turing_machine.thread_signals.extend_tape.connect(self.execute_extend_tape)
         self.turing_machine.thread_signals.stop.connect(self.switch_enabled_buttons)
         self.turing_machine.thread_signals.stop.connect(self.turing_machine.quit)
         self.turing_machine.thread_signals.error.connect(self.switch_enabled_buttons)
@@ -301,7 +338,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def disconnect_signals(self) -> None:
         self.turing_machine.thread_signals.draw.disconnect(self.redraw_turing_machine)
         self.turing_machine.thread_signals.save.disconnect(self.save_state_turing_machine)
-        self.turing_machine.thread_signals.extend_tape.disconnect(self.show_extend_tape_info)
+        self.turing_machine.thread_signals.extend_tape.disconnect(self.execute_extend_tape)
         self.turing_machine.thread_signals.stop.disconnect(self.switch_enabled_buttons)
         self.turing_machine.thread_signals.error.disconnect(self.switch_enabled_buttons)
         self.turing_machine.thread_signals.error.disconnect(self.execute_error_thread)
@@ -344,6 +381,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if config.error:
             self.execute_error_step()
             return
+        self.add_pixmap_for_turing_machine_label()
         self.redraw_turing_machine()
         self.inform_about_extend_tape()
         if config.finish_step_work:
@@ -353,6 +391,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.result_word_label.clear()
         self.calculation_length_label.clear()
         self.restore_state_turing_machine()
+        self.add_pixmap_for_turing_machine_label()
         self.redraw_turing_machine()
 
     def set_reset_button_command(self) -> None:
@@ -360,6 +399,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.calculation_length_label.clear()
         self.restore_state_turing_machine(Indexes.ZERO.value)
         self.turing_machine.reset_state_of_written_file()
+        self.add_pixmap_for_turing_machine_label()
         self.redraw_turing_machine()
         self.history_turing_machine.clear()
 

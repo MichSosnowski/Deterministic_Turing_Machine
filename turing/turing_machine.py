@@ -1,7 +1,7 @@
 import time
 from collections import deque
 from typing import Deque
-from itertools import repeat, islice
+from itertools import repeat
 
 from PySide6.QtCore import QThread, QMutex, QWaitCondition
 
@@ -28,9 +28,6 @@ class TuringMachine(QThread):
         self.transition_function: dict[tuple[str, str], tuple[str, str, str]] = self.transform_transition_function(file_reader)
         self.tape: Deque[str] = self.create_tape()
         self.head_position_tape: int = self.get_initial_head_position()
-        self.head_position_fragment_tape: int = self.get_initial_head_position()
-        self.first_index_fragment_tape: int = constants.FIRST_TAPE_INDEX
-        self.last_index_fragment_tape: int = constants.LAST_TAPE_FRAGMENT_INDEX
         self.calculation_length: int = constants.INITIAL_CALCULATION_LENGTH
         self.thread_sleep_secs: float = constants.INITIAL_SPEED_THREAD
         self.write_to_file: list[bool] = [True]
@@ -46,9 +43,6 @@ class TuringMachine(QThread):
         self.actual_state: str = memento.actual_state
         self.tape: Deque[str] = memento.tape
         self.head_position_tape: int = memento.head_position_tape
-        self.head_position_fragment_tape: int = memento.head_position_fragment_tape
-        self.first_index_fragment_tape: int = memento.first_index_fragment_tape
-        self.last_index_fragment_tape: int = memento.last_index_fragment_tape
         self.calculation_length: int = memento.calculation_length
         self.write_to_file.insert(Indexes.ZERO.value, False)
 
@@ -80,8 +74,6 @@ class TuringMachine(QThread):
         if self.head_position_tape == constants.FIRST_TAPE_INDEX:
             self.tape.extendleft(repeat(constants.EMPTY_CHAR, constants.EXTEND_TAPE_SIZE))
             self.head_position_tape += constants.EXTEND_TAPE_SIZE
-            self.first_index_fragment_tape += constants.EXTEND_TAPE_SIZE
-            self.last_index_fragment_tape += constants.EXTEND_TAPE_SIZE
             if self.write_to_file[Indexes.ZERO.value]:
                 self.file_writer.write_info_text(constants.EXTEND_TAPE_LEFT_INFO_FILE)
             config.extend_tape_left: bool = True
@@ -122,19 +114,11 @@ class TuringMachine(QThread):
             return self.tape.index(self.entry_word[Indexes.ZERO.value])
         return constants.EMPTY_CHAR_ENTRY_WORD_POSITION
 
-    def get_actual_head_position_fragment_tape(self) -> int:
-        return self.head_position_fragment_tape
+    def get_actual_head_position(self) -> int:
+        return self.head_position_tape
 
-    def get_fragment_of_tape(self) -> list[str]:
-        if self.head_position_fragment_tape == constants.FIRST_TAPE_INDEX:
-            self.first_index_fragment_tape -= constants.EXTEND_TAPE_SIZE
-            self.last_index_fragment_tape -= constants.EXTEND_TAPE_SIZE
-            self.head_position_fragment_tape: int = constants.INITIAL_HEAD_POSITION + constants.NEXT_CELL
-        elif self.head_position_fragment_tape == constants.LAST_TAPE_FRAGMENT_INDEX:
-            self.first_index_fragment_tape += constants.EXTEND_TAPE_SIZE
-            self.last_index_fragment_tape += constants.EXTEND_TAPE_SIZE
-            self.head_position_fragment_tape: int = constants.INITIAL_HEAD_POSITION
-        return islice(self.tape, self.first_index_fragment_tape, self.last_index_fragment_tape + constants.NEXT_CELL)
+    def get_tape(self) -> Deque[str]:
+        return self.tape
 
     def get_actual_transition_function(self) -> tuple[tuple[str, str], tuple[str, str, str]]:
         read_character: str = self.tape[self.head_position_tape]
@@ -145,10 +129,8 @@ class TuringMachine(QThread):
     def set_new_head_position(self, direction: str) -> None:
         if direction == constants.LEFT:
             self.head_position_tape += constants.PREVIOUS_CELL
-            self.head_position_fragment_tape += constants.PREVIOUS_CELL
         elif direction == constants.RIGHT:
             self.head_position_tape += constants.NEXT_CELL
-            self.head_position_fragment_tape += constants.NEXT_CELL
 
     def inform_about_extend_tape(self) -> None:
         if config.extend_tape_left:

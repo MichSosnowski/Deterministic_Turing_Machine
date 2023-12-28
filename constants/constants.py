@@ -1,6 +1,3 @@
-from itertools import count
-
-
 # constants used in file_reader.py, file_writer.py, file_parser.py and turing_machine.py
 LAST_CHAR_INDEX: int = -1
 SPACE: str = ' '
@@ -108,9 +105,9 @@ PIXMAP_BACKGROUND_COLOR: str = '#f0f0f0'
 BROWN: str = 'brown'
 PERU: str = 'peru'
 WIDTH_COEFFICIENT: float = 0.802
-HEIGHT_COEFFICIENT: float = 0.6
+HEIGHT_COEFFICIENT: float = 0.53
 BEG_POINT_X_RECT: int = 0
-BEG_POINT_Y_RECT_COEFFICIENT: float = 0.3
+BEG_POINT_Y_RECT_COEFFICIENT: float = 0.25
 END_POINT_Y_RECT: int = 45
 CELLS_LOCATION_HEIGHT_COEFFICIENT: float = BEG_POINT_Y_RECT_COEFFICIENT
 CELL_WIDTH_PEN: int = 32
@@ -118,19 +115,18 @@ X_LOC_FIRST_CELL: int = 18
 Y_LOC_CELL_INCREASED: int = 23
 X_DIST_NEXT_CELL: int = 35
 HEAD_LOC_COEFFICIENT: int = 3
-_iter = count(-450, 35)
-HEAD_X_BOTTOM_POINT_LOC_ABOVE_TAPE: int = [next(_iter) for _ in range(32)]
-HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE: int = 70
-_iter = count(-433, 35)
-HEAD_X_TOP_LEFT_POINT_LOC_ABOVE_TAPE: int = [next(_iter) for _ in range(32)]
-_iter = count(-467, 35)
-HEAD_X_TOP_RIGHT_POINT_LOC_ABOVE_TAPE: int = [next(_iter) for _ in range(32)]
-HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE: int = 100
+HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE: int = 100
+HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE: int = 130
 HEAD_WIDTH_PEN: int = 1
 FAMILY_FONT: str = 'Times'
 POINT_SIZE: int = 25
 FIRST_LETTER_POS: int = 5
 NEXT_LETTER_POS: int = 35
-LETTER_HEIGHT_COEFFICIENT: float = 0.347
+LETTER_HEIGHT_COEFFICIENT: float = 0.298
 FILL_TABLE_NO_TRANSITION: str = ' '
 LAST_INDEX_HISTORY: int = -1
+ONE_CELL_WIDTH: float = 35.0875
+HEAD_X_BOTTOM_FIRST: int = -450
+HEAD_X_TOP_LEFT_FIRST: int = -433
+HEAD_X_TOP_RIGHT_FIRST: int = -467
+NEXT_VALUE: int = 35
