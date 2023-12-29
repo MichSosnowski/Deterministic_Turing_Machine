@@ -1,4 +1,4 @@
-import sys
+from sys import argv, exit
 from itertools import islice, repeat, count
 from typing import Iterator, Deque
 
@@ -413,8 +413,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
+    app = QApplication(argv)
     widget = MainWindow()
     widget.setWindowTitle(constants.WINDOW_TITLE)
     widget.show()
-    sys.exit(app.exec())
+    exit(app.exec())
