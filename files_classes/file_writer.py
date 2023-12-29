@@ -1,4 +1,5 @@
-import os
+from os import mkdir
+from os.path import isdir
 from pathlib import Path
 from typing import Deque
 
@@ -14,8 +15,8 @@ class FileWriter:
         self.clear_file()
 
     def create_directory_for_results(self) -> None:
-        if not os.path.isdir(constants.RESULT_DIRECTORY):
-            os.mkdir(constants.RESULT_DIRECTORY)
+        if not isdir(constants.RESULT_DIRECTORY):
+            mkdir(constants.RESULT_DIRECTORY)
 
     def create_name_for_result_file(self, filename: str) -> str:
         filename_path: Path = Path(filename)

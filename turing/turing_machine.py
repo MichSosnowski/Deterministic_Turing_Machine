@@ -1,4 +1,4 @@
-import time
+from time import sleep
 from collections import deque
 from typing import Deque
 from itertools import repeat
@@ -204,7 +204,7 @@ class TuringMachine(QThread):
             self.inform_about_extend_tape()
             self.slow_thread_down()
             self.speed_thread_up()
-            time.sleep(self.thread_sleep_secs)
+            sleep(self.thread_sleep_secs)
             if config.finish_thread:
                 self.thread_signals.stop.emit()
                 return
