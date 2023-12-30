@@ -66,8 +66,8 @@ class FileParser:
         read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
         if read_line:
             is_all_chars_in_entry_alphabet = list(map(lambda elem: elem in entry_alphabet, read_line))
-            if (len(read_line) < constants.REQUIRED_COUNT
-                or len(read_line) > constants.MAX_LENGTH_ENTRY_WORD
+            if ((length := len(read_line)) < constants.REQUIRED_COUNT
+                or length > constants.MAX_LENGTH_ENTRY_WORD
                 or False in is_all_chars_in_entry_alphabet):
                 raise IncorrectFormatException
 

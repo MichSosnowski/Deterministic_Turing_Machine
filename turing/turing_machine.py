@@ -136,10 +136,11 @@ class TuringMachine(QThread):
         return (key, value) if value else constants.EMPTY_STRING
 
     def set_new_head_position(self, direction: str) -> None:
-        if direction == constants.LEFT:
-            self.head_position_tape += constants.PREVIOUS_CELL
-        elif direction == constants.RIGHT:
-            self.head_position_tape += constants.NEXT_CELL
+        match direction:
+            case constants.LEFT:
+                self.head_position_tape += constants.PREVIOUS_CELL
+            case constants.RIGHT:
+                self.head_position_tape += constants.NEXT_CELL
 
     def inform_about_extend_tape(self) -> None:
         if config.extend_tape_left:

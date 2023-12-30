@@ -59,11 +59,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def closeEvent(self, event) -> None:
         if self.turing_machine and self.turing_machine.isRunning():
             button = self.show_warning_dialog(constants.MESSAGE_TITLE_END_PROGRAM, constants.MESSAGE_END_PROGRAM)
-            if button == QMessageBox.StandardButton.Ok:
-                self.stop_thread()
-                event.accept()
-            else:
-                event.ignore()
+            match button:
+                case QMessageBox.StandardButton.Ok:
+                    self.stop_thread()
+                    event.accept()
+                case _:
+                    event.ignore()
 
     def set_size_column_table(self) -> None:
         header: QHeaderView = self.tape_state_table.horizontalHeader()
