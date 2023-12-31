@@ -27,23 +27,23 @@ class FileReader:
     def get_entry_word_from_file(self) -> str:
         lines: list[str] = self.get_all_lines_from_file()
         entry_word_index: int = lines.index(constants.ENTRY_WORD) + constants.NEXT_INDEX
-        return lines[entry_word_index][:constants.LAST_CHAR_INDEX]
+        return lines[entry_word_index].rstrip(constants.NEWLINE)
 
     def get_states_from_file(self) -> list[str]:
         lines: list[str] = self.get_all_lines_from_file()
         states_index: int = lines.index(constants.STATES) + constants.NEXT_INDEX
-        states: list[str] = lines[states_index][:constants.LAST_CHAR_INDEX].split(constants.SPACE)
+        states: list[str] = lines[states_index].rstrip(constants.NEWLINE).split(constants.SPACE)
         return states
 
     def get_initial_state_from_file(self) -> str:
         lines: list[str] = self.get_all_lines_from_file()
         initial_state_index: int = lines.index(constants.INITIAL_STATE) + constants.NEXT_INDEX
-        return lines[initial_state_index][:constants.LAST_CHAR_INDEX]
+        return lines[initial_state_index].rstrip(constants.NEWLINE)
 
     def get_accepting_states_from_file(self) -> list[str]:
         lines: list[str] = self.get_all_lines_from_file()
         accepting_states_index: int = lines.index(constants.ACCEPTING_STATES) + constants.NEXT_INDEX
-        accepting_states: list[str] = lines[accepting_states_index][:constants.LAST_CHAR_INDEX].split(constants.SPACE)
+        accepting_states: list[str] = lines[accepting_states_index].rstrip(constants.NEWLINE).split(constants.SPACE)
         return accepting_states
 
     def get_transition_function_from_file(self) -> list[str]:

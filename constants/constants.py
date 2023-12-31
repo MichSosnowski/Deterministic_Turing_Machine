@@ -1,6 +1,6 @@
 # constants used in file_reader.py, file_writer.py, file_parser.py and turing_machine.py
-LAST_CHAR_INDEX: int = -1
 SPACE: str = ' '
+NEWLINE: str = '\n'
 
 
 # constants used in file_reader.py, mainwindow.py and turing_machine.py
@@ -31,10 +31,6 @@ INITIAL_HEAD_POSITION: int = 15
 # constants used in file_parser.py and turing_machine.py
 LEFT: str = 'L'
 RIGHT: str = 'P'
-
-
-# constants used in file_parser.py and file_writer.py
-NEWLINE: str = '\n'
 
 
 # constants used in turing_machine.py

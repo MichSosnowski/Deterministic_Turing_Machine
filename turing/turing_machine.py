@@ -67,7 +67,7 @@ class TuringMachine(QThread):
         transition_function: dict[tuple(str, str), tuple(str, str, str)] = dict()
         transition_function_list: list[str] = file_reader.get_transition_function_from_file()
         for elem in transition_function_list:
-            function: list[str] = elem[:constants.LAST_CHAR_INDEX].split(constants.SPACE)
+            function: list[str] = elem.rstrip(constants.NEWLINE).split(constants.SPACE)
             transition_function[(function[Indexes.ZERO.value], function[Indexes.ONE.value])] = (function[Indexes.TWO.value],
                                                                                                 function[Indexes.THREE.value],
                                                                                                 function[Indexes.FOUR.value])

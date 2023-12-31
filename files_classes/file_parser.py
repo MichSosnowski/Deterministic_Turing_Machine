@@ -48,14 +48,14 @@ class FileParser:
             raise IncorrectFormatException
 
     def check_tape_alphabet(self) -> str:
-        read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
+        read_line: str = self.file.readline().rstrip(constants.NEWLINE)
         if (len(read_line) < constants.REQUIRED_COUNT_TAPE_ALPHABET
             or read_line.find(constants.EMPTY_CHAR) == constants.CHAR_NOT_FOUND):
             raise IncorrectFormatException
         return read_line
 
     def check_entry_alphabet(self, tape_alphabet: str) -> str:
-        read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
+        read_line: str = self.file.readline().rstrip(constants.NEWLINE)
         is_all_chars_in_tape_alphabet = list(map(lambda elem: elem in tape_alphabet, read_line))
         if (len(read_line) < constants.REQUIRED_COUNT
             or False in is_all_chars_in_tape_alphabet):
@@ -63,7 +63,7 @@ class FileParser:
         return read_line
 
     def check_entry_word(self, entry_alphabet: str) -> None:
-        read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
+        read_line: str = self.file.readline().rstrip(constants.NEWLINE)
         if read_line:
             is_all_chars_in_entry_alphabet = list(map(lambda elem: elem in entry_alphabet, read_line))
             if ((length := len(read_line)) < constants.REQUIRED_COUNT
@@ -72,21 +72,21 @@ class FileParser:
                 raise IncorrectFormatException
 
     def get_all_states(self) -> list[str]:
-        read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
+        read_line: str = self.file.readline().rstrip(constants.NEWLINE)
         if len(read_line) < constants.REQUIRED_COUNT:
             raise IncorrectFormatException
         states: list[str] = read_line.split(constants.SPACE)
         return states
 
     def check_initial_state(self, states: list[str]) -> None:
-        read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
+        read_line: str = self.file.readline().rstrip(constants.NEWLINE)
         read_line_list: list[str] = read_line.split(constants.SPACE)
         if (len(read_line_list) != constants.REQUIRED_COUNT
             or read_line not in states):
             raise IncorrectFormatException
 
     def check_accepting_states(self, states: list[str]) -> None:
-        read_line: str = self.file.readline()[:constants.LAST_CHAR_INDEX]
+        read_line: str = self.file.readline().rstrip(constants.NEWLINE)
         accepting_states: list[str] = read_line.split(constants.SPACE)
         is_accepting_states_in_states = list(map(lambda elem: elem in states, accepting_states))
         if (len(read_line) < constants.REQUIRED_COUNT
@@ -99,10 +99,9 @@ class FileParser:
             line_elements: list[str] = self.get_elems_of_line_from_file(line)
             self.analyze_line_elements(line_elements, tape_alphabet, states)
 
-
     def get_elems_of_line_from_file(self, line: str) -> list[str]:
         if line.find(constants.NEWLINE) != constants.CHAR_NOT_FOUND:
-            line_elements: list[str] = line[:constants.LAST_CHAR_INDEX].split(constants.SPACE)
+            line_elements: list[str] = line.rstrip(constants.NEWLINE).split(constants.SPACE)
         else:
             line_elements: list[str] = line.split(constants.SPACE)
         return line_elements
