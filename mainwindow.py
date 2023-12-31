@@ -304,7 +304,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def add_commands_for_buttons(self) -> None:
         self.load_file_button.clicked.connect(self.load_file)
-        self.refresh_button.clicked.connect(self.set_contents_for_widgets)
+        self.refresh_button.clicked.connect(self.set_refresh_button_command)
         self.start_button.clicked.connect(self.set_start_button_command)
         self.slow_head_button.clicked.connect(self.slow_thread_down)
         self.fast_head_button.clicked.connect(self.speed_thread_up)
@@ -377,6 +377,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def execute_error_thread(self) -> None:
         self.execute_error_step()
         self.disconnect_signals()
+
+    def set_refresh_button_command(self) -> None:
+        try:
+            self.set_contents_for_widgets()
+        except IncorrectFormatException as error:
+            message_error: str = constants.MESSAGE_FORMAT + str(error)
+            self.show_error_dialog(constants.MESSAGE_TITLE_FORMAT, message_error)
+        except IndexError:
+            message_error: str = constants.MESSAGE_FORMAT + constants.INDEX_ERROR
+            self.show_error_dialog(constants.MESSAGE_TITLE_FORMAT, message_error)
 
     def set_start_button_command(self) -> None:
         self.load_file_button.setDisabled(True)
