@@ -26,6 +26,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.filename: str = constants.EMPTY_STRING
         self.window_size: WindowSize = WindowSize(self.width(), self.height())
         self.wait_condition: QWaitCondition = QWaitCondition()
+        self.previous_head_position: int = constants.INITIAL_HEAD_POSITION
         self.history_turing_machine: list[TuringMachine] = list()
         self.center_window()
         self.turing_machine = None
@@ -78,6 +79,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.set_result_word_label(constants.EMPTY_STRING)
         self.set_calculation_length_label(constants.EMPTY_STRING)
         self.turing_machine: TuringMachine = TuringMachine(self.file_reader, self.wait_condition)
+        self.previous_head_position: int = self.turing_machine.get_actual_head_position()
         self.history_turing_machine.clear()
         self.add_pixmap_for_turing_machine_label()
         self.draw_turing_machine()
@@ -129,7 +131,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.draw_turing_machine_head(canvas, pen)
 
     def paint_tape(self, painter: QPainter) -> None:
-        rect_width: float = len(self.turing_machine.tape) * constants.ONE_CELL_WIDTH if self.turing_machine else self.window_size.width
+        rect_width: float = len(self.turing_machine.get_tape()) * constants.ONE_CELL_WIDTH if self.turing_machine else self.window_size.width
         painter.drawRect(constants.BEG_POINT_X_RECT, self.window_size.height * constants.BEG_POINT_Y_RECT_COEFFICIENT,
                          rect_width, constants.END_POINT_Y_RECT)
 
@@ -145,7 +147,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def draw_cells(self, painter: QPainter) -> None:
         x_loc_cell = constants.X_LOC_FIRST_CELL
         y_loc_cell = self.window_size.height * constants.CELLS_LOCATION_HEIGHT_COEFFICIENT + constants.Y_LOC_CELL_INCREASED
-        max_width: float = len(self.turing_machine.tape) * constants.ONE_CELL_WIDTH if self.turing_machine else self.window_size.width
+        max_width: float = len(self.turing_machine.get_tape()) * constants.ONE_CELL_WIDTH if self.turing_machine else self.window_size.width
         while x_loc_cell <= max_width:
             painter.drawPoint(x_loc_cell, y_loc_cell)
             x_loc_cell += constants.X_DIST_NEXT_CELL
@@ -171,31 +173,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         painter.end()
         self.turing_machine_label.setPixmap(canvas)
 
+    def set_first_position_of_head(self, head_position: int) -> None:
+        _iter = count(constants.HEAD_X_BOTTOM_FIRST, constants.NEXT_VALUE)
+        self.head_x_bottom_point_loc_above_tape: int = next(islice(_iter, head_position, None))
+        _iter = count(constants.HEAD_X_TOP_LEFT_FIRST, constants.NEXT_VALUE)
+        self.head_x_top_left_point_loc_above_tape: int = next(islice(_iter, head_position, None))
+        _iter = count(constants.HEAD_X_TOP_RIGHT_FIRST, constants.NEXT_VALUE)
+        self.head_x_top_right_point_loc_aboce_tape: int = next(islice(_iter, head_position, None))
+
     def set_positions_of_head(self) -> None:
-        if self.turing_machine:
-            _iter = count(constants.HEAD_X_BOTTOM_FIRST, constants.NEXT_VALUE)
-            self.head_x_bottom_point_loc_above_tape: int = [next(_iter) for _ in range(len(self.turing_machine.get_tape()))]
-            _iter = count(constants.HEAD_X_TOP_LEFT_FIRST, constants.NEXT_VALUE)
-            self.head_x_top_left_point_loc_above_tape: int = [next(_iter) for _ in range(len(self.turing_machine.get_tape()))]
-            _iter = count(constants.HEAD_X_TOP_RIGHT_FIRST, constants.NEXT_VALUE)
-            self.head_x_top_right_point_loc_aboce_tape: int = [next(_iter) for _ in range(len(self.turing_machine.get_tape()))]
+        head_position: int = self.turing_machine.get_actual_head_position() if self.turing_machine else constants.INITIAL_HEAD_POSITION
+        if self.previous_head_position < head_position:
+            self.head_x_bottom_point_loc_above_tape += constants.NEXT_VALUE
+            self.head_x_top_left_point_loc_above_tape += constants.NEXT_VALUE
+            self.head_x_top_right_point_loc_aboce_tape += constants.NEXT_VALUE
+        elif head_position < self.previous_head_position:
+            self.head_x_bottom_point_loc_above_tape -= constants.NEXT_VALUE
+            self.head_x_top_left_point_loc_above_tape -= constants.NEXT_VALUE
+            self.head_x_top_right_point_loc_aboce_tape -= constants.NEXT_VALUE
         else:
-            _iter = count(constants.HEAD_X_BOTTOM_FIRST, constants.NEXT_VALUE)
-            self.head_x_bottom_point_loc_above_tape: int = [next(_iter) for _ in range(constants.INITIAL_TAPE_SIZE)]
-            _iter = count(constants.HEAD_X_TOP_LEFT_FIRST, constants.NEXT_VALUE)
-            self.head_x_top_left_point_loc_above_tape: int = [next(_iter) for _ in range(constants.INITIAL_TAPE_SIZE)]
-            _iter = count(constants.HEAD_X_TOP_RIGHT_FIRST, constants.NEXT_VALUE)
-            self.head_x_top_right_point_loc_aboce_tape: int = [next(_iter) for _ in range(constants.INITIAL_TAPE_SIZE)]
+            self.set_first_position_of_head(head_position)
+        self.previous_head_position: int = head_position
 
     def create_head(self) -> QPolygon:
         polygon: QPolygon = QPolygon()
-        head_position: int = self.turing_machine.get_actual_head_position() if self.turing_machine else constants.INITIAL_HEAD_POSITION
         self.set_positions_of_head()
-        (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_bottom_point_loc_above_tape[head_position],
+        (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_bottom_point_loc_above_tape,
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE)
-                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_top_left_point_loc_above_tape[head_position],
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_top_left_point_loc_above_tape,
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
-                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_top_right_point_loc_aboce_tape[head_position],
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_top_right_point_loc_aboce_tape,
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE))
         return polygon
 
@@ -407,6 +414,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.result_word_label.clear()
         self.calculation_length_label.clear()
         self.restore_state_turing_machine(Indexes.ZERO.value)
+        self.previous_head_position: int = self.turing_machine.get_actual_head_position()
         self.turing_machine.reset_state_of_written_file()
         self.add_pixmap_for_turing_machine_label()
         self.redraw_turing_machine()

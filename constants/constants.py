@@ -11,6 +11,10 @@ EMPTY_STRING: str = ''
 EMPTY_CHAR: str = '#'
 
 
+# constants used in file_reader.py and mainwindow.py
+NEXT_INDEX: int = 1
+
+
 # constants used in file_reader.py and file_parser.py
 ENTRY_WORD: str = 'slowo wejsciowe:\n'
 STATES: str = 'stany:\n'
@@ -57,10 +61,6 @@ EXTEND_TAPE_LEFT_INFO_FILE: str = 'ROZSZERZENIE TAŚMY Z LEWEJ STRONY\n\n'
 EXTEND_TAPE_RIGHT_INFO_FILE: str = 'ROZSZERZENIE TAŚMY Z PRAWEJ STRONY\n\n'
 ERROR_INFO_FILE: str = 'MASZYNA TURINGA ZAKOŃCZYŁA SWOJE DZIAŁANIE BŁĘDEM\n'
 SUCCESS_END_INFO_FILE: str = 'MASZYNA TURINGA ZAKOŃCZYŁA SWOJE DZIAŁANIE POMYŚLNIE\n'
-
-
-# constants used in file_reader.py
-NEXT_INDEX: int = 1
 
 
 # constants used in file_parser.py
