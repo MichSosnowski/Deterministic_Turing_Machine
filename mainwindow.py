@@ -270,8 +270,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.set_contents_for_widgets()
         except FileNotFoundError:
             self.filename: str = temp_filename
-        except (IncorrectFormatException, IndexError):
-            self.show_error_dialog(constants.MESSAGE_TITLE_FORMAT, constants.MESSAGE_FORMAT)
+        except IncorrectFormatException as error:
+            message_error: str = constants.MESSAGE_FORMAT + str(error)
+            self.show_error_dialog(constants.MESSAGE_TITLE_FORMAT, message_error)
+            self.filename: str = temp_filename
+        except IndexError:
+            message_error: str = constants.MESSAGE_FORMAT + constants.INDEX_ERROR
+            self.show_error_dialog(constants.MESSAGE_TITLE_FORMAT, message_error)
             self.filename: str = temp_filename
         else:
             self.switch_enabled_buttons()
