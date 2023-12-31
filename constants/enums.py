@@ -1,6 +1,8 @@
-from enum import Enum
+from enum import Enum, verify, UNIQUE, CONTINUOUS
 
 
+@verify(UNIQUE)
+@verify(CONTINUOUS)
 class Indexes(Enum):
     ZERO = 0
     ONE = 1
