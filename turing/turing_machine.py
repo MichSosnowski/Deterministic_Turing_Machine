@@ -110,13 +110,17 @@ class TuringMachine(QThread):
             self.thread_sleep_secs *= constants.COEFFICIENT_SPEED_THREAD
             config.slow_head: bool = False
 
-    def fill_tape_with_empty_char(self, tape_deque: Deque[str], tape_size: int) -> None:
+    def fill_tape_with_empty_char(self, tape_deque: Deque[str], required_tape_size: int) -> None:
         filled_cells_count: int = len(tape_deque)
-        while filled_cells_count < tape_size:
-            tape_deque.appendleft(constants.EMPTY_CHAR)
-            if len(tape_deque) < tape_size:
-                tape_deque.append(constants.EMPTY_CHAR)
-            filled_cells_count: int = len(tape_deque)
+        blank_cells_count: int = required_tape_size - filled_cells_count
+        blank_cells_equal_parts: int = blank_cells_count // constants.EQUAL_TWO_PARTS
+        remainder: int = blank_cells_count % constants.EQUAL_TWO_PARTS
+        match remainder:
+            case constants.REMAINDER_ZERO:
+                tape_deque.extendleft(constants.EMPTY_CHAR * blank_cells_equal_parts)
+            case _:
+                tape_deque.extendleft(constants.EMPTY_CHAR * (blank_cells_equal_parts + constants.CALCULATION_LENGTH_INCREASE))
+        tape_deque.extend(constants.EMPTY_CHAR * blank_cells_equal_parts)
 
     def get_initial_head_position(self) -> int:
         if self.entry_word:
