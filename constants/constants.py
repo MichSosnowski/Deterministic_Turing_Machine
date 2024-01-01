@@ -3,7 +3,7 @@ SPACE: str = ' '
 NEWLINE: str = '\n'
 
 
-# constants used in file_reader.py, mainwindow.py and turing_machine.py
+# constants used in file_reader.py, file_writer.py, mainwindow.py and turing_machine.py
 EMPTY_STRING: str = ''
 
 
@@ -85,6 +85,7 @@ WRITE_MODE: str = 'w'
 APPEND_MODE: str = 'a'
 HEAD_CHAR: str = 'v'
 SHIFT_DUE_TO_STATE: int = 3
+TWICE_STRING: int = 2
 ENTRY_WORD_FILE: str = 'SŁOWO WEJŚCIOWE: '
 RESULT_WORD_FILE: str = 'SŁOWO OBLICZONE: '
 CALCULATION_LENGTH_FILE: str = 'DŁUGOŚĆ OBLICZENIA: '

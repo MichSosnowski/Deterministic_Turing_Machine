@@ -44,11 +44,9 @@ class FileWriter:
             file.write(state_text)
 
     def write_tape(self, tape: Deque[str]) -> None:
+        tape_line: str = constants.EMPTY_STRING.join(tape) + constants.NEWLINE * constants.TWICE_STRING
         with open(self.filename, constants.APPEND_MODE) as file:
-            for cell in tape:
-                file.write(cell)
-            file.write(constants.NEWLINE)
-            file.write(constants.NEWLINE)
+            file.write(tape_line)
 
     def write_info_text(self, info: str) -> None:
         with open(self.filename, constants.APPEND_MODE) as file:
