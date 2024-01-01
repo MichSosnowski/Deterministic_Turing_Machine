@@ -11,10 +11,6 @@ EMPTY_STRING: str = ''
 EMPTY_CHAR: str = '#'
 
 
-# constants used in file_reader.py and mainwindow.py
-NEXT_INDEX: int = 1
-
-
 # constants used in file_reader.py and file_parser.py
 ENTRY_WORD: str = 'slowo wejsciowe:\n'
 STATES: str = 'stany:\n'
@@ -25,7 +21,6 @@ TRANSITION_FUNCTION: str = 'relacja przejscia:\n'
 
 # constants used in mainwindow.py and turing_machine.py
 INITIAL_TAPE_SIZE: int = 32
-INITIAL_HEAD_POSITION: int = 15
 
 
 # constants used in file_parser.py and turing_machine.py
@@ -34,13 +29,9 @@ RIGHT: str = 'P'
 
 
 # constants used in turing_machine.py
-DRAWN_TAPE_SIZE: int = 19
 FIRST_TAPE_INDEX: int = 0
-LAST_TAPE_FRAGMENT_INDEX: int = 31
 EXTEND_TAPE_SIZE: int = 16
 EMPTY_CHAR_ENTRY_WORD_POSITION: int = 15
-INITIAL_FRAGMENT_POSITION_BACK: int = 9
-END_FRAGMENT_POSITION_FORWARD: int = 10
 INITIAL_CALCULATION_LENGTH: int = 0
 PREVIOUS_CELL: int = -1
 NEXT_CELL: int = 1
@@ -82,6 +73,10 @@ NO_TRANSITION_FUNCTIONS_ERROR: str = 'Brak jakiejkolwiek relacji przejścia!'
 INCORECT_TRANSITION_FUNCTION_ERROR: str = 'Niepoprawna relacja przejścia'
 
 
+# constants used in file_reader.py
+NEXT_INDEX: int = 1
+
+
 # constants used in file_writer.py
 RESULT_DIRECTORY: str = 'wyniki'
 INDIRECT_PATH_TO_RESULT_DIRECTORY: str = '.\\wyniki\\'
@@ -111,6 +106,7 @@ CURRENT_DIR: str = '.'
 TXT_FILTER: str = 'Pliki tekstowe (*.txt)'
 EXTEND_TAPE_INFO_TITLE: str = 'Rozszerzenie taśmy'
 FILENAME_INDEX: int = 0
+INITIAL_HEAD_POSITION: int = 15
 PIXMAP_BACKGROUND_COLOR: str = '#f0f0f0'
 BROWN: str = 'brown'
 PERU: str = 'peru'
