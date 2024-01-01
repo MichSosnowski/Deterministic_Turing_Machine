@@ -65,12 +65,10 @@ class FileParser:
 
     def check_entry_word(self, entry_alphabet: str) -> None:
         read_line: str = self.file.readline().rstrip(constants.NEWLINE)
-        if read_line:
-            is_all_chars_in_entry_alphabet = list(map(lambda elem: elem in entry_alphabet, read_line))
-            if ((length := len(read_line)) < constants.REQUIRED_COUNT
-                or length > constants.MAX_LENGTH_ENTRY_WORD
-                or not all(is_all_chars_in_entry_alphabet)):
-                raise IncorrectFormatException(f'{constants.ENTRY_WORD_ERROR}')
+        is_all_chars_in_entry_alphabet = list(map(lambda elem: elem in entry_alphabet, read_line))
+        if (len(read_line) > constants.MAX_LENGTH_ENTRY_WORD
+            or not all(is_all_chars_in_entry_alphabet)):
+            raise IncorrectFormatException(f'{constants.ENTRY_WORD_ERROR}')
 
     def get_all_states(self) -> list[str]:
         read_line: str = self.file.readline().rstrip(constants.NEWLINE)
