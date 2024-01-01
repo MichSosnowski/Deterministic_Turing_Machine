@@ -59,7 +59,7 @@ class FileParser:
         read_line: str = self.file.readline().rstrip(constants.NEWLINE)
         is_all_chars_in_tape_alphabet = list(map(lambda elem: elem in tape_alphabet, read_line))
         if (len(read_line) < constants.REQUIRED_COUNT
-            or False in is_all_chars_in_tape_alphabet):
+            or not all(is_all_chars_in_tape_alphabet)):
             raise IncorrectFormatException(f'{constants.ENTRY_ALPHABET_ERROR}')
         return read_line
 
@@ -69,7 +69,7 @@ class FileParser:
             is_all_chars_in_entry_alphabet = list(map(lambda elem: elem in entry_alphabet, read_line))
             if ((length := len(read_line)) < constants.REQUIRED_COUNT
                 or length > constants.MAX_LENGTH_ENTRY_WORD
-                or False in is_all_chars_in_entry_alphabet):
+                or not all(is_all_chars_in_entry_alphabet)):
                 raise IncorrectFormatException(f'{constants.ENTRY_WORD_ERROR}')
 
     def get_all_states(self) -> list[str]:
@@ -91,7 +91,7 @@ class FileParser:
         accepting_states: list[str] = read_line.split(constants.SPACE)
         is_accepting_states_in_states = list(map(lambda elem: elem in states, accepting_states))
         if (len(read_line) < constants.REQUIRED_COUNT
-            or False in is_accepting_states_in_states):
+            or not all(is_accepting_states_in_states)):
             raise IncorrectFormatException(f'{constants.ACCEPTING_STATES_ERROR}')
 
     def check_transition_function(self, tape_alphabet: str, states: list[str]) -> None:
