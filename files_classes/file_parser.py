@@ -99,10 +99,7 @@ class FileParser:
             self.analyze_line_elements(line_elements, tape_alphabet, states)
 
     def get_elems_of_line_from_file(self, line: str) -> list[str]:
-        if line.find(constants.NEWLINE) != constants.CHAR_NOT_FOUND:
-            line_elements: list[str] = line.rstrip(constants.NEWLINE).split(constants.SPACE)
-        else:
-            line_elements: list[str] = line.split(constants.SPACE)
+        line_elements: list[str] = line.rstrip(constants.NEWLINE).split(constants.SPACE)
         return line_elements
 
     def analyze_line_elements(self, line_elements: list[str], tape_alphabet: str, states: list[str]) -> None:
