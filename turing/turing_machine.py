@@ -24,7 +24,7 @@ class TuringMachine(QThread):
         self.wait_condition: QWaitCondition = wait_condition
         self.entry_word: str = file_reader.get_entry_word_from_file()
         self.actual_state: str = file_reader.get_initial_state_from_file()
-        self.accepting_states: list[str] = file_reader.get_accepting_states_from_file()
+        self.accepting_states: tuple[str] = file_reader.get_accepting_states_from_file()
         self.transition_function: dict[tuple[str, str], tuple[str, str, str]] = self.transform_transition_function(file_reader)
         self.tape: Deque[str] = self.create_tape()
         self.head_position_tape: int = self.get_initial_head_position()
@@ -65,8 +65,8 @@ class TuringMachine(QThread):
 
     def transform_transition_function(self, file_reader: FileReader) -> dict[tuple[str, str], tuple[str, str, str]]:
         transition_function: dict[tuple(str, str), tuple(str, str, str)] = dict()
-        transition_function_list: list[str] = file_reader.get_transition_function_from_file()
-        for elem in transition_function_list:
+        transition_function_tuple: tuple[str] = file_reader.get_transition_function_from_file()
+        for elem in transition_function_tuple:
             function: list[str] = elem.rstrip(constants.NEWLINE).split(constants.SPACE)
             transition_function[(function[Indexes.ZERO.value], function[Indexes.ONE.value])] = (function[Indexes.TWO.value],
                                                                                                 function[Indexes.THREE.value],

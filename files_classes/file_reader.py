@@ -40,14 +40,14 @@ class FileReader:
         initial_state_index: int = lines.index(constants.INITIAL_STATE) + constants.NEXT_INDEX
         return lines[initial_state_index].rstrip(constants.NEWLINE)
 
-    def get_accepting_states_from_file(self) -> list[str]:
+    def get_accepting_states_from_file(self) -> tuple[str]:
         lines: list[str] = self.get_all_lines_from_file()
         accepting_states_index: int = lines.index(constants.ACCEPTING_STATES) + constants.NEXT_INDEX
         accepting_states: list[str] = lines[accepting_states_index].rstrip(constants.NEWLINE).split(constants.SPACE)
-        return accepting_states
+        return tuple(accepting_states)
 
-    def get_transition_function_from_file(self) -> list[str]:
+    def get_transition_function_from_file(self) -> tuple[str]:
         lines: list[str] = self.get_all_lines_from_file()
         transition_function_index: int = lines.index(constants.TRANSITION_FUNCTION) + constants.NEXT_INDEX
         transition_function: list[str] = lines[transition_function_index:]
-        return transition_function
+        return tuple(transition_function)
