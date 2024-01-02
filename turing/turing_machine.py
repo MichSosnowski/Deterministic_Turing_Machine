@@ -30,7 +30,7 @@ class TuringMachine(QThread):
         self.head_position_tape: int = self.get_initial_head_position()
         self.calculation_length: int = constants.INITIAL_CALCULATION_LENGTH
         self.thread_sleep_secs: float = constants.INITIAL_SPEED_THREAD
-        self.write_to_file: list[bool] = [True]
+        self.dont_write_to_file_counter: int = constants.INITIAL_DONT_WRITE
         shift_due_to_states: int = max(map(len, file_reader.get_states_from_file()))
         self.file_writer: FileWriter = FileWriter(file_reader.filename, shift_due_to_states)
         self.file_writer.write_entry_word(self.entry_word)
@@ -53,13 +53,13 @@ class TuringMachine(QThread):
         self.tape: Deque[str] = memento.tape
         self.head_position_tape: int = memento.head_position_tape
         self.calculation_length: int = memento.calculation_length
-        self.write_to_file.insert(Indexes.ZERO.value, False)
+        self.dont_write_to_file_counter += constants.NEXT_DONT_WRITE_VALUE
 
     def reset_state_of_written_file(self) -> None:
         self.file_writer.clear_file()
         self.file_writer.write_entry_word(self.entry_word)
-        if not self.write_to_file[Indexes.ZERO.value]:
-            self.write_to_file.pop(Indexes.ZERO.value)
+        if self.dont_write_to_file_counter:
+            self.dont_write_to_file_counter -= constants.NEXT_DONT_WRITE_VALUE
         self.write_state_of_turing_machine_file()
         config.result_text_in_file: bool = False
 
@@ -83,12 +83,12 @@ class TuringMachine(QThread):
         if self.head_position_tape == constants.FIRST_TAPE_INDEX:
             self.tape.extendleft(repeat(constants.EMPTY_CHAR, constants.EXTEND_TAPE_SIZE))
             self.head_position_tape += constants.EXTEND_TAPE_SIZE
-            if self.write_to_file[Indexes.ZERO.value]:
+            if not self.dont_write_to_file_counter:
                 self.file_writer.write_info_text(constants.EXTEND_TAPE_LEFT_INFO_FILE)
             config.extend_tape_left: bool = True
         elif self.head_position_tape == len(self.tape) + constants.PREVIOUS_CELL:
             self.tape.extend(repeat(constants.EMPTY_CHAR, constants.EXTEND_TAPE_SIZE))
-            if self.write_to_file[Indexes.ZERO.value]:
+            if not self.dont_write_to_file_counter:
                 self.file_writer.write_info_text(constants.EXTEND_TAPE_RIGHT_INFO_FILE)
             config.extend_tape_right: bool = True
 
@@ -165,7 +165,7 @@ class TuringMachine(QThread):
         return self.calculation_length
 
     def write_state_of_turing_machine_file(self) -> None:
-        if self.write_to_file[Indexes.ZERO.value]:
+        if not self.dont_write_to_file_counter:
             self.file_writer.write_head_position(self.head_position_tape)
             self.file_writer.write_state(self.actual_state)
             self.file_writer.write_tape(self.tape)
@@ -182,19 +182,19 @@ class TuringMachine(QThread):
                 self.extend_tape()
                 self.write_state_of_turing_machine_file()
             else:
-                if not config.result_text_in_file and self.write_to_file[Indexes.ZERO.value]:
+                if not (config.result_text_in_file or self.dont_write_to_file_counter):
                     self.file_writer.write_info_text(constants.ERROR_INFO_FILE)
                     config.result_text_in_file: bool = True
                 config.error = True
                 return
         if self.actual_state in self.accepting_states:
-            if not config.result_text_in_file and self.write_to_file[Indexes.ZERO.value]:
+            if not (config.result_text_in_file or self.dont_write_to_file_counter):
                 result_word: str = self.get_result_word()
                 self.file_writer.write_success_end(constants.SUCCESS_END_INFO_FILE, result_word, self.calculation_length)
                 config.result_text_in_file: bool = True
             config.finish_step_work = True
-        if not self.write_to_file[Indexes.ZERO.value]:
-            self.write_to_file.pop(Indexes.ZERO.value)
+        if self.dont_write_to_file_counter:
+            self.dont_write_to_file_counter -= constants.NEXT_DONT_WRITE_VALUE
 
     def run(self) -> None:
         while self.actual_state not in self.accepting_states:
