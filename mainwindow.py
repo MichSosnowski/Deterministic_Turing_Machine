@@ -173,36 +173,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         painter.end()
         self.turing_machine_label.setPixmap(canvas)
 
-    def set_first_position_of_head(self, head_position: int) -> None:
-        _iter = count(constants.HEAD_X_BOTTOM_FIRST, constants.NEXT_VALUE)
-        self.head_x_bottom_point_loc_above_tape: int = next(islice(_iter, head_position, None))
-        _iter = count(constants.HEAD_X_TOP_LEFT_FIRST, constants.NEXT_VALUE)
-        self.head_x_top_left_point_loc_above_tape: int = next(islice(_iter, head_position, None))
-        _iter = count(constants.HEAD_X_TOP_RIGHT_FIRST, constants.NEXT_VALUE)
-        self.head_x_top_right_point_loc_aboce_tape: int = next(islice(_iter, head_position, None))
-
     def set_positions_of_head(self) -> None:
-        head_position: int = self.turing_machine.get_actual_head_position() if self.turing_machine else constants.INITIAL_HEAD_POSITION
-        if self.previous_head_position < head_position:
-            self.head_x_bottom_point_loc_above_tape += constants.NEXT_VALUE
-            self.head_x_top_left_point_loc_above_tape += constants.NEXT_VALUE
-            self.head_x_top_right_point_loc_aboce_tape += constants.NEXT_VALUE
-        elif head_position < self.previous_head_position:
-            self.head_x_bottom_point_loc_above_tape -= constants.NEXT_VALUE
-            self.head_x_top_left_point_loc_above_tape -= constants.NEXT_VALUE
-            self.head_x_top_right_point_loc_aboce_tape -= constants.NEXT_VALUE
+        if self.turing_machine:
+            _iter = count(constants.HEAD_X_BOTTOM_FIRST, constants.NEXT_VALUE)
+            self.head_x_bottom_point_loc_above_tape: int = [next(_iter) for _ in range(len(self.turing_machine.get_tape()))]
+            _iter = count(constants.HEAD_X_TOP_LEFT_FIRST, constants.NEXT_VALUE)
+            self.head_x_top_left_point_loc_above_tape: int = [next(_iter) for _ in range(len(self.turing_machine.get_tape()))]
+            _iter = count(constants.HEAD_X_TOP_RIGHT_FIRST, constants.NEXT_VALUE)
+            self.head_x_top_right_point_loc_aboce_tape: int = [next(_iter) for _ in range(len(self.turing_machine.get_tape()))]
         else:
-            self.set_first_position_of_head(head_position)
-        self.previous_head_position: int = head_position
+            _iter = count(constants.HEAD_X_BOTTOM_FIRST, constants.NEXT_VALUE)
+            self.head_x_bottom_point_loc_above_tape: int = [next(_iter) for _ in range(constants.INITIAL_TAPE_SIZE)]
+            _iter = count(constants.HEAD_X_TOP_LEFT_FIRST, constants.NEXT_VALUE)
+            self.head_x_top_left_point_loc_above_tape: int = [next(_iter) for _ in range(constants.INITIAL_TAPE_SIZE)]
+            _iter = count(constants.HEAD_X_TOP_RIGHT_FIRST, constants.NEXT_VALUE)
+            self.head_x_top_right_point_loc_aboce_tape: int = [next(_iter) for _ in range(constants.INITIAL_TAPE_SIZE)]
 
     def create_head(self) -> QPolygon:
         polygon: QPolygon = QPolygon()
+        head_position: int = self.turing_machine.get_actual_head_position() if self.turing_machine else constants.INITIAL_HEAD_POSITION
         self.set_positions_of_head()
-        (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_bottom_point_loc_above_tape,
+        (polygon << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_bottom_point_loc_above_tape[head_position],
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_BOTTOM_POINT_LOC_ABOVE_TAPE)
-                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_top_left_point_loc_above_tape,
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_top_left_point_loc_above_tape[head_position],
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE)
-                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_top_right_point_loc_aboce_tape,
+                 << QPoint(self.window_size.width / HEAD_LOC_COEFFICIENT + self.head_x_top_right_point_loc_aboce_tape[head_position],
                            self.window_size.height / HEAD_LOC_COEFFICIENT - HEAD_Y_TOP_POINT_LOC_ABOVE_TAPE))
         return polygon
 
