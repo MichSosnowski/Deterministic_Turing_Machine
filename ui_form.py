@@ -39,6 +39,7 @@ class Ui_MainWindow(object):
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.file_text_browser = QTextBrowser(self.groupBox_2)
         self.file_text_browser.setObjectName(u"file_text_browser")
+        self.file_text_browser.setContextMenuPolicy(Qt.NoContextMenu)
         self.file_text_browser.setStyleSheet(u"background-color: rgb(240, 240, 240);")
         self.file_text_browser.setFrameShape(QFrame.NoFrame)
 

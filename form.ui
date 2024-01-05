@@ -28,6 +28,9 @@
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
           <widget class="QTextBrowser" name="file_text_browser">
+           <property name="contextMenuPolicy">
+            <enum>Qt::NoContextMenu</enum>
+           </property>
            <property name="styleSheet">
             <string notr="true">background-color: rgb(240, 240, 240);</string>
            </property>
