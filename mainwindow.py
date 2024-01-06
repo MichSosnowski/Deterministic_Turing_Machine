@@ -39,7 +39,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.wait_condition.wakeAll()
 
     def restore_state_turing_machine(self, index: int = constants.LAST_INDEX_HISTORY) -> None:
-        if len(self.history_turing_machine):
+        if self.history_turing_machine:
             self.turing_machine.restore_state(self.history_turing_machine.pop(index))
 
     def remove_memento_from_history_error_end(self) -> None:
