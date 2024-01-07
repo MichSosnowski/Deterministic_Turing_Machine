@@ -78,17 +78,19 @@ class TuringMachine(QThread):
         self.fill_tape_with_empty_char(tape_deque, constants.INITIAL_TAPE_SIZE)
         return tape_deque
 
+    def write_extend_tape_info_to_file(self, message: str) -> None:
+        if not self.dont_write_to_file_counter:
+            self.file_writer.write_info_text(message)
+
     def extend_tape(self) -> None:
         if self.head_position_tape == constants.FIRST_TAPE_INDEX:
             self.tape.extendleft(repeat(constants.EMPTY_CHAR, constants.EXTEND_TAPE_SIZE))
             self.head_position_tape += constants.EXTEND_TAPE_SIZE
-            if not self.dont_write_to_file_counter:
-                self.file_writer.write_info_text(constants.EXTEND_TAPE_LEFT_INFO_FILE)
+            self.write_extend_tape_info_to_file(constants.EXTEND_TAPE_LEFT_INFO_FILE)
             config.extend_tape_left: bool = True
         elif self.head_position_tape == len(self.tape) + constants.PREVIOUS_CELL:
             self.tape.extend(repeat(constants.EMPTY_CHAR, constants.EXTEND_TAPE_SIZE))
-            if not self.dont_write_to_file_counter:
-                self.file_writer.write_info_text(constants.EXTEND_TAPE_RIGHT_INFO_FILE)
+            self.write_extend_tape_info_to_file(constants.EXTEND_TAPE_RIGHT_INFO_FILE)
             config.extend_tape_right: bool = True
 
     def wait_for_wake(self, miliseconds: int = constants.STANDARD_MILISECONDS_WAIT_MUTEX) -> None:
