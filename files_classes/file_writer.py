@@ -44,9 +44,14 @@ class FileWriter:
             file.write(state_text)
 
     def write_tape(self, tape: Deque[str]) -> None:
-        tape_line: str = constants.EMPTY_STRING.join(tape) + constants.NEWLINE * constants.TWICE_STRING
+        tape_line: str = constants.EMPTY_STRING.join(tape)
         with open(self.filename, constants.APPEND_MODE) as file:
             file.write(tape_line)
+
+    def write_configuration(self, configuration: str) -> None:
+        configuration_text: str = f'\t{configuration}' + constants.NEWLINE * constants.TWICE_STRING
+        with open(self.filename, constants.APPEND_MODE) as file:
+            file.write(configuration_text)
 
     def write_info_text(self, info: str) -> None:
         with open(self.filename, constants.APPEND_MODE) as file:

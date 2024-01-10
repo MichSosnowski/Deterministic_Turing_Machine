@@ -79,6 +79,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.set_result_word_label(constants.EMPTY_STRING)
         self.set_calculation_length_label(constants.EMPTY_STRING)
         self.turing_machine: TuringMachine = TuringMachine(self.file_reader, self.wait_condition)
+        self.set_configuration_label(self.turing_machine.get_configuration())
         self.previous_head_position: int = self.turing_machine.get_actual_head_position()
         self.history_turing_machine.clear()
         self.add_pixmap_for_turing_machine_label()
@@ -239,6 +240,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def redraw_turing_machine(self) -> None:
         self.draw_turing_machine()
+        self.set_configuration_label(self.turing_machine.get_configuration())
         self.fill_tape_state_table()
 
     def create_item_for_table(self, data: str) -> QTableWidgetItem:
@@ -257,6 +259,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def set_calculation_length_label(self, calculation_length_text: str) -> None:
         self.calculation_length_label.clear()
         self.calculation_length_label.setText(calculation_length_text)
+
+    def set_configuration_label(self, configuration: str) -> None:
+        self.configuration_label.clear()
+        self.configuration_label.setText(constants.CONFIGURATION_LABEL_TEXT + configuration)
 
     def load_file(self) -> None:
         temp_filename: str = self.filename
@@ -356,6 +362,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def execute_success_end_step(self) -> None:
         self.set_result_word_label(self.turing_machine.get_result_word())
         self.set_calculation_length_label(str(self.turing_machine.get_calculation_length()))
+        self.set_configuration_label(self.turing_machine.get_configuration())
         self.remove_memento_from_history_error_end()
         self.show_info_dialog(constants.SUCCESS_END_OR_ERROR_INFO_TITLE, constants.SUCCESS_END_INFO_MESSAGE)
         config.finish_step_work: bool = False

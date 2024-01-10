@@ -1,7 +1,7 @@
 from time import sleep
 from collections import deque
 from typing import Deque
-from itertools import repeat
+from itertools import repeat, islice
 
 from PySide6.QtCore import QThread, QMutex, QWaitCondition
 
@@ -165,11 +165,20 @@ class TuringMachine(QThread):
     def get_calculation_length(self) -> int:
         return self.calculation_length
 
+    def get_configuration(self) -> str:
+        begin_tape: str = constants.EMPTY_STRING.join(islice(self.tape, Indexes.ZERO.value, self.head_position_tape)).lstrip(constants.EMPTY_CHAR)
+        begin_tape: str = begin_tape if begin_tape else constants.EMPTY_CHAR
+        end_tape: str = constants.EMPTY_STRING.join(islice(self.tape, self.head_position_tape, len(self.tape))).rstrip(constants.EMPTY_CHAR)
+        end_tape: str = end_tape if end_tape else constants.EMPTY_CHAR
+        return constants.EMPTY_STRING.join([constants.LEFT_BRACKET, str(self.actual_state), constants.COMMA, begin_tape,
+                                            constants.COMMA, end_tape, constants.RIGHT_BRACKET])
+
     def write_state_of_turing_machine_file(self) -> None:
         if not self.dont_write_to_file_counter:
             self.file_writer.write_head_position(self.head_position_tape)
             self.file_writer.write_state(self.actual_state)
             self.file_writer.write_tape(self.tape)
+            self.file_writer.write_configuration(self.get_configuration())
 
     def step_forward(self) -> None:
         if self.actual_state not in self.accepting_states:

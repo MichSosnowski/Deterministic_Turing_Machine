@@ -52,6 +52,9 @@ EXTEND_TAPE_LEFT_INFO_FILE: str = 'ROZSZERZENIE TAŚMY Z LEWEJ STRONY\n\n'
 EXTEND_TAPE_RIGHT_INFO_FILE: str = 'ROZSZERZENIE TAŚMY Z PRAWEJ STRONY\n\n'
 ERROR_INFO_FILE: str = 'MASZYNA TURINGA ZAKOŃCZYŁA SWOJE DZIAŁANIE BŁĘDEM\n'
 SUCCESS_END_INFO_FILE: str = 'MASZYNA TURINGA ZAKOŃCZYŁA SWOJE DZIAŁANIE POMYŚLNIE\n'
+LEFT_BRACKET: str = '('
+RIGHT_BRACKET: str = ')'
+COMMA: str = ', '
 
 
 # constants used in file_parser.py
@@ -95,6 +98,7 @@ CALCULATION_LENGTH_FILE: str = 'DŁUGOŚĆ OBLICZENIA: '
 
 # constants used in mainwindow.py
 WINDOW_TITLE: str = 'Maszyna Turinga'
+CONFIGURATION_LABEL_TEXT = 'AKTUALNA KONFIGURACJA MASZYNY\n'
 MESSAGE_TITLE_FORMAT: str = 'Niepoprawny format!'
 MESSAGE_FORMAT: str = 'Niepoprawny format pliku wejściowego.\n'
 INDEX_ERROR: str = 'Niekompletna relacja przejścia!'
