@@ -365,6 +365,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.disconnect_signals()
 
     def execute_error_step(self) -> None:
+        self.set_calculation_length_label(str(self.turing_machine.get_calculation_length()))
         self.remove_memento_from_history_error_end()
         self.show_info_dialog(constants.SUCCESS_END_OR_ERROR_INFO_TITLE, constants.ERROR_INFO_MESSAGE)
         config.error: bool = False

@@ -184,7 +184,7 @@ class TuringMachine(QThread):
                 self.write_state_of_turing_machine_file()
             else:
                 if not (config.result_text_in_file or self.dont_write_to_file_counter):
-                    self.file_writer.write_info_text(constants.ERROR_INFO_FILE)
+                    self.file_writer.write_error_end(constants.ERROR_INFO_FILE, self.calculation_length)
                     config.result_text_in_file: bool = True
                 config.error = True
                 return

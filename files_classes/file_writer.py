@@ -59,3 +59,9 @@ class FileWriter:
             file.write(info)
             file.write(result_word_text)
             file.write(calculation_length_text)
+
+    def write_error_end(self, info: str, calculation_length: str) -> None:
+        calculation_length_text: str = f'{constants.CALCULATION_LENGTH_FILE}{calculation_length}\n'
+        with open(self.filename, constants.APPEND_MODE) as file:
+            file.write(info)
+            file.write(calculation_length_text)
