@@ -98,7 +98,7 @@ CALCULATION_LENGTH_FILE: str = 'DŁUGOŚĆ OBLICZENIA: '
 
 # constants used in mainwindow.py
 WINDOW_TITLE: str = 'Maszyna Turinga'
-CONFIGURATION_LABEL_TEXT = 'AKTUALNA KONFIGURACJA MASZYNY\n'
+CONFIGURATION_LABEL_TEXT: str = 'AKTUALNA KONFIGURACJA MASZYNY\n'
 MESSAGE_TITLE_FORMAT: str = 'Niepoprawny format!'
 MESSAGE_FORMAT: str = 'Niepoprawny format pliku wejściowego.\n'
 INDEX_ERROR: str = 'Niekompletna relacja przejścia!'
