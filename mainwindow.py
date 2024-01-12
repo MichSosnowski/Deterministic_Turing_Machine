@@ -434,6 +434,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.restore_state_turing_machine(Indexes.ZERO.value)
         self.previous_head_position: int = self.turing_machine.get_actual_head_position()
         self.turing_machine.reset_state_of_written_file()
+        self.turing_machine.restore_standard_thread_speed()
         self.add_pixmap_for_turing_machine_label()
         self.redraw_turing_machine()
         self.history_turing_machine.clear()

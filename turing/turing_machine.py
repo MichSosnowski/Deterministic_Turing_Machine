@@ -111,6 +111,9 @@ class TuringMachine(QThread):
             self.thread_sleep_secs *= constants.COEFFICIENT_SPEED_THREAD
             config.slow_head: bool = False
 
+    def restore_standard_thread_speed(self) -> None:
+        self.thread_sleep_secs: float = constants.INITIAL_SPEED_THREAD
+
     def fill_tape_with_empty_char(self, tape_deque: Deque[str], required_tape_size: int) -> None:
         filled_cells_count: int = len(tape_deque)
         blank_cells_count: int = required_tape_size - filled_cells_count
