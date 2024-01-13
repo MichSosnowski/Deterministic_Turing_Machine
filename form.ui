@@ -195,6 +195,9 @@
            <property name="enabled">
             <bool>false</bool>
            </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Spowalnia pracę głowicy maszyny Turinga podczas symulacji.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="text">
             <string>SPOWOLNIJ GŁOWICĘ</string>
            </property>
@@ -204,6 +207,9 @@
           <widget class="QPushButton" name="step_forward_button">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Wykonuje kolejną operację przewidzianą przez program wczytanej maszyny Turinga.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>KROK W PRZÓD</string>
@@ -215,6 +221,9 @@
            <property name="enabled">
             <bool>false</bool>
            </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Rozpoczyna symulację działania maszyny Turinga.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="text">
             <string>START</string>
            </property>
@@ -224,6 +233,9 @@
           <widget class="QPushButton" name="step_backward_button">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Przywraca poprzednią operację wykonaną przez maszynę Turinga.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>KROK WSTECZ</string>
@@ -235,6 +247,9 @@
            <property name="enabled">
             <bool>false</bool>
            </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Zatrzymuje symulację działania maszyny Turinga.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="text">
             <string>STOP</string>
            </property>
@@ -245,6 +260,9 @@
            <property name="enabled">
             <bool>false</bool>
            </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Przyspiesza pracę głowicy maszyny Turinga podczas symulacji.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
            <property name="text">
             <string>PRZYSPIESZ GŁOWICĘ</string>
            </property>
@@ -254,6 +272,9 @@
           <widget class="QPushButton" name="reset_button">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Ustawia początkowy stan symulatora maszyny Turinga z wczytanego uprzednio pliku z opisem, lecz nie zaciąga jakichkolwiek zmian, które w międzyczasie nastąpiły w tym pliku.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="text">
             <string>RESET</string>
@@ -285,6 +306,9 @@
         <property name="enabled">
          <bool>false</bool>
         </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Wczytuje ponownie uprzednio wczytany plik z opisem maszyny Turinga wraz ze wszelkimi wykonanymi przez użytkownika zmianami w tym pliku oraz odpowiednio ustawia symulator zgodnie z dokonanymi zmianami.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>ODŚWIEŻ</string>
         </property>
@@ -305,6 +329,9 @@
       </item>
       <item row="1" column="1">
        <widget class="QPushButton" name="load_file_button">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Otwiera eksplorator plików celem umożliwenia użytkownikowi wyboru pliku z opisem maszyny Turinga do wczytania przez symulator.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>WCZYTAJ PLIK</string>
         </property>
@@ -379,6 +406,9 @@
        <widget class="QPushButton" name="open_load_file_button">
         <property name="enabled">
          <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Otwiera uprzednio wczytany przez użytkownika plik z opisem maszyny Turinga w standardowym edytorze tekstowym.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="text">
          <string>OTWÓRZ WCZYTANY PLIK</string>
