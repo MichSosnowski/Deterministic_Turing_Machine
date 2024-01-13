@@ -191,40 +191,54 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4 = QGridLayout()
         self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.load_file_button = QPushButton(self.centralwidget)
-        self.load_file_button.setObjectName(u"load_file_button")
+        self.refresh_button = QPushButton(self.centralwidget)
+        self.refresh_button.setObjectName(u"refresh_button")
+        self.refresh_button.setEnabled(False)
 
-        self.gridLayout_4.addWidget(self.load_file_button, 1, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.refresh_button, 3, 1, 1, 1)
 
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.gridLayout_4.addItem(self.horizontalSpacer, 1, 0, 1, 1)
 
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        self.load_file_button = QPushButton(self.centralwidget)
+        self.load_file_button.setObjectName(u"load_file_button")
 
-        self.gridLayout_4.addItem(self.verticalSpacer_2, 3, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.load_file_button, 1, 1, 1, 1)
 
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.gridLayout_4.addItem(self.horizontalSpacer_2, 1, 2, 1, 1)
 
+        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_4.addItem(self.horizontalSpacer_6, 3, 2, 1, 1)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_4.addItem(self.verticalSpacer_2, 4, 1, 1, 1)
+
+        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_4.addItem(self.horizontalSpacer_5, 3, 0, 1, 1)
+
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
         self.gridLayout_4.addItem(self.verticalSpacer, 0, 1, 1, 1)
 
-        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.open_load_file_button = QPushButton(self.centralwidget)
+        self.open_load_file_button.setObjectName(u"open_load_file_button")
+        self.open_load_file_button.setEnabled(False)
 
-        self.gridLayout_4.addItem(self.horizontalSpacer_6, 2, 2, 1, 1)
+        self.gridLayout_4.addWidget(self.open_load_file_button, 2, 1, 1, 1)
 
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.gridLayout_4.addItem(self.horizontalSpacer_5, 2, 0, 1, 1)
+        self.gridLayout_4.addItem(self.horizontalSpacer_7, 2, 0, 1, 1)
 
-        self.refresh_button = QPushButton(self.centralwidget)
-        self.refresh_button.setObjectName(u"refresh_button")
-        self.refresh_button.setEnabled(False)
+        self.horizontalSpacer_8 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
-        self.gridLayout_4.addWidget(self.refresh_button, 2, 1, 1, 1)
+        self.gridLayout_4.addItem(self.horizontalSpacer_8, 2, 2, 1, 1)
 
         self.gridLayout_4.setColumnStretch(0, 1)
         self.gridLayout_4.setColumnStretch(1, 4)
@@ -336,8 +350,9 @@ class Ui_MainWindow(object):
         self.stop_button.setText(QCoreApplication.translate("MainWindow", u"STOP", None))
         self.fast_head_button.setText(QCoreApplication.translate("MainWindow", u"PRZYSPIESZ G\u0141OWIC\u0118", None))
         self.reset_button.setText(QCoreApplication.translate("MainWindow", u"RESET", None))
-        self.load_file_button.setText(QCoreApplication.translate("MainWindow", u"WCZYTAJ PLIK", None))
         self.refresh_button.setText(QCoreApplication.translate("MainWindow", u"OD\u015aWIE\u017b", None))
+        self.load_file_button.setText(QCoreApplication.translate("MainWindow", u"WCZYTAJ PLIK", None))
+        self.open_load_file_button.setText(QCoreApplication.translate("MainWindow", u"OTW\u00d3RZ WCZYTANY PLIK", None))
         self.turing_machine_label.setText("")
         self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"AKTUALNIE ROZPATRYWANA RELACJA PRZEJ\u015aCIA", None))
         ___qtablewidgetitem = self.tape_state_table.horizontalHeaderItem(0)
