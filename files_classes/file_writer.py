@@ -49,7 +49,7 @@ class FileWriter:
             file.write(tape_line)
 
     def write_configuration(self, configuration: str) -> None:
-        configuration_text: str = f'\t{configuration}' + constants.NEWLINE * constants.TWICE_STRING
+        configuration_text: str = f'\t\t{configuration}' + constants.NEWLINE * constants.TWICE_STRING
         with open(self.filename, constants.APPEND_MODE) as file:
             file.write(configuration_text)
 
