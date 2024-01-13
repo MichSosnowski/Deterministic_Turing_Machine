@@ -90,7 +90,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 341, 45))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 373, 45))
         self.verticalLayout_2 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.result_word_label = QLabel(self.scrollAreaWidgetContents)
@@ -191,58 +191,47 @@ class Ui_MainWindow(object):
 
         self.gridLayout_4 = QGridLayout()
         self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_4.addItem(self.verticalSpacer_2, 3, 0, 1, 1)
+
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_4.addItem(self.verticalSpacer_4, 3, 1, 1, 1)
+
         self.refresh_button = QPushButton(self.centralwidget)
         self.refresh_button.setObjectName(u"refresh_button")
         self.refresh_button.setEnabled(False)
 
-        self.gridLayout_4.addWidget(self.refresh_button, 3, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.refresh_button, 1, 1, 1, 1)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.open_result_file_button = QPushButton(self.centralwidget)
+        self.open_result_file_button.setObjectName(u"open_result_file_button")
+        self.open_result_file_button.setEnabled(False)
 
-        self.gridLayout_4.addItem(self.horizontalSpacer, 1, 0, 1, 1)
-
-        self.load_file_button = QPushButton(self.centralwidget)
-        self.load_file_button.setObjectName(u"load_file_button")
-
-        self.gridLayout_4.addWidget(self.load_file_button, 1, 1, 1, 1)
-
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_4.addItem(self.horizontalSpacer_2, 1, 2, 1, 1)
-
-        self.horizontalSpacer_6 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_4.addItem(self.horizontalSpacer_6, 3, 2, 1, 1)
-
-        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.gridLayout_4.addItem(self.verticalSpacer_2, 4, 1, 1, 1)
-
-        self.horizontalSpacer_5 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_4.addItem(self.horizontalSpacer_5, 3, 0, 1, 1)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.gridLayout_4.addItem(self.verticalSpacer, 0, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.open_result_file_button, 2, 1, 1, 1)
 
         self.open_load_file_button = QPushButton(self.centralwidget)
         self.open_load_file_button.setObjectName(u"open_load_file_button")
         self.open_load_file_button.setEnabled(False)
 
-        self.gridLayout_4.addWidget(self.open_load_file_button, 2, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.open_load_file_button, 2, 0, 1, 1)
 
-        self.horizontalSpacer_7 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.load_file_button = QPushButton(self.centralwidget)
+        self.load_file_button.setObjectName(u"load_file_button")
 
-        self.gridLayout_4.addItem(self.horizontalSpacer_7, 2, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.load_file_button, 1, 0, 1, 1)
 
-        self.horizontalSpacer_8 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 
-        self.gridLayout_4.addItem(self.horizontalSpacer_8, 2, 2, 1, 1)
+        self.gridLayout_4.addItem(self.verticalSpacer_3, 0, 1, 1, 1)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.gridLayout_4.addItem(self.verticalSpacer, 0, 0, 1, 1)
 
         self.gridLayout_4.setColumnStretch(0, 1)
-        self.gridLayout_4.setColumnStretch(1, 4)
-        self.gridLayout_4.setColumnStretch(2, 1)
+        self.gridLayout_4.setColumnStretch(1, 1)
 
         self.gridLayout_2.addLayout(self.gridLayout_4, 6, 0, 2, 1)
 
@@ -252,7 +241,7 @@ class Ui_MainWindow(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollAreaWidgetContents_2 = QWidget()
         self.scrollAreaWidgetContents_2.setObjectName(u"scrollAreaWidgetContents_2")
-        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 1028, 349))
+        self.scrollAreaWidgetContents_2.setGeometry(QRect(0, 0, 996, 349))
         self.verticalLayout_4 = QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.turing_machine_label = QLabel(self.scrollAreaWidgetContents_2)
@@ -376,13 +365,17 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(tooltip)
         self.refresh_button.setText(QCoreApplication.translate("MainWindow", u"OD\u015aWIE\u017b", None))
 #if QT_CONFIG(tooltip)
-        self.load_file_button.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\">Otwiera eksplorator plik\u00f3w celem umo\u017cliwenia u\u017cytkownikowi wyboru pliku z opisem maszyny Turinga do wczytania przez symulator.</p></body></html>", None))
+        self.open_result_file_button.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\">Otwiera plik z wynikiem symulacji maszyny Turinga w standardowym edytorze tekstowym.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
-        self.load_file_button.setText(QCoreApplication.translate("MainWindow", u"WCZYTAJ PLIK", None))
+        self.open_result_file_button.setText(QCoreApplication.translate("MainWindow", u"OTW\u00d3RZ PLIK WYNIKOWY", None))
 #if QT_CONFIG(tooltip)
         self.open_load_file_button.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\">Otwiera uprzednio wczytany przez u\u017cytkownika plik z opisem maszyny Turinga w standardowym edytorze tekstowym.</p></body></html>", None))
 #endif // QT_CONFIG(tooltip)
         self.open_load_file_button.setText(QCoreApplication.translate("MainWindow", u"OTW\u00d3RZ WCZYTANY PLIK", None))
+#if QT_CONFIG(tooltip)
+        self.load_file_button.setToolTip(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\">Otwiera eksplorator plik\u00f3w celem umo\u017cliwenia u\u017cytkownikowi wyboru pliku z opisem maszyny Turinga do wczytania przez symulator.</p></body></html>", None))
+#endif // QT_CONFIG(tooltip)
+        self.load_file_button.setText(QCoreApplication.translate("MainWindow", u"WCZYTAJ PLIK", None))
         self.turing_machine_label.setText("")
         self.groupBox_3.setTitle(QCoreApplication.translate("MainWindow", u"AKTUALNIE ROZPATRYWANA RELACJA PRZEJ\u015aCIA", None))
         ___qtablewidgetitem = self.tape_state_table.horizontalHeaderItem(0)

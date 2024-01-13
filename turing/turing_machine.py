@@ -45,6 +45,9 @@ class TuringMachine(QThread):
     def __ne__(self, memento: TuringMachineMemento) -> bool:
         return not self == memento
 
+    def get_filename_of_written_file(self) -> str:
+        return self.file_writer.get_filename()
+
     def save_state(self) -> TuringMachineMemento:
         return TuringMachineMemento(self)
 

@@ -14,6 +14,9 @@ class FileWriter:
         self.shift_states = shift_states
         self.clear_file()
 
+    def get_filename(self) -> str:
+        return self.filename
+
     def create_directory_for_results(self) -> None:
         if not isdir(constants.RESULT_DIRECTORY):
             mkdir(constants.RESULT_DIRECTORY)

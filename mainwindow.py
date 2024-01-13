@@ -306,8 +306,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def add_commands_for_buttons(self) -> None:
         self.load_file_button.clicked.connect(self.load_file)
-        self.open_load_file_button.clicked.connect(lambda: startfile(self.filename))
         self.refresh_button.clicked.connect(self.set_refresh_button_command)
+        self.open_load_file_button.clicked.connect(lambda: startfile(self.filename))
+        self.open_result_file_button.clicked.connect(lambda: startfile(self.turing_machine.get_filename_of_written_file()))
         self.start_button.clicked.connect(self.set_start_button_command)
         self.slow_head_button.clicked.connect(self.slow_thread_down)
         self.fast_head_button.clicked.connect(self.speed_thread_up)
@@ -329,8 +330,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def switch_enabled_buttons(self) -> None:
         self.load_file_button.setEnabled(True)
-        self.open_load_file_button.setEnabled(True)
         self.refresh_button.setEnabled(True)
+        self.open_load_file_button.setEnabled(True)
+        self.open_result_file_button.setEnabled(True)
         self.start_button.setEnabled(True)
         self.slow_head_button.setDisabled(True)
         self.fast_head_button.setDisabled(True)
