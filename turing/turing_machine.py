@@ -201,25 +201,25 @@ class TuringMachine(QThread):
                 if not (config.result_text_in_file or self.dont_write_to_file_counter):
                     self.file_writer.write_error_end(constants.ERROR_INFO_FILE, self.calculation_length)
                     config.result_text_in_file: bool = True
-                config.error = True
+                config.error: bool = True
                 return
         if self.actual_state in self.accepting_states:
             if not (config.result_text_in_file or self.dont_write_to_file_counter):
                 result_word: str = self.get_result_word()
                 self.file_writer.write_success_end(constants.SUCCESS_END_INFO_FILE, result_word, self.calculation_length)
                 config.result_text_in_file: bool = True
-            config.finish_step_work = True
+            config.finish_step_work: bool = True
         if self.dont_write_to_file_counter:
             self.dont_write_to_file_counter -= constants.NEXT_DONT_WRITE_VALUE
 
     def run(self) -> None:
-        while self.actual_state not in self.accepting_states:
+        while True:
             self.thread_signals.save.emit()
             self.wait_for_wake(constants.SAVE_MILISECONDS_WAIT_MUTEX)
             self.step_forward()
             if config.error:
                 self.thread_signals.error.emit()
-                config.error = False
+                config.error: bool = False
                 break
             self.thread_signals.draw.emit()
             self.inform_about_extend_tape()
@@ -228,6 +228,7 @@ class TuringMachine(QThread):
             sleep(self.thread_sleep_secs)
             if config.finish_thread:
                 self.thread_signals.stop.emit()
-                return
-        else:
-            self.thread_signals.end.emit()
+                break
+            elif self.actual_state in self.accepting_states:
+                self.thread_signals.end.emit()
+                break
