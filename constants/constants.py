@@ -98,7 +98,6 @@ CALCULATION_LENGTH_FILE: str = 'DŁUGOŚĆ OBLICZENIA: '
 
 # constants used in mainwindow.py
 WINDOW_TITLE: str = 'Symulator maszyny Turinga'
-CONFIGURATION_LABEL_TEXT: str = 'AKTUALNA KONFIGURACJA MASZYNY\n'
 MESSAGE_TITLE_FORMAT: str = 'Niepoprawny format!'
 MESSAGE_FORMAT: str = 'Niepoprawny format pliku wejściowego.\n'
 INDEX_ERROR: str = 'Niekompletna relacja przejścia!'
@@ -118,7 +117,7 @@ PIXMAP_BACKGROUND_COLOR: str = '#f0f0f0'
 BROWN: str = 'brown'
 PERU: str = 'peru'
 WIDTH_COEFFICIENT: float = 0.802
-HEIGHT_COEFFICIENT: float = 0.53
+HEIGHT_COEFFICIENT: float = 0.47
 BEG_POINT_X_RECT: int = 0
 BEG_POINT_Y_RECT_COEFFICIENT: float = 0.25
 END_POINT_Y_RECT: int = 45

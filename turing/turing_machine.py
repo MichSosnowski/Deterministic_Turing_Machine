@@ -176,8 +176,8 @@ class TuringMachine(QThread):
         begin_tape: str = begin_tape if begin_tape else constants.EMPTY_CHAR
         end_tape: str = constants.EMPTY_STRING.join(islice(self.tape, self.head_position_tape, len(self.tape))).rstrip(constants.EMPTY_CHAR)
         end_tape: str = end_tape if end_tape else constants.EMPTY_CHAR
-        return constants.EMPTY_STRING.join([constants.LEFT_BRACKET, str(self.actual_state), constants.COMMA, begin_tape,
-                                            constants.COMMA, end_tape, constants.RIGHT_BRACKET])
+        return constants.EMPTY_STRING.join((constants.LEFT_BRACKET, str(self.actual_state), constants.COMMA, begin_tape,
+                                            constants.COMMA, end_tape, constants.RIGHT_BRACKET))
 
     def write_state_of_turing_machine_file(self) -> None:
         if not self.dont_write_to_file_counter:

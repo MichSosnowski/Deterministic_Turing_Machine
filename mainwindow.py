@@ -263,7 +263,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_configuration_label(self, configuration: str) -> None:
         self.configuration_label.clear()
-        self.configuration_label.setText(constants.CONFIGURATION_LABEL_TEXT + configuration)
+        self.configuration_label.setText(configuration)
 
     def load_file(self) -> None:
         temp_filename: str = self.filename
