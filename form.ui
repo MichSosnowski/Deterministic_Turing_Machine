@@ -31,6 +31,11 @@
         <layout class="QGridLayout" name="gridLayout_3">
          <item row="0" column="0">
           <widget class="QTextBrowser" name="file_text_browser">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="contextMenuPolicy">
             <enum>Qt::NoContextMenu</enum>
            </property>
@@ -113,10 +118,7 @@
          <widget class="QLabel" name="configuration_label">
           <property name="font">
            <font>
-            <italic>false</italic>
-            <bold>false</bold>
-            <underline>false</underline>
-            <kerning>true</kerning>
+            <pointsize>11</pointsize>
            </font>
           </property>
           <property name="text">
@@ -145,6 +147,11 @@
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QTableWidget" name="tape_state_table">
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
          </property>
@@ -366,6 +373,11 @@
       </item>
       <item>
        <widget class="QLabel" name="entry_word_label">
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -428,6 +440,11 @@
          <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
            <widget class="QLabel" name="result_word_label">
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string/>
             </property>
@@ -458,6 +475,11 @@
       </item>
       <item>
        <widget class="QLabel" name="calculation_length_label">
+        <property name="font">
+         <font>
+          <pointsize>11</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string/>
         </property>

@@ -40,6 +40,9 @@ class Ui_MainWindow(object):
         self.gridLayout_3.setObjectName(u"gridLayout_3")
         self.file_text_browser = QTextBrowser(self.groupBox_2)
         self.file_text_browser.setObjectName(u"file_text_browser")
+        font = QFont()
+        font.setPointSize(10)
+        self.file_text_browser.setFont(font)
         self.file_text_browser.setContextMenuPolicy(Qt.NoContextMenu)
         self.file_text_browser.setStyleSheet(u"background-color: rgb(240, 240, 240);")
         self.file_text_browser.setFrameShape(QFrame.NoFrame)
@@ -88,12 +91,9 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.setContentsMargins(-1, 2, -1, -1)
         self.configuration_label = QLabel(self.scrollAreaWidgetContents_3)
         self.configuration_label.setObjectName(u"configuration_label")
-        font = QFont()
-        font.setBold(False)
-        font.setItalic(False)
-        font.setUnderline(False)
-        font.setKerning(True)
-        self.configuration_label.setFont(font)
+        font1 = QFont()
+        font1.setPointSize(11)
+        self.configuration_label.setFont(font1)
         self.configuration_label.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_5.addWidget(self.configuration_label)
@@ -126,6 +126,7 @@ class Ui_MainWindow(object):
         __qtablewidgetitem5 = QTableWidgetItem()
         self.tape_state_table.setVerticalHeaderItem(0, __qtablewidgetitem5)
         self.tape_state_table.setObjectName(u"tape_state_table")
+        self.tape_state_table.setFont(font1)
         self.tape_state_table.setFocusPolicy(Qt.NoFocus)
         self.tape_state_table.setStyleSheet(u"background-color: rgb(240, 240, 240);")
         self.tape_state_table.setFrameShape(QFrame.NoFrame)
@@ -217,23 +218,24 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.label = QLabel(self.centralwidget)
         self.label.setObjectName(u"label")
-        font1 = QFont()
-        font1.setBold(True)
-        font1.setItalic(True)
-        self.label.setFont(font1)
+        font2 = QFont()
+        font2.setBold(True)
+        font2.setItalic(True)
+        self.label.setFont(font2)
         self.label.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_3.addWidget(self.label)
 
         self.entry_word_label = QLabel(self.centralwidget)
         self.entry_word_label.setObjectName(u"entry_word_label")
+        self.entry_word_label.setFont(font1)
         self.entry_word_label.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_3.addWidget(self.entry_word_label)
 
         self.label_2 = QLabel(self.centralwidget)
         self.label_2.setObjectName(u"label_2")
-        self.label_2.setFont(font1)
+        self.label_2.setFont(font2)
         self.label_2.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_3.addWidget(self.label_2)
@@ -254,6 +256,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.result_word_label = QLabel(self.scrollAreaWidgetContents)
         self.result_word_label.setObjectName(u"result_word_label")
+        self.result_word_label.setFont(font1)
         self.result_word_label.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_2.addWidget(self.result_word_label)
@@ -264,13 +267,14 @@ class Ui_MainWindow(object):
 
         self.label_3 = QLabel(self.centralwidget)
         self.label_3.setObjectName(u"label_3")
-        self.label_3.setFont(font1)
+        self.label_3.setFont(font2)
         self.label_3.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_3.addWidget(self.label_3)
 
         self.calculation_length_label = QLabel(self.centralwidget)
         self.calculation_length_label.setObjectName(u"calculation_length_label")
+        self.calculation_length_label.setFont(font1)
         self.calculation_length_label.setAlignment(Qt.AlignCenter)
 
         self.verticalLayout_3.addWidget(self.calculation_length_label)
