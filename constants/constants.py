@@ -111,6 +111,7 @@ ERROR_INFO_MESSAGE: str = 'Maszyna Turinga zakończyła swoje działanie błęde
 CURRENT_DIR: str = '.'
 TXT_FILTER: str = 'Pliki tekstowe (*.txt)'
 EXTEND_TAPE_INFO_TITLE: str = 'Rozszerzenie taśmy'
+WORD_LENGTH_TEXT: str = 'Długość słowa: '
 FILENAME_INDEX: int = 0
 INITIAL_HEAD_POSITION: int = 15
 PIXMAP_BACKGROUND_COLOR: str = '#f0f0f0'

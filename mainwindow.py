@@ -77,7 +77,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.file_reader: FileReader = FileReader(self.filename)
         self.add_text_to_file_text_browser()
         self.set_entry_word_label()
-        self.set_result_word_label(constants.EMPTY_STRING)
+        self.set_result_word_label(constants.EMPTY_STRING, is_calculated=False)
         self.set_calculation_length_label(constants.EMPTY_STRING)
         self.turing_machine: TuringMachine = TuringMachine(self.file_reader, self.wait_condition)
         self.set_configuration_label(self.turing_machine.get_configuration())
@@ -251,11 +251,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def set_entry_word_label(self) -> None:
         self.entry_word_label.clear()
-        self.entry_word_label.setText(self.file_reader.get_entry_word_from_file())
+        entry_word: str = self.file_reader.get_entry_word_from_file()
+        self.entry_word_label.setText(entry_word)
+        self.entry_word_label.setToolTip(constants.WORD_LENGTH_TEXT + f'{len(entry_word)}')
 
-    def set_result_word_label(self, result_text: str) -> None:
+    def set_result_word_label(self, result_text: str, *, is_calculated: bool=True) -> None:
         self.result_word_label.clear()
         self.result_word_label.setText(result_text)
+        self.result_word_label.setToolTip(constants.EMPTY_STRING)
+        if is_calculated:
+            self.result_word_label.setToolTip(constants.WORD_LENGTH_TEXT + f'{len(result_text)}')
 
     def set_calculation_length_label(self, calculation_length_text: str) -> None:
         self.calculation_length_label.clear()
@@ -427,14 +432,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.execute_success_end_step()
 
     def set_step_backward_command(self) -> None:
-        self.result_word_label.clear()
+        self.set_result_word_label(constants.EMPTY_STRING, is_calculated=False)
         self.calculation_length_label.clear()
         self.restore_state_turing_machine()
         self.add_pixmap_for_turing_machine_label()
         self.redraw_turing_machine()
 
     def set_reset_button_command(self) -> None:
-        self.result_word_label.clear()
+        self.set_result_word_label(constants.EMPTY_STRING, is_calculated=False)
         self.calculation_length_label.clear()
         self.restore_state_turing_machine(Indexes.ZERO.value)
         self.previous_head_position: int = self.turing_machine.get_actual_head_position()
