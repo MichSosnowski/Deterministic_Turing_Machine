@@ -97,7 +97,7 @@ CALCULATION_LENGTH_FILE: str = 'DŁUGOŚĆ OBLICZENIA: '
 
 
 # constants used in mainwindow.py
-WINDOW_TITLE: str = 'Symulator maszyny Turinga'
+WINDOW_TITLE: str = 'Symulator deterministycznej maszyny Turinga'
 MESSAGE_TITLE_FORMAT: str = 'Niepoprawny format!'
 MESSAGE_FORMAT: str = 'Niepoprawny format pliku wejściowego.\n'
 INDEX_ERROR: str = 'Niekompletna relacja przejścia!'
