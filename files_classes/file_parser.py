@@ -50,15 +50,14 @@ class FileParser:
 
     def check_tape_alphabet(self) -> str:
         read_line: str = self.file.readline().rstrip(constants.NEWLINE)
-        if (len(read_line) < constants.REQUIRED_COUNT_TAPE_ALPHABET
-            or read_line.find(constants.EMPTY_CHAR) == constants.CHAR_NOT_FOUND):
+        if read_line.find(constants.EMPTY_CHAR) == constants.CHAR_NOT_FOUND:
             raise IncorrectFormatException(f'{constants.TAPE_ALPHABET_ERROR}')
         return read_line
 
     def check_entry_alphabet(self, tape_alphabet: str) -> str:
         read_line: str = self.file.readline().rstrip(constants.NEWLINE)
         is_all_chars_in_tape_alphabet = list(map(lambda elem: elem in tape_alphabet, read_line))
-        if not (read_line and all(is_all_chars_in_tape_alphabet)):
+        if not all(is_all_chars_in_tape_alphabet):
             raise IncorrectFormatException(f'{constants.ENTRY_ALPHABET_ERROR}')
         return read_line
 

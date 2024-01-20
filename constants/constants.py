@@ -63,14 +63,12 @@ ENTRY_ALPHABET: str = 'alfabet wejsciowy:\n'
 STATES: str = 'stany:\n'
 CHAR_NOT_FOUND: int = -1
 REQUIRED_COUNT: int = 1
-REQUIRED_COUNT_TAPE_ALPHABET: int = 2
 MAX_LENGTH_ENTRY_WORD: int = 30
 EXPECTED_LINE: str = 'Oczekiwana linia'
 RECEIVED_LINE: str = 'Otrzymana linia'
-TAPE_ALPHABET_ERROR: str = 'Zbyt mała liczba znaków w alfabecie taśmowym\nbądź brak znaku pustego #.'
-ENTRY_ALPHABET_ERROR: str = ('Zbyt mała liczba znaków w alfabecie wejściowym bądź nie wszystkie\nznaki alfabetu wejściowego'
-                             + ' zawarte są w alfabecie taśmowym.')
-ENTRY_WORD_ERROR: str = 'Zbyt krótkie lub zbyt długie słowo wejściowe\nlub słowo wejściowe zawiera znaki spoza alfabetu wejściowego.'
+TAPE_ALPHABET_ERROR: str = 'Alfabet taśmowy nie zawiera znaku pustego #.'
+ENTRY_ALPHABET_ERROR: str = 'Nie wszystkie znaki alfabetu wejściowego zawarte są w alfabecie taśmowym.'
+ENTRY_WORD_ERROR: str = 'Zbyt długie słowo wejściowe lub słowo wejściowe zawiera\nznaki spoza alfabetu wejściowego.'
 STATES_ERROR: str = 'Zbyt mała liczba stanów.'
 INITIAL_STATE_ERROR: str = 'Brak stanu wejściowego lub stan wejściowy nie jest stanem zdefiniowanym w stanach.'
 ACCEPTING_STATES_ERROR: str = 'Brak stanów akceptujących lub któryś stan akceptujący nie jest stanem zdefiniowanym w stanach.'
