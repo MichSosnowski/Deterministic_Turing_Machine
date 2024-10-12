@@ -1,5 +1,5 @@
 .ropeproject/
 __pycache__/
-venv/
+.venv/
 wyniki/
 turing_machine.pyproject.user
